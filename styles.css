@@ -1,0 +1,75 @@
+.habitCompleteDisplay {
+    display: flex;
+    align-items: center; /* per allineare verticalmente al centro */
+    justify-content: space-around; /* per distanziare testo e bottone agli estremi */
+    gap: 10px; /* opzionale, per un po' di spazio tra testo e bottone */
+    background-color: aquamarine;
+    margin-left: 60;
+    margin-right: 60;
+    margin-top: 20;
+    margin-bottom: 20;
+}
+
+.errorMessage{
+    color: red;
+}
+
+#toHomePage{
+    width: 100%;
+    max-width: 260px;
+    min-width: 150px;
+}
+
+#toHomePage:hover{
+   cursor: pointer;
+}
+
+.divMenu{
+    display: flex;
+    align-items: center; /* per allineare verticalmente al centro */
+    justify-content: space-around; /* per distanziare testo e bottone agli estremi */
+    padding: 30px;
+    border-bottom: solid;
+    border-bottom-color: #59FF00;
+}
+
+.menu{
+
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+body{
+    text-align: center;
+    font-family: "Ancizar Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    background-color: rgb(22, 23, 39);
+    color: rgb(174,174,174);
+    box-sizing: border-box;
+    margin: 0;
+}
+.dataGiornoTasks{
+    color: red;
+}
+
+a{
+    color: rgb(174,174,174);
+    text-decoration: none;
+    
+}
+
+.menuItem{
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.menuItem:hover{
+
+border-bottom: solid;
+
+}
