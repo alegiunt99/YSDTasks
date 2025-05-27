@@ -1,22 +1,6 @@
+import { Week } from "Week.js"
+
 export class Day {
-
-    /*  date (Date)
-        La data esatta di quel giorno (es. 2025-06-02).
-
-        dayName (string)
-        Il nome del giorno (es. "Lunedì", "Martedì"…), opzionale se lo ricavi da date.
-
-        tasks (Task[])
-        Un array di oggetti Task, per rappresentare le attività associate a quel giorno.
-
-        completed (boolean)
-        (Opzionale) Se tutte le task del giorno sono state completate, utile per statistiche o interfaccia.
-
-        note (string)
-        (Facoltativo) Un campo per eventuali annotazioni libere dell’utente sul giorno.
-
-        weekRef (Week)
-        (Opzionale) Riferimento alla Week a cui appartiene — utile se in futuro ti servirà risalire alla settimana. */
 
     #date
     #dayName
@@ -25,7 +9,7 @@ export class Day {
     #weekRef
 
 
-    constructor(date, dayName, tasks, completed, weekRef) {
+    constructor(date, dayName, tasks = [], completed = false, weekRef) {
         
         this.#date = date;
         this.#dayName = dayName;
@@ -80,7 +64,7 @@ export class Day {
         return this.#weekRef
     }
 
-    /** @param {boolean} value */
+    /** @param {Week} value */
     set weekRef(value){
         this.#weekRef = value
     }
