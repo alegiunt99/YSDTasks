@@ -37,6 +37,29 @@ registrationPageLink.addEventListener("click", () => showOnlySection(registratio
 themeSectionLink.addEventListener("click", () => showOnlySection(themeSection, allSections));
 
 
+// aggiungere il cambio di tema con le classi
+const switchThemeBtn = document.getElementById("switchThemeBtn");
+
+// Carica il tema salvato in precedenza
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) {
+    document.body.classList.add(savedTheme);
+} else {
+    // Di default parte con dark-theme
+    document.body.classList.add("dark-theme");
+}
+
+switchThemeBtn.addEventListener("click", () => {
+    if (document.body.classList.contains("dark-theme")) {
+        document.body.classList.remove("dark-theme");
+        document.body.classList.add("light-theme");
+        localStorage.setItem("theme", "light-theme");
+    } else {
+        document.body.classList.remove("light-theme");
+        document.body.classList.add("dark-theme");
+        localStorage.setItem("theme", "dark-theme");
+    }
+});
 
 
 

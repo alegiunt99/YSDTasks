@@ -73,3 +73,24 @@ a{
 border-bottom: solid;
 
 }
+
+
+/* 🌙 Tema scuro (default) */
+body.dark-theme {
+    background-color: rgb(22, 23, 39);
+    color: #aeaeae;
+}
+
+/* ☀️ Tema chiaro */
+body.light-theme {
+    background-color:#aeaeae;
+    color:  rgb(22, 23, 39);
+}
+
+body.light-theme a {
+    color: rgb(22, 23, 39);
+}
+
+body.light-theme .divMenu {
+    border-bottom-color: #59FF00;
+}
