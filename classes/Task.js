@@ -1,17 +1,19 @@
+import { Day } from "./Day.js"
+
 export class Task {
     
     #id
-    #desription
+    #description
     #time
     #done
     #dayRef
     #weekRef
     #notes
 
-    constructor(id, desription, time, done = false, dayRef, weekRef, notes ) {
+    constructor(id, description, time, done = false, dayRef, weekRef, notes ) {
         
         this.#id = id;
-        this.#desription = desription;
+        this.#description = description;
         this.#time = time
         this.#done = done
         this.#dayRef = dayRef
@@ -28,17 +30,17 @@ export class Task {
 
     
     //get e set
-    get desription(){
+    get description(){
 
-        return this.#desription
+        return this.#description
     }
 
     /**
      * @param {String} value
      */
-    set desription(value){
+    set description(value){
 
-        this.#desription = value
+        this.#description = value
     }
 
 
@@ -75,7 +77,7 @@ export class Task {
     }
 
     /**
-    * @param {Day[]} value
+    * @param {Day} value
     */
     set dayRef(value) {
         this.#dayRef = value;
@@ -83,14 +85,14 @@ export class Task {
 
 
     //get e set SETTIMANA DI RIFERIMENTO
-    get weekRefRef() {
+    get weekRef() {
         return this.#weekRef;
     }
 
     /**
-    * @param {Day[]} value
+    * @param {Week} value
     */
-    set weekRefRef(value) {
+    set weekRef(value) {
         this.#weekRef = value;
     }
 
@@ -101,7 +103,7 @@ export class Task {
     }
 
     /**
-    * @param {Day[]} value
+    * @param {String} value
     */
     set notes(value) {
         this.#notes = value;

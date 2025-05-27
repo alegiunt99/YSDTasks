@@ -1,4 +1,4 @@
-import { Week } from "Week.js"
+import { Week } from "./Week.js"
 
 export class Day {
 

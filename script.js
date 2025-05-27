@@ -1,6 +1,7 @@
 import {renderHabits} from './scripts/functions.js'
 import {addTask} from './scripts/functions.js'
 import {showOnlySection} from './scripts/functions.js'
+import {crateNewWeekFromToday} from './scripts/functions.js'
 // Prendo gli elementi HTML
 // links
 const weekPageLink = document.getElementById("toWeek")
@@ -61,6 +62,7 @@ switchThemeBtn.addEventListener("click", () => {
     }
 });
 
+crateNewWeekFromToday()
 
 
 // Caricamento iniziale da localStorage
