@@ -72,7 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (savedWeeks) {
       try {
         const parsed = JSON.parse(savedWeeks);
-        console.log(parsed)
         if (Array.isArray(parsed)) {
           weekList = parsed.map(w => Week.fromJSON(w));
         } else {
@@ -95,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     startTodayBtn.addEventListener("click", () => {
       addNewWeekFromToday(weekList, addWeekModale)
+      console.log("Array su localStorage: " + savedWeeks)
     })
 
     // --------------------------------------------------------- TASKS --------------------------------------------------------------------

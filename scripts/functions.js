@@ -196,7 +196,8 @@ export function addNewWeekFromToday(weeksList, addWeekModale) {
         //weeksList.sort((a, b) => a.ora.localeCompare(b.ora));
     
         // 🔐 Aggiorna il localStorage
-        localStorage.setItem("weeks", JSON.stringify(weeksList));
+        const salvate = weeksList.map(week => week.toJSON());
+        localStorage.setItem("weeks", JSON.stringify(salvate));
     
         addWeekModale.classList.add("hidden")
 

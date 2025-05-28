@@ -72,8 +72,17 @@ export class Day {
 
     // date, dayName, tasks = [], completed = false, weekRef
 
-    static fromJSON(obj) {
-        const tasks = obj.tasks.map(task => Task.fromJSON(task));
+   static fromJSON(obj) {
+        const tasks = Array.isArray(obj.tasks) ? obj.tasks.map(task => Task.fromJSON(task)) : [];;
         return new Day(new Date(obj.date), obj.dayName, tasks, obj.completed, obj.weekRef)
+    }
+
+    toJSON() {
+        return {
+            date: this.#date, 
+            dayName: this.#dayName,
+            tasks: this.#tasks, 
+            completed: this.#completed,
+        };
     }
 }

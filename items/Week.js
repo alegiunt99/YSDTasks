@@ -93,10 +93,20 @@ export class Week {
         const end = new Date(obj.endDate)
         const title = obj.title
         const color = obj.color
-        const days = obj.days.map(day => Day.fromJSON(day))
+        const days = Array.isArray(obj.days) ? obj.days.map(day => Day.fromJSON(day)) : [];
 
         return new Week(start, end, title, color, days)
 
         
+    }
+
+    toJSON() {
+        return {
+            startDate: this.#startDate,
+            endDate: this.#endDate,
+            title: this.#title,
+            color: this.#color,
+            days: this.#days
+        };
     }
 }
