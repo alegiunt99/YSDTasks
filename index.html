@@ -17,12 +17,32 @@
                 <div>
                     <img src="./foto/logo_app.png" class=""  href="#" id="toHomePage" />
                 </div>
-                <a class="menuItem"  href="#" id="toWeek">Weeks</a>
-                <a class="menuItem"  href="#" id="toLogin">Login</a>
-                <a class="menuItem"  href="#" id="toSignup">Sign up</a>
-                <a class="menuItem"  href="#" id="toTheme">Theme</a>
+                <div>
+                    <a class="menuItem"  href="#" id="toLogin">Login</a>
+                    <a class="menuItem"  href="#" id="toSignup">Sign up</a>
+                    <a class="menuItem"  href="#" id="toTheme">Theme</a>
+                </div>
+                
             </nav>
-            
+            <!-- menu responsive -->
+             <nav class="hidden">
+                <div>
+                    <a href="#" id="toHomePage" >
+                        <img src="" alt="" srcset="">
+                    </a>
+                </div>
+                <div>
+                    <div>
+                        <img width="16" height="16" src="https://img.icons8.com/small/16/menu.png" alt="menu" id="hamburgerMenu"/>
+                    </div>
+                    <div>
+                        <a class="menuItem"  href="#" id="toLogin">Login</a>
+                        <a class="menuItem"  href="#" id="toSignup">Sign up</a>
+                        <a class="menuItem"  href="#" id="toTheme">Theme</a>
+                    </div>
+                </div>
+             </nav>
+
         </div>
     </header>
     
@@ -36,14 +56,38 @@
                 Benvenuto su YSDTasks! 
             </h1>
 
+            <div id="weeksViewContainer">
 
+            </div>
+
+
+            <div>
+                <button id="addWeekBtn" class="add-week-btn">+</button>
+            </div>
+
+            <div id="weekModal" class="modal hidden">
+                <div class="modal-content">
+                    <div>
+                        <button id="exitAddWeekModale">X</button>
+                    </div>
+                    <h2>Quando vuoi iniziare la settimana?</h2>
+                    <div>
+                        <button id="startToday">Da oggi</button>
+                        <button id="startNextMonday">Dal prossimo lunedì</button>
+                    </div>
+                    <input type="text" placeholder="Vuoi dare una descrizione alla tua Settimana?" id="weekColor">
+                    <input type="color" placeholder="Se vuoi, Seleziona un colore per la tua settimana" id="weekColor">
+                </div>
+            </div>
         </section>
 
 
         <!-- 🔄 CONTENUTO settimana -->
         <section id="weekSection" style="display: none;">
             <h1 id="weekTitle"></h1>
-            
+            <div id="daysContainer">
+
+            </div>
         </section>
 
 
@@ -52,6 +96,13 @@
             
             <h1 id="dayTitle"></h1>
             
+            <!-- 🔄 modale modifica Task-->
+            <div id="editTaskModale" class="hidden">
+            
+                <h1>modifica Task</h1>
+
+            </div>
+
         </section>
 
         <!-- 🔄 CONTENUTO giorno con le task -->
@@ -78,12 +129,7 @@
             <button id="switchThemeBtn">Cambia tema</button>
         </section>
 
-        <!-- 🔄 modale modifica Task-->
-        <section id="editTaskModale" style="display: none;">
-            
-            <h1>modifica Task</h1>
-
-        </section>
+        
 
 
     </main>

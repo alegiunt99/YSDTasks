@@ -1,10 +1,6 @@
-import {renderHabits} from './scripts/functions.js'
-import {addTask} from './scripts/functions.js'
-import {showOnlySection} from './scripts/functions.js'
-import {crateNewWeekFromToday} from './scripts/functions.js'
+import {renderHabits, addTask, showOnlySection, createNewWeekFromToday, createNewWeekFromNextMonday, addNewWeekFromToday} from './scripts/functions.js'
 // Prendo gli elementi HTML
 // links
-const weekPageLink = document.getElementById("toWeek")
 const homePageLink = document.getElementById("toHomePage")
 const themeSectionLink = document.getElementById("toTheme")
 const loginPageLink = document.getElementById("toLogin")
@@ -19,6 +15,11 @@ const loginSection = document.getElementById("loginSection")
 const registrationSection = document.getElementById("registrationSection")
 const themeSection = document.getElementById("themeSection")
 const editTaskModale = document.getElementById("editTaskModale")
+const addWeekModale = document.getElementById("weekModal")
+const addWeekButton = document.getElementById("addWeekBtn")
+const exitAddWeekModale = document.getElementById("exitAddWeekModale")
+const weeksViewContainer = document.getElementById("weeksViewContainer")
+const startTodayBtn = document.getElementById("startToday")
 
 //tasks 
 const habitDescription = document.getElementById("newHabitDescription");
@@ -27,17 +28,16 @@ const addButton = document.getElementById("addHabitBtn");
 const containerList = document.getElementById("ListContainer");
 
 const allSections = [
-    homePage, weekPage, daySection, loginSection,
+    homePage, daySection, loginSection,
     registrationSection, themeSection, editTaskModale
   ];
 
 homePageLink.addEventListener("click", () => showOnlySection(homePage, allSections));
-weekPageLink.addEventListener("click", () => showOnlySection(weekPage, allSections));
 loginPageLink.addEventListener("click", () => showOnlySection(loginSection, allSections));
 registrationPageLink.addEventListener("click", () => showOnlySection(registrationSection, allSections));
 themeSectionLink.addEventListener("click", () => showOnlySection(themeSection, allSections));
 
-
+// --------------------------------------------------------- THEME --------------------------------------------------------------------
 // aggiungere il cambio di tema con le classi
 const switchThemeBtn = document.getElementById("switchThemeBtn");
 
@@ -62,9 +62,26 @@ switchThemeBtn.addEventListener("click", () => {
     }
 });
 
-crateNewWeekFromToday()
+// --------------------------------------------------------- WEEKS --------------------------------------------------------------------
+createNewWeekFromToday()
 
+createNewWeekFromNextMonday()
 
+addWeekButton.addEventListener("click", () => {
+  addWeekModale.classList.remove("hidden")
+})
+
+exitAddWeekModale.addEventListener("click", () => {
+  addWeekModale.classList.add("hidden")
+})
+
+const weekList = []
+
+startTodayBtn.addEventListener("click", () => {
+  addNewWeekFromToday(weekList, addWeekModale)
+})
+
+// --------------------------------------------------------- TASKS --------------------------------------------------------------------
 // Caricamento iniziale da localStorage
 const savedHabits = localStorage.getItem("habits");
 console.log(savedHabits)
