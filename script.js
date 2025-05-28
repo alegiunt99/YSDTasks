@@ -82,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    console.log("Array su localStorage: " + savedWeeks)
 
     addWeekButton.addEventListener("click", () => {
       addWeekModale.classList.remove("hidden")

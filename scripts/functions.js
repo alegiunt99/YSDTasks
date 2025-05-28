@@ -184,8 +184,6 @@ export function generateDaysForWeek(startDate, endDate, weekRef) {
 }
 
 
-
-
 export function addNewWeekFromToday(weeksList, addWeekModale) {
 
         const newWeek = createNewWeekFromToday()
