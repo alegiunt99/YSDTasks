@@ -153,6 +153,14 @@ body.light-theme .divMenu {
 
 }
 
+#filtersAndDeleteAllWeeks{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
 .modal-content {
   background: white;
   padding: 20px 30px;

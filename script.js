@@ -69,12 +69,14 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.classList.remove("dark-theme");
             document.body.classList.add("light-theme");
             sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/161727/sort-amount-up.png"
+            homePageLink.src = "./foto/logo_app_schermo_chiaro.png"
             localStorage.setItem("theme", "light-theme");
             
         } else {
             document.body.classList.remove("light-theme");
             document.body.classList.add("dark-theme");
             localStorage.setItem("theme", "dark-theme");
+            homePageLink.src = "./foto/logo_app.png"
             sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png"
         }
     });
@@ -83,12 +85,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     sortBtn.addEventListener("click", () => {
         if (up === true) {
+          if (document.body.classList.contains("dark-theme")) {
             sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/generic-sorting.png"
             up = false
+          }else{
+            sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/161727/generic-sorting.png"
+            up = false
+          }
+            
             
         } else {
+
+          if (document.body.classList.contains("dark-theme")) {
             sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png"
             up=true
+          } else {
+            sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/161727/sort-amount-up.png"
+            up=true
+          }
+            
         }
     });
 
