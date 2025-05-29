@@ -131,13 +131,19 @@ export function showOnlySection(section, allSections) {
   section.style.display = "block";
 }
 
-export function createNewWeekFromToday() {
+export function createNewWeekFromToday(userWeekColor, userWeekDescription) {
 
   const start = new Date(); // oggi
   const end = new Date();
   end.setDate(start.getDate() + (7 - start.getDay())); // domenica corrente
-  const title = `SETTIMANA ${start.toLocaleDateString()} - ${end.toLocaleDateString()}`
-  const color = "#00AA00" // verde
+  var title = ""
+  if (userWeekDescription.value === "" || userWeekDescription.value.trim().length === 0) {
+        title = `SETTIMANA ${start.toLocaleDateString()} - ${end.toLocaleDateString()}`
+  }else{
+        title = userWeekDescription.value
+  }
+ 
+  const color = userWeekColor.value // verde
   const week = new Week(start, end, title, color, [])
   const days = generateDaysForWeek(start, end, week)
   week.days = days
@@ -145,7 +151,7 @@ export function createNewWeekFromToday() {
   return week
 }
 
-export function createNewWeekFromNextMonday() {
+export function createNewWeekFromNextMonday(userWeekColor, userWeekDescription) {
 
   const today = new Date();
   const nextMonday = new Date();
@@ -154,9 +160,14 @@ export function createNewWeekFromNextMonday() {
   nextMonday.setDate(today.getDate() + daysUntilNextMonday);
   const nextSunday = new Date(nextMonday);
   nextSunday.setDate(nextMonday.getDate() + 6);
-
-  const title = `SETTIMANA ${nextMonday.toLocaleDateString()} - ${nextSunday.toLocaleDateString()}`;
-  const color = "#00AA00";
+  var title = ""
+  if (userWeekDescription.value === "" || userWeekDescription.value.trim().length === 0) {
+        title = `SETTIMANA ${nextMonday.toLocaleDateString()} - ${nextSunday.toLocaleDateString()}`
+  }else{
+        title = userWeekDescription.value
+  }
+ 
+  const color = userWeekColor.value // verde
   const week = new Week(nextMonday, nextSunday, title, color, []);
   const days = generateDaysForWeek(nextMonday, nextSunday, week);
   week.days = days;
@@ -184,9 +195,9 @@ export function generateDaysForWeek(startDate, endDate, weekRef) {
 }
 
 
-export function addNewWeekFromToday(weeksList, addWeekModale, weeksViewContainer) {
+export function addNewWeekFromToday(weeksList, addWeekModale, weeksViewContainer,userWeekColor, userWeekDescription) {
 
-        const newWeek = createNewWeekFromToday()
+        const newWeek = createNewWeekFromToday(userWeekColor, userWeekDescription)
 
         weeksList.push(newWeek);
       
@@ -205,13 +216,14 @@ export function addNewWeekFromToday(weeksList, addWeekModale, weeksViewContainer
       
        
         
-
+        userWeekColor.value = "#000000"
+        userWeekDescription.value = ""
 
 }
 
-export function addNewWeekFromNextMonday(weeksList, addWeekModale, weeksViewContainer) {
+export function addNewWeekFromNextMonday(weeksList, addWeekModale, weeksViewContainer,userWeekColor, userWeekDescription) {
 
-        const newWeek = createNewWeekFromNextMonday()
+        const newWeek = createNewWeekFromNextMonday(userWeekColor, userWeekDescription)
 
         weeksList.push(newWeek);
       
@@ -228,6 +240,8 @@ export function addNewWeekFromNextMonday(weeksList, addWeekModale, weeksViewCont
         // 🔄 Pulisci e ricostruisci il DOM
         renderWeeks(weeksList,weeksViewContainer)
 
+        userWeekColor.value = "#000000"
+        userWeekDescription.value = ""
 
 }
 
@@ -246,7 +260,7 @@ export function renderWeeks(weekList, weeksViewContainer) {
       
       const pWeekColor = document.createElement("p");
       pWeekColor.className = "weekColor";
-      pWeekColor.style.color = week.color
+      pWeekColor.style.backgroundColor = week.color
   
       // 🗑️ Cancella se clicchi su di lui
       /*habitDeleteButton.addEventListener("click", () => {

@@ -13,20 +13,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //PAGINE DA ATTIVARE E DISATTIVARE
     const homePage = document.getElementById("homeSection")
-    const weekPage = document.getElementById("weekSection")
+    const weekSection = document.getElementById("weekSection")
     const daySection = document.getElementById("daySection")
     const loginSection = document.getElementById("loginSection")
     const registrationSection = document.getElementById("registrationSection")
     const themeSection = document.getElementById("themeSection")
     const editTaskModale = document.getElementById("editTaskModale")
+    //weeks button and elements
     const addWeekModale = document.getElementById("weekModal")
     const addWeekButton = document.getElementById("addWeekBtn")
     const exitAddWeekModale = document.getElementById("exitAddWeekModale")
     const weeksViewContainer = document.getElementById("weeksViewContainer")
+    // --- week buttons
     const startTodayBtn = document.getElementById("startToday")
-    
     const startNextMondayBtn = document.getElementById("startNextMonday")
-
+    const userWeekDescription = document.getElementById("userWeekDescription")
+    const userWeekColor= document.getElementById("userWeekColor")
+    const clearLocalStorageBtn= document.getElementById("resetLocalStorage")
+    
     //tasks 
     const habitDescription = document.getElementById("newHabitDescription");
     const habitHour = document.getElementById("newHabitHour");
@@ -69,6 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // --------------------------------------------------------- WEEKS --------------------------------------------------------------------
+    
+
+    
     const savedWeeks = localStorage.getItem("weeks");
     var weekList = []
     if (savedWeeks) {
@@ -95,13 +102,21 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     startTodayBtn.addEventListener("click", () => {
-      addNewWeekFromToday(weekList, addWeekModale,weeksViewContainer)
+      addNewWeekFromToday(weekList, addWeekModale,weeksViewContainer,userWeekColor, userWeekDescription)
       console.log("Array su localStorage: " + savedWeeks)
     })
 
     startNextMondayBtn.addEventListener("click", () => {
-      addNewWeekFromNextMonday(weekList, addWeekModale, weeksViewContainer)
+      addNewWeekFromNextMonday(weekList, addWeekModale, weeksViewContainer,userWeekColor, userWeekDescription)
       console.log("Array su localStorage: " + savedWeeks)
+    })
+
+    clearLocalStorageBtn.addEventListener("click", () => {
+      localStorage.clear()
+      weekList.length = 0; // 🧹 Svuota anche l'array in memoria
+      weeksViewContainer.innerHTML = ""; // 🧹 Svuota anche il DOM (opzionale ma sicuro)
+      renderWeeks(weekList,weeksViewContainer)
+      console.log(weekList)
     })
 
     // --------------------------------------------------------- TASKS --------------------------------------------------------------------
