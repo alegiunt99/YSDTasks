@@ -37,6 +37,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const addButton = document.getElementById("addHabitBtn");
     const tasksWiewContainer = document.getElementById("tasksWiewContainer");
 
+
+    const sortBtnImg = document.getElementById("imgSorting")
+    const sortBtn = document.getElementById("weekFilters")
+
     const allSections = [
         homePage, daySection, loginSection,
         registrationSection, themeSection, editTaskModale
@@ -64,11 +68,27 @@ document.addEventListener("DOMContentLoaded", () => {
         if (document.body.classList.contains("dark-theme")) {
             document.body.classList.remove("dark-theme");
             document.body.classList.add("light-theme");
+            sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/161727/sort-amount-up.png"
             localStorage.setItem("theme", "light-theme");
+            
         } else {
             document.body.classList.remove("light-theme");
             document.body.classList.add("dark-theme");
             localStorage.setItem("theme", "dark-theme");
+            sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png"
+        }
+    });
+
+    var up = true
+
+    sortBtn.addEventListener("click", () => {
+        if (up === true) {
+            sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/generic-sorting.png"
+            up = false
+            
+        } else {
+            sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png"
+            up=true
         }
     });
 
