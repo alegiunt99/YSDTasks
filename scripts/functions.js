@@ -4,8 +4,8 @@ import { Week } from "../items/Week.js";
 import { Day } from "../items/Day.js";
 //tasks
 
-export function renderHabits(habitsContainer, containerList) {
-    containerList.innerHTML = ""; // svuota la lista prima di ricostruirla
+export function renderHabits(habitsContainer, tasksWiewContainer) {
+    tasksWiewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
   
     habitsContainer.forEach(habit => {
       const habitDiv = document.createElement("div");
@@ -23,13 +23,13 @@ export function renderHabits(habitsContainer, containerList) {
   
       // 🗑️ Cancella se clicchi su di lui
       habitDeleteButton.addEventListener("click", () => {
-        deleteTask(habit,habitsContainer,containerList)
+        deleteTask(habit,habitsContainer,tasksWiewContainer)
       });
 
       habitDiv.appendChild(pHabitDescr)
       habitDiv.appendChild(habitDeleteButton)
 
-      containerList.appendChild(habitDiv)
+      tasksWiewContainer.appendChild(habitDiv)
     });
   }
 
@@ -184,7 +184,7 @@ export function generateDaysForWeek(startDate, endDate, weekRef) {
 }
 
 
-export function addNewWeekFromToday(weeksList, addWeekModale) {
+export function addNewWeekFromToday(weeksList, addWeekModale, weeksViewContainer) {
 
         const newWeek = createNewWeekFromToday()
 
@@ -201,7 +201,7 @@ export function addNewWeekFromToday(weeksList, addWeekModale) {
 
         console.log(weeksList)
         // 🔄 Pulisci e ricostruisci il DOM
-        // renderHabits(habitsContainer, containerList);
+        renderWeeks(weeksList,weeksViewContainer)
       
        
         
@@ -209,7 +209,7 @@ export function addNewWeekFromToday(weeksList, addWeekModale) {
 
 }
 
-export function addNewWeekFromNextMonday(weeksList, addWeekModale) {
+export function addNewWeekFromNextMonday(weeksList, addWeekModale, weeksViewContainer) {
 
         const newWeek = createNewWeekFromNextMonday()
 
@@ -226,10 +226,36 @@ export function addNewWeekFromNextMonday(weeksList, addWeekModale) {
 
         console.log(weeksList)
         // 🔄 Pulisci e ricostruisci il DOM
-        // renderHabits(habitsContainer, containerList);
-      
-       
-        
+        renderWeeks(weeksList,weeksViewContainer)
 
 
 }
+
+export function renderWeeks(weekList, weeksViewContainer) {
+    weeksViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
+  
+    weekList.forEach(week => {
+      const weekDiv = document.createElement("div");
+      weekDiv.className = "WeekCompleteDisplay";
+
+      
+      const pWeekTile = document.createElement("p");
+      pWeekTile.className = "weekTitle";
+      pWeekTile.textContent = week.title;
+
+      
+      const pWeekColor = document.createElement("p");
+      pWeekColor.className = "weekColor";
+      pWeekColor.style.color = week.color
+  
+      // 🗑️ Cancella se clicchi su di lui
+      /*habitDeleteButton.addEventListener("click", () => {
+        deleteTask(week,weekList,weeksViewContainer)
+      });*/
+
+      weekDiv.appendChild(pWeekTile)
+      weekDiv.appendChild(pWeekColor)
+
+      weeksViewContainer.appendChild(weekDiv)
+    });
+  }

@@ -1,4 +1,4 @@
-import {renderHabits, addTask, showOnlySection, createNewWeekFromToday, createNewWeekFromNextMonday, addNewWeekFromToday,  addNewWeekFromNextMonday} from './scripts/functions.js'
+import {renderHabits, addTask, showOnlySection, createNewWeekFromToday, createNewWeekFromNextMonday, addNewWeekFromToday,  addNewWeekFromNextMonday, renderWeeks} from './scripts/functions.js'
 import { Week } from "../items/Week.js";
 // import { Day } from "../Classes/Day.js";
 // Prendo gli elementi HTML
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const habitDescription = document.getElementById("newHabitDescription");
     const habitHour = document.getElementById("newHabitHour");
     const addButton = document.getElementById("addHabitBtn");
-    const containerList = document.getElementById("ListContainer");
+    const tasksWiewContainer = document.getElementById("tasksWiewContainer");
 
     const allSections = [
         homePage, daySection, loginSection,
@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const parsed = JSON.parse(savedWeeks);
         if (Array.isArray(parsed)) {
           weekList = parsed.map(w => Week.fromJSON(w));
+          renderWeeks(weekList, weeksViewContainer)
         } else {
           console.warn("Formato non valido per weeks:", parsed);
         }
@@ -94,12 +95,12 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     startTodayBtn.addEventListener("click", () => {
-      addNewWeekFromToday(weekList, addWeekModale)
+      addNewWeekFromToday(weekList, addWeekModale,weeksViewContainer)
       console.log("Array su localStorage: " + savedWeeks)
     })
 
     startNextMondayBtn.addEventListener("click", () => {
-      addNewWeekFromNextMonday(weekList, addWeekModale)
+      addNewWeekFromNextMonday(weekList, addWeekModale, weeksViewContainer)
       console.log("Array su localStorage: " + savedWeeks)
     })
 
