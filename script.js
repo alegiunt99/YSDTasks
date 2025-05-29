@@ -1,4 +1,4 @@
-import {renderHabits, addTask, showOnlySection, createNewWeekFromToday, createNewWeekFromNextMonday, addNewWeekFromToday} from './scripts/functions.js'
+import {renderHabits, addTask, showOnlySection, createNewWeekFromToday, createNewWeekFromNextMonday, addNewWeekFromToday,  addNewWeekFromNextMonday} from './scripts/functions.js'
 import { Week } from "../items/Week.js";
 // import { Day } from "../Classes/Day.js";
 // Prendo gli elementi HTML
@@ -24,6 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const exitAddWeekModale = document.getElementById("exitAddWeekModale")
     const weeksViewContainer = document.getElementById("weeksViewContainer")
     const startTodayBtn = document.getElementById("startToday")
+    
+    const startNextMondayBtn = document.getElementById("startNextMonday")
 
     //tasks 
     const habitDescription = document.getElementById("newHabitDescription");
@@ -93,6 +95,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     startTodayBtn.addEventListener("click", () => {
       addNewWeekFromToday(weekList, addWeekModale)
+      console.log("Array su localStorage: " + savedWeeks)
+    })
+
+    startNextMondayBtn.addEventListener("click", () => {
+      addNewWeekFromNextMonday(weekList, addWeekModale)
       console.log("Array su localStorage: " + savedWeeks)
     })
 

@@ -208,3 +208,28 @@ export function addNewWeekFromToday(weeksList, addWeekModale) {
 
 
 }
+
+export function addNewWeekFromNextMonday(weeksList, addWeekModale) {
+
+        const newWeek = createNewWeekFromNextMonday()
+
+        weeksList.push(newWeek);
+      
+        // 🔽 Ordina per orario
+        //weeksList.sort((a, b) => a.ora.localeCompare(b.ora));
+    
+        // 🔐 Aggiorna il localStorage
+        const salvate = weeksList.map(week => week.toJSON());
+        localStorage.setItem("weeks", JSON.stringify(salvate));
+    
+        addWeekModale.classList.add("hidden")
+
+        console.log(weeksList)
+        // 🔄 Pulisci e ricostruisci il DOM
+        // renderHabits(habitsContainer, containerList);
+      
+       
+        
+
+
+}
