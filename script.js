@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const addWeekButton = document.getElementById("addWeekBtn")
     const exitAddWeekModale = document.getElementById("exitAddWeekModale")
     const weeksViewContainer = document.getElementById("weeksViewContainer")
+    const weekPreviewOnHomePage = document.getElementsByClassName("WeekCompleteDisplay")
     // --- week buttons
     const startTodayBtn = document.getElementById("startToday")
     const startNextMondayBtn = document.getElementById("startNextMonday")
@@ -75,9 +76,10 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             document.body.classList.remove("light-theme");
             document.body.classList.add("dark-theme");
-            localStorage.setItem("theme", "dark-theme");
             homePageLink.src = "./foto/logo_app.png"
             sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png"
+            localStorage.setItem("theme", "dark-theme");
+            
         }
     });
 

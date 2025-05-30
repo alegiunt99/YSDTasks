@@ -104,8 +104,8 @@ body.light-theme .divMenu {
   height: 60px;
   border-radius: 50%;
   border: none;
-  background-color: #28a745;
-  color: white;
+  background-color: #59FF00;
+  color: rgb(22, 23, 39);
   cursor: pointer;
   box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
@@ -138,6 +138,7 @@ body.light-theme .divMenu {
     border-color: #59FF00;
     margin-top: 35px;
     cursor: pointer;
+    border-radius: 20px;
 }
 
 .WeekCompleteDisplay:hover{
