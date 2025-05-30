@@ -1,56 +1,19 @@
-import {renderHabits, addTask, showOnlySection, createNewWeekFromToday, createNewWeekFromNextMonday, addNewWeekFromToday,  addNewWeekFromNextMonday, renderWeeks} from './scripts/functions.js'
+import {showOnlySection, addNewWeekFromToday, addNewWeekFromNextMonday, renderWeeks} from './scripts/functions.js'
+import * as elements from './scripts/domElements.js'
 import { Week } from "../items/Week.js";
-// import { Day } from "../Classes/Day.js";
-// Prendo gli elementi HTML
-// links
+
 document.addEventListener("DOMContentLoaded", () => {
-    // tutto il codice dentro questo blocco
-    const homePageLink = document.getElementById("toHomePage")
-    const themeSectionLink = document.getElementById("toTheme")
-    const loginPageLink = document.getElementById("toLogin")
-    const registrationPageLink = document.getElementById("toSignup")
-    const editTaskLink = document.getElementById("toEditTask")
 
-    //PAGINE DA ATTIVARE E DISATTIVARE
-    const homePage = document.getElementById("homeSection")
-    const weekSection = document.getElementById("weekSection")
-    const daySection = document.getElementById("daySection")
-    const loginSection = document.getElementById("loginSection")
-    const registrationSection = document.getElementById("registrationSection")
-    const themeSection = document.getElementById("themeSection")
-    const editTaskModale = document.getElementById("editTaskModale")
-    //weeks button and elements
-    const addWeekModale = document.getElementById("weekModal")
-    const addWeekButton = document.getElementById("addWeekBtn")
-    const exitAddWeekModale = document.getElementById("exitAddWeekModale")
-    const weeksViewContainer = document.getElementById("weeksViewContainer")
-    const weekPreviewOnHomePage = document.getElementsByClassName("WeekCompleteDisplay")
-    // --- week buttons
-    const startTodayBtn = document.getElementById("startToday")
-    const startNextMondayBtn = document.getElementById("startNextMonday")
-    const userWeekDescription = document.getElementById("userWeekDescription")
-    const userWeekColor= document.getElementById("userWeekColor")
-    const clearLocalStorageBtn= document.getElementById("resetLocalStorage")
     
-    //tasks 
-    const habitDescription = document.getElementById("newHabitDescription");
-    const habitHour = document.getElementById("newHabitHour");
-    const addButton = document.getElementById("addHabitBtn");
-    const tasksWiewContainer = document.getElementById("tasksWiewContainer");
-
-
-    const sortBtnImg = document.getElementById("imgSorting")
-    const sortBtn = document.getElementById("weekFilters")
-
     const allSections = [
-        homePage, daySection, loginSection,
-        registrationSection, themeSection, editTaskModale
+        elements.homePage, daySection, elements.loginSection,
+        elements.registrationSection, elements.themeSection, editTaskModale
       ];
     
-    homePageLink.addEventListener("click", () => showOnlySection(homePage, allSections));
-    loginPageLink.addEventListener("click", () => showOnlySection(loginSection, allSections));
-    registrationPageLink.addEventListener("click", () => showOnlySection(registrationSection, allSections));
-    themeSectionLink.addEventListener("click", () => showOnlySection(themeSection, allSections));
+    elements.homePageLink.addEventListener("click", () => showOnlySection(elements.homePage, allSections));
+    elements.loginPageLink.addEventListener("click", () => showOnlySection(elements.loginSection, allSections));
+    elements.registrationPageLink.addEventListener("click", () => showOnlySection(elements.registrationSection, allSections));
+    elements.themeSectionLink.addEventListener("click", () => showOnlySection(elements.themeSection, allSections));
     
     // --------------------------------------------------------- THEME --------------------------------------------------------------------
     // aggiungere il cambio di tema con le classi
@@ -58,40 +21,61 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Carica il tema salvato in precedenza
     const savedTheme = localStorage.getItem("theme");
+    const savedLogo = localStorage.getItem("logo-src")
+    const savedSortBtnSrc = localStorage.getItem("sort-png-src")
     if (savedTheme) {
-        document.body.classList.add(savedTheme);
+      document.body.classList.add(savedTheme);
+      if (savedLogo) {
+        elements.homePageLink.src = savedLogo;
+      }
+      if (savedLogo) {
+        elements.sortBtnImg.src = savedSortBtnSrc;
+      }
     } else {
-        // Di default parte con dark-theme
-        document.body.classList.add("dark-theme");
+      document.body.classList.add("dark-theme");
+      elements.homePageLink.src = "./foto/logo_app.png"; // default
+      elements.sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png"
     }
 
     switchThemeBtn.addEventListener("click", () => {
         if (document.body.classList.contains("dark-theme")) {
             document.body.classList.remove("dark-theme");
             document.body.classList.add("light-theme");
-            sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/161727/sort-amount-up.png"
-            homePageLink.src = "./foto/logo_app_schermo_chiaro.png"
+            
+            const newLogo = "./foto/logo_app_schermo_chiaro.png";
+            const newSortPngSrc = "https://img.icons8.com/fluency-systems-filled/48/161727/sort-amount-up.png"
+            elements.homePageLink.src = newLogo;
+            elements.sortBtnImg.src = newSortPngSrc
+            localStorage.setItem("logo-src", newLogo);
+            localStorage.setItem("sort-png-src", newSortPngSrc);
             localStorage.setItem("theme", "light-theme");
+            
             
         } else {
             document.body.classList.remove("light-theme");
             document.body.classList.add("dark-theme");
-            homePageLink.src = "./foto/logo_app.png"
-            sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png"
+            //elements.homePageLink.src = "./foto/logo_app.png"
+            const newLogo = "./foto/logo_app.png";
+            const newSortPngSrc = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png"
+            elements.homePageLink.src = newLogo;
+            elements.sortBtnImg.src = newSortPngSrc
+            localStorage.setItem("logo-src", newLogo);
+            localStorage.setItem("sort-png-src", newSortPngSrc);
             localStorage.setItem("theme", "dark-theme");
+            
             
         }
     });
 
     var up = true
 
-    sortBtn.addEventListener("click", () => {
+    elements.sortBtn.addEventListener("click", () => {
         if (up === true) {
           if (document.body.classList.contains("dark-theme")) {
-            sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/generic-sorting.png"
+            elements.sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/generic-sorting.png"
             up = false
           }else{
-            sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/161727/generic-sorting.png"
+            elements.sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/161727/generic-sorting.png"
             up = false
           }
             
@@ -99,10 +83,10 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
 
           if (document.body.classList.contains("dark-theme")) {
-            sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png"
+            elements.sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png"
             up=true
           } else {
-            sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/161727/sort-amount-up.png"
+            elements.sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/161727/sort-amount-up.png"
             up=true
           }
             
@@ -120,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const parsed = JSON.parse(savedWeeks);
         if (Array.isArray(parsed)) {
           weekList = parsed.map(w => Week.fromJSON(w));
-          renderWeeks(weekList, weeksViewContainer)
+          renderWeeks(weekList, elements.weeksViewContainer)
         } else {
           console.warn("Formato non valido per weeks:", parsed);
         }
@@ -130,28 +114,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    addWeekButton.addEventListener("click", () => {
-      addWeekModale.classList.remove("hidden")
+    elements.addWeekButton.addEventListener("click", () => {
+      elements.addWeekModale.classList.remove("hidden")
     })
 
-    exitAddWeekModale.addEventListener("click", () => {
-      addWeekModale.classList.add("hidden")
+    elements.exitAddWeekModale.addEventListener("click", () => {
+      elements.addWeekModale.classList.add("hidden")
     })
 
-    startTodayBtn.addEventListener("click", () => {
-      addNewWeekFromToday(weekList, addWeekModale,weeksViewContainer,userWeekColor, userWeekDescription)
+    elements.startTodayBtn.addEventListener("click", () => {
+      addNewWeekFromToday(weekList, elements.addWeekModale,elements.weeksViewContainer,elements.userWeekColor, elements.userWeekDescription)
       console.log("Array su localStorage: " + savedWeeks)
     })
 
-    startNextMondayBtn.addEventListener("click", () => {
-      addNewWeekFromNextMonday(weekList, addWeekModale, weeksViewContainer,userWeekColor, userWeekDescription)
+    elements.startNextMondayBtn.addEventListener("click", () => {
+      addNewWeekFromNextMonday(weekList, elements.addWeekModale, weeksViewContainer,elements.userWeekColor, elements.userWeekDescription)
       console.log("Array su localStorage: " + savedWeeks)
     })
 
-    clearLocalStorageBtn.addEventListener("click", () => {
+    elements.clearLocalStorageBtn.addEventListener("click", () => {
       localStorage.clear()
       weekList.length = 0; // 🧹 Svuota anche l'array in memoria
-      weeksViewContainer.innerHTML = ""; // 🧹 Svuota anche il DOM (opzionale ma sicuro)
+      elements.weeksViewContainer.innerHTML = ""; // 🧹 Svuota anche il DOM (opzionale ma sicuro)
       renderWeeks(weekList,weeksViewContainer)
       console.log(weekList)
     })

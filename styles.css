@@ -10,6 +10,20 @@
     margin-bottom: 20;
 }
 
+#main-content{
+    padding-top: 125px;
+}
+
+#header-content{
+    position: fixed;
+    width: 100%;
+    z-index: 1000; /* Assicura che stia sopra a tutto */
+}
+
+
+
+
+
 .errorMessage{
     color: red;
 }
@@ -74,15 +88,33 @@ border-bottom: solid;
 
 }
 
+body.light-theme #header-content {
+  background-color: #aeaeae; /* bianco pieno */
+  color: #161727;
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
 
-/* 🌙 Tema scuro (default) */
-body.dark-theme {
+/* Tema scuro */
+body.dark-theme #header-content {
+  background-color: #161727; /* colore scuro pieno */
+  color: #aeaeae;
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+ 
+body.dark-theme{
     background-color: #161727;
     color: #aeaeae;
 }
 
-/* ☀️ Tema chiaro */
-body.light-theme {
+
+body.light-theme{
     background-color:#aeaeae;
     color:  rgb(22, 23, 39);
 }
