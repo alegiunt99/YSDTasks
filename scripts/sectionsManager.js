@@ -1,7 +1,7 @@
 import * as elements from './domElements.js'
 import { showOnlySection } from "./functions.js";
-const allSections = [
-        elements.homePage, elements.daySection, elements.loginSection,
+export const allSections = [
+        elements.homePage, elements.singleWeekSection, elements.daySection, elements.loginSection,
         elements.registrationSection, elements.themeSection, elements.editTaskModale
       ];
 

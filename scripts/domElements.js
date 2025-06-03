@@ -1,5 +1,5 @@
 // document body
-
+const dom = document
 const domBody = document.body
 // tutto il codice dentro questo blocco
 const homePageLink = document.getElementById("toHomePage")
@@ -9,7 +9,7 @@ const registrationPageLink = document.getElementById("toSignup")
 const editTaskLink = document.getElementById("toEditTask")
 //PAGINE DA ATTIVARE E DISATTIVARE
 const homePage = document.getElementById("homeSection")
-const weekSection = document.getElementById("weekSection")
+const singleWeekSection = document.getElementById("weekSection")
 const daySection = document.getElementById("daySection")
 const loginSection = document.getElementById("loginSection")
 const registrationSection = document.getElementById("registrationSection")
@@ -20,7 +20,10 @@ const addWeekModale = document.getElementById("weekModal")
 const addWeekButton = document.getElementById("addWeekBtn")
 const exitAddWeekModale = document.getElementById("exitAddWeekModale")
 const weeksViewContainer = document.getElementById("weeksViewContainer")
-const weekPreviewOnHomePage = document.getElementsByClassName("WeekCompleteDisplay")
+
+
+const daysViewContainer = document.querySelector(".daysViewContainer")
+const dayPreviewOnWeekPage = document.getElementsByClassName("dayCompleteDisplay")
 // --- week buttons
 const startTodayBtn = document.getElementById("startToday")
 const startNextMondayBtn = document.getElementById("startNextMonday")
@@ -39,12 +42,12 @@ const sortBtn = document.getElementById("weekFilters")
 
 const switchThemeBtn = document.getElementById("switchThemeBtn");
 
-export {
-  domBody,          
-  homePage, 
-            homePageLink, 
-            weekPreviewOnHomePage,
-            weekSection, 
+export {    
+            dom,
+            domBody,          
+            homePage, 
+            homePageLink,
+            singleWeekSection, 
             weeksViewContainer,
             themeSectionLink,
             loginPageLink,
@@ -63,10 +66,13 @@ export {
             userWeekDescription,
             userWeekColor,
             clearLocalStorageBtn,
+            taskDescription,
             taskHour,
             addTaskButton,
             tasksWiewContainer,
             sortBtnImg,
             sortBtn,
-            switchThemeBtn
+            switchThemeBtn,
+            daysViewContainer,
+            dayPreviewOnWeekPage
         }

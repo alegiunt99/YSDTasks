@@ -1,5 +1,6 @@
 
-
+import { allSections} from "./sectionsManager.js"
+import * as elements from './domElements.js'
 import { Week } from "../items/Week.js";
 import { Day } from "../items/Day.js";
 //tasks
@@ -179,7 +180,7 @@ export function generateDaysForWeek(startDate, endDate, weekRef) {
   const days = []
   const current = new Date(startDate)
 
-  const dayNames = ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"]
+  const dayNames = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"]
 
   while (current <= endDate) {
 
@@ -248,9 +249,10 @@ export function addNewWeekFromNextMonday(weeksList, addWeekModale, weeksViewCont
 export function renderWeeks(weekList, weeksViewContainer) {
     weeksViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
   
-    weekList.forEach(week => {
+    weekList.forEach((week, index) => {
       const weekDiv = document.createElement("div");
-      weekDiv.className = "WeekCompleteDisplay";
+      weekDiv.className = "weekCompleteDisplay";
+      weekDiv.id = index
 
       
       const pWeekTile = document.createElement("p");
@@ -271,5 +273,45 @@ export function renderWeeks(weekList, weeksViewContainer) {
       weekDiv.appendChild(pWeekColor)
 
       weeksViewContainer.appendChild(weekDiv)
+
+      // ✅ Aggiungi qui il tuo event listener
+      weekDiv.addEventListener("click", () => {
+            console.log("Hai cliccato sulla settimana:", weekDiv.id);
+            showOnlySection(allSections[1],allSections)
+            renderWeekDays(weekList[index], elements.daysViewContainer)
+            // fai il cambio sezione o altra logica
+      });
+    });
+  }
+
+// ----------------------------------------- DAYS ------------------------------------------
+
+export function renderWeekDays(selectedWeek, daysViewContainer) {
+    daysViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
+      const singleWeekTitle = document.createElement("h1");
+      singleWeekTitle.className = "singleWeekTitle";
+      singleWeekTitle.innerText = selectedWeek.title
+      daysViewContainer.appendChild(singleWeekTitle)
+
+      selectedWeek.days.forEach(day => {
+
+        const dayDiv = document.createElement("div");
+        dayDiv.className = "dayCompleteDisplay";
+
+      
+        const pDayName = document.createElement("p");
+        pDayName.className = "dayName";
+        pDayName.textContent = day.dayName
+
+        const pDayDate = document.createElement("p");
+        pDayDate.className = "dayDate";
+        pDayDate.textContent = day.date.toLocaleDateString('it-IT');
+
+        dayDiv.appendChild(pDayName)
+        dayDiv.appendChild(pDayDate)
+
+        
+        daysViewContainer.appendChild(dayDiv)
+      
     });
   }
