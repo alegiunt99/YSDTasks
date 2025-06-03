@@ -2,6 +2,7 @@ import {showOnlySection, addNewWeekFromToday, addNewWeekFromNextMonday, renderWe
 import * as elements from './scripts/domElements.js'
 import { Week } from "../items/Week.js";
 import * as constant from "./scripts/constants.js";
+import { changeTheme } from './scripts/changeTheme.js';
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -16,9 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.registrationPageLink.addEventListener("click", () => showOnlySection(elements.registrationSection, allSections));
     elements.themeSectionLink.addEventListener("click", () => showOnlySection(elements.themeSection, allSections));
     
+
     // --------------------------------------------------------- THEME --------------------------------------------------------------------
-    // aggiungere il cambio di tema con le classi
-    const switchThemeBtn = document.getElementById("switchThemeBtn");
+    //aggiungere il cambio di tema con le classi
+    
     
     // Carica il tema salvato in precedenza
     const savedTheme = localStorage.getItem("theme");
@@ -34,38 +36,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } else {
       document.body.classList.add("dark-theme");
-      elements.homePageLink.src = "./foto/logo_app.png"; // default
+      elements.homePageLink.src = constant.LOGO_TEMA_SCURO; // default
       elements.sortBtnImg.src = constant.SORT_UP_TEMA_SCURO
     }
 
-    switchThemeBtn.addEventListener("click", () => {
-        if (document.body.classList.contains("dark-theme")) {
-            document.body.classList.remove("dark-theme");
-            document.body.classList.add("light-theme");
-            
-            const newLogo = constant.LOGO_TEMA_CHIARO;
-            const newSortPngSrc = constant.SORT_UP_TEMA_CHIARO
-            elements.homePageLink.src = newLogo;
-            elements.sortBtnImg.src = newSortPngSrc
-            localStorage.setItem("logo-src", newLogo);
-            localStorage.setItem("sort-png-src", newSortPngSrc);
-            localStorage.setItem("theme", "light-theme");
-            
-            
-        } else {
-            document.body.classList.remove("light-theme");
-            document.body.classList.add("dark-theme");
-            //elements.homePageLink.src = "./foto/logo_app.png"
-            const newLogo = constant.LOGO_TEMA_SCURO;
-            const newSortPngSrc = constant.SORT_UP_TEMA_SCURO
-            elements.homePageLink.src = newLogo;
-            elements.sortBtnImg.src = newSortPngSrc
-            localStorage.setItem("logo-src", newLogo);
-            localStorage.setItem("sort-png-src", newSortPngSrc);
-            localStorage.setItem("theme", "dark-theme");
-            
-            
-        }
+    elements.switchThemeBtn.addEventListener("click", () => {
+      changeTheme()   
     });
 
     var up = true
@@ -92,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
             
         }
-    });
+    }); 
 
     // --------------------------------------------------------- WEEKS --------------------------------------------------------------------
     

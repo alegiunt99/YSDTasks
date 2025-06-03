@@ -1,4 +1,7 @@
-  // tutto il codice dentro questo blocco
+// document body
+
+const domBody = document.body
+// tutto il codice dentro questo blocco
 const homePageLink = document.getElementById("toHomePage")
 const themeSectionLink = document.getElementById("toTheme")
 const loginPageLink = document.getElementById("toLogin")
@@ -34,8 +37,11 @@ const tasksWiewContainer = document.getElementById("tasksWiewContainer");
 const sortBtnImg = document.getElementById("imgSorting")
 const sortBtn = document.getElementById("weekFilters")
 
+const switchThemeBtn = document.getElementById("switchThemeBtn");
+
 export {
-            homePage, 
+  domBody,          
+  homePage, 
             homePageLink, 
             weekPreviewOnHomePage,
             weekSection, 
@@ -62,5 +68,5 @@ export {
             tasksWiewContainer,
             sortBtnImg,
             sortBtn,
-            
+            switchThemeBtn
         }
