@@ -86,8 +86,11 @@
                         <button id="startToday">Da oggi</button>
                         <button id="startNextMonday">Dal prossimo lunedì</button>
                     </div>
-                    <input type="text" placeholder="Vuoi dare una descrizione alla tua Settimana?" id="userWeekDescription">
-                    <input type="color" placeholder="Se vuoi, Seleziona un colore per la tua settimana" id="userWeekColor">
+
+                    <label for="">Vuoi dare una descrizione alla tua Settimana?</label>
+                    <input type="text" placeholder="inserisci descrizione" id="userWeekDescription"><br>
+                    <label for="">Se vuoi, Seleziona un colore per la tua settimana</label>
+                    <input type="color" placeholder="" id="userWeekColor">
                 </div>
             </div>
         </section>
@@ -105,10 +108,18 @@
         <!-- 🔄 CONTENUTO giorno con le task -->
         <section id="daySection" style="display: none;">
             
-            <h1 id="dayTitle"></h1>
+            <h1 class="dayTitle"></h1>
             
+            <div>
+                <input type="time" placeholder="Seleziona l'orario" id="newTaskTime">
+                <input type="text" id="newTaskDescription" placeholder="Aggiungi una nuova attività" >
+                <button name="aggiungi" id="addTaskBtn">Aggiungi</button>
+            </div>
+
+            <div id="tasksViewContainer"></div>
+
             <!-- 🔄 modale modifica Task-->
-            <div id="editTaskModale" class="hidden">
+            <div class="editTaskModale hidden">
             
                 <h1>modifica Task</h1>
 

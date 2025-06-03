@@ -14,7 +14,7 @@ const daySection = document.getElementById("daySection")
 const loginSection = document.getElementById("loginSection")
 const registrationSection = document.getElementById("registrationSection")
 const themeSection = document.getElementById("themeSection")
-const editTaskModale = document.getElementById("editTaskModale")
+const editTaskModale = document.querySelector(".editTaskModale")
 //weeks button and elements
 const addWeekModale = document.getElementById("weekModal")
 const addWeekButton = document.getElementById("addWeekBtn")
@@ -31,10 +31,11 @@ const userWeekDescription = document.getElementById("userWeekDescription")
 const userWeekColor= document.getElementById("userWeekColor")
 const clearLocalStorageBtn= document.getElementById("resetLocalStorage")
 
-const taskDescription = document.getElementById("newHabitDescription");
-const taskHour = document.getElementById("newHabitHour");
-const addTaskButton = document.getElementById("addHabitBtn");
-const tasksWiewContainer = document.getElementById("tasksWiewContainer");
+const taskDescription = document.getElementById("newTaskDescription");
+const taskHour = document.getElementById("newTaskTime");
+const addTaskButton = document.getElementById("addTaskBtn");
+const tasksViewContainer = document.getElementById("tasksViewContainer");
+const singleDayTitle = document.querySelector(".dayTitle")
 
 
 const sortBtnImg = document.getElementById("imgSorting")
@@ -69,10 +70,11 @@ export {
             taskDescription,
             taskHour,
             addTaskButton,
-            tasksWiewContainer,
+            tasksViewContainer,
             sortBtnImg,
             sortBtn,
             switchThemeBtn,
             daysViewContainer,
-            dayPreviewOnWeekPage
+            dayPreviewOnWeekPage,
+            singleDayTitle
         }

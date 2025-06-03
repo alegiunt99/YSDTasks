@@ -77,7 +77,7 @@ export class Task {
     }
 
     /**
-    * @param {Day} value
+    * @param {string} value
     */
     set dayRef(value) {
         this.#dayRef = value;
@@ -113,5 +113,17 @@ export class Task {
     // id, description, time, done = false, dayRef, weekRef, notes
     static fromJSON(obj) {
         return new Task(obj.id, obj.description, obj.time, obj.done, obj.dayRef, obj.weekRef, obj.notes)
+    }
+
+    toJSON() {
+        return {
+            id: this.#id,
+            description: this.#description,
+            time: this.#time ,
+            done: this.#done,
+            dayRef: this.#dayRef ,
+            weekRef: this.#weekRef,
+            notes: this.#notes 
+        };
     }
 }

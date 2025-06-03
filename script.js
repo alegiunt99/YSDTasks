@@ -1,65 +1,25 @@
-import {showOnlySection, addNewWeekFromToday, addNewWeekFromNextMonday, renderWeeks} from './scripts/functions.js'
+import {renderTasks, addNewWeekFromToday, addNewWeekFromNextMonday, renderWeeks, addTask} from './scripts/functions.js'
 import * as elements from './scripts/domElements.js'
 import { Week } from "../items/Week.js";
 import * as constant from "./scripts/constants.js";
 import { changeTheme } from './scripts/themeManager.js';
 import { switchSections} from "./scripts/sectionsManager.js"
+import { showSavedTheme } from "./scripts/localStorageManager.js"
+import { Task } from './items/Task.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     // cambiare sezione in base ai click
     switchSections()
 
     // --------------------------------------------------------- THEME --------------------------------------------------------------------
-    //aggiungere il cambio di tema con le classi
     
+    showSavedTheme()
     
-    // Carica il tema salvato in precedenza
-    const savedTheme = localStorage.getItem("theme");
-    const savedLogo = localStorage.getItem("logo-src")
-    const savedSortBtnSrc = localStorage.getItem("sort-png-src")
-    if (savedTheme) {
-      document.body.classList.add(savedTheme);
-      if (savedLogo) {
-        elements.homePageLink.src = savedLogo;
-      }
-      if (savedLogo) {
-        elements.sortBtnImg.src = savedSortBtnSrc;
-      }
-    } else {
-      document.body.classList.add("dark-theme");
-      elements.homePageLink.src = constant.LOGO_TEMA_SCURO; // default
-      elements.sortBtnImg.src = constant.SORT_UP_TEMA_SCURO
-    }
-
     elements.switchThemeBtn.addEventListener("click", () => {
       changeTheme()   
     });
 
-    var up = true
-
-    elements.sortBtn.addEventListener("click", () => {
-        if (up === true) {
-          if (document.body.classList.contains("dark-theme")) {
-            elements.sortBtnImg.src = constant.SORT_DOWN_TEMA_SCURO
-            up = false
-          }else{
-            elements.sortBtnImg.src = constant.SORT_DOWN_TEMA_CHIARO
-            up = false
-          }
-            
-            
-        } else {
-
-          if (document.body.classList.contains("dark-theme")) {
-            elements.sortBtnImg.src = constant.SORT_UP_TEMA_SCURO
-            up=true
-          } else {
-            elements.sortBtnImg.src = constant.SORT_UP_TEMA_CHIARO
-            up=true
-          }
-            
-        }
-    }); 
+    
 
     // --------------------------------------------------------- WEEKS LIST--------------------------------------------------------------------
     
@@ -71,7 +31,12 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const parsed = JSON.parse(savedWeeks);
         if (Array.isArray(parsed)) {
-          weekList = parsed.map(w => Week.fromJSON(w));
+          // weekList = parsed.map(w => Week.fromJSON(w)).sort((a, b) => a.startDate - b.startDate);
+          if (elements.sortBtnImg.src == constant.SORT_UP_TEMA_SCURO  || elements.sortBtnImg.src == constant.SORT_UP_TEMA_CHIARO) {
+            weekList = parsed.map(w => Week.fromJSON(w)).sort((a, b) => a.startDate - b.startDate);
+          }else{
+            weekList = parsed.map(w => Week.fromJSON(w)).sort((a, b) => b.startDate - a.startDate);
+          }
           renderWeeks(weekList, elements.weeksViewContainer)
         } else {
           console.warn("Formato non valido per weeks:", parsed);
@@ -99,12 +64,38 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     elements.clearLocalStorageBtn.addEventListener("click", () => {
-      localStorage.clear()
+      localStorage.removeItem("weeks")
       weekList.length = 0; // 🧹 Svuota anche l'array in memoria
       elements.weeksViewContainer.innerHTML = ""; // 🧹 Svuota anche il DOM (opzionale ma sicuro)
       renderWeeks(weekList,weeksViewContainer)
       console.log(weekList)
     })
+
+    var up = true
+
+    elements.sortBtn.addEventListener("click", () => {
+        if (up === true) {
+          if (elements.domBody.classList.contains("dark-theme")) {
+            elements.sortBtnImg.src = constant.SORT_DOWN_TEMA_SCURO
+            up = false
+          }else{
+            elements.sortBtnImg.src = constant.SORT_DOWN_TEMA_CHIARO
+            up = false
+          }
+            
+            
+        } else {
+
+          if (elements.domBody.classList.contains("dark-theme")) {
+            elements.sortBtnImg.src = constant.SORT_UP_TEMA_SCURO
+            up=true
+          } else {
+            elements.sortBtnImg.src = constant.SORT_UP_TEMA_CHIARO
+            up=true
+          }
+            
+        }
+    }); 
 
     // --------------------------------------------------------- SINGLE WEEK DAYS --------------------------------------------------------------------
     
@@ -112,17 +103,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --------------------------------------------------------- TASKS --------------------------------------------------------------------
     // Caricamento iniziale da localStorage
-    /* const savedHabits = localStorage.getItem("habits");
-    console.log(savedHabits)
-
-    var habitsContainer = []
-    if (savedHabits) {
-      habitsContainer = JSON.parse(savedHabits);
-      habitsContainer.sort((a, b) => a.ora.localeCompare(b.ora)); // ordina anche al load  
-      renderHabits(habitsContainer, containerList)
+    /*const savedtasks = localStorage.getItem("tasks");
+    console.log(savedtasks)
+    var tasksContainer = []
+    
+      
+   
+    if (savedtasks) {
+      const parsed = JSON.parse(savedtasks);
+      tasksContainer = parsed.map(t => Task.fromJSON(t))
+      console.log(tasksContainer)
+      //tasksContainer.sort((a, b) => a.time.localeCompare(b.time)); // ordina anche al load  
+      renderTasks(tasksContainer, elements.tasksViewContainer)
     }
 
-    addTask(habitDescription, habitHour, addButton, habitsContainer, containerList) */
+    elements.addTaskButton.addEventListener("click", () => {
+      addTask(elements.taskDescription, elements.taskHour,elements.addTaskButton, tasksContainer, elements.tasksViewContainer)
+    })/*/
+    
 })
 
 

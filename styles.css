@@ -207,3 +207,9 @@ body.light-theme .divMenu {
 .hidden {
   display: none;
 }
+
+.done{
+    text-decoration: line-through;
+    color: green;
+
+}

@@ -3,6 +3,7 @@ import { Task } from "./Task.js"
 
 export class Day {
 
+    
     #date
     #dayName
     #tasks
@@ -18,6 +19,9 @@ export class Day {
         this.#completed = completed;
         this.#weekRef = weekRef;
     }
+
+    // get e set data esatta di quel giorno
+   
 
     // get e set data esatta di quel giorno
     get date(){

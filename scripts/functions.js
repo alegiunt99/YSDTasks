@@ -3,75 +3,107 @@ import { allSections} from "./sectionsManager.js"
 import * as elements from './domElements.js'
 import { Week } from "../items/Week.js";
 import { Day } from "../items/Day.js";
+import { Task } from "../items/Task.js";
 //tasks
 
-export function renderHabits(habitsContainer, tasksWiewContainer) {
-    tasksWiewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
-  
-    habitsContainer.forEach(habit => {
-      const habitDiv = document.createElement("div");
-      habitDiv.className = "habitCompleteDisplay";
+export function renderTasks(dayRef, tasksViewContainer) {
+    
+      tasksViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
+      console.log(dayRef.date.toLocaleDateString("it-IT"))
+      elements.singleDayTitle.innerText = dayRef.dayName + " - " +dayRef.date.toLocaleDateString("it-IT")
 
+      console.log(dayRef.tasks)
       
-      const pHabitDescr = document.createElement("p");
-      pHabitDescr.className = "habitDescr";
-      pHabitDescr.textContent = habit.ora + " - " + habit.descrizione;
+      if (Array.isArray(dayRef.tasks)) {
+        
+        dayRef.tasks.forEach(task => {
+        const taskDiv = document.createElement("div");
+        taskDiv.className = "taskCompleteDisplay";
 
-      
-      const habitDeleteButton = document.createElement("button");
-      habitDeleteButton.className = "habitDelete";
-      habitDeleteButton.innerHTML = "&#x1F5D1;";
-  
-      // 🗑️ Cancella se clicchi su di lui
-      habitDeleteButton.addEventListener("click", () => {
-        deleteTask(habit,habitsContainer,tasksWiewContainer)
+        
+        const ptaskDescr = document.createElement("p");
+        ptaskDescr.className = "taskDescr";
+        ptaskDescr.textContent = task.time + " - " + task.description;
+
+        
+        const taskDeleteButton = document.createElement("button");
+        taskDeleteButton.className = "taskDelete";
+        taskDeleteButton.innerHTML = "&#x1F5D1;";
+        
+        /*🗑️ Cancella se clicchi su di lui
+        taskDeleteButton.addEventListener("click", () => {
+          deleteTask(task,dayRef.tasks,tasksViewContainer)
+        });*/
+
+        taskDiv.appendChild(ptaskDescr)
+        taskDiv.appendChild(taskDeleteButton)
+
+        tasksViewContainer.appendChild(taskDiv)
+
+        taskDiv.addEventListener("click", () => {
+          if (task.done == false) {
+            ptaskDescr.classList.add("done")
+            task.done = true
+          }else{
+            ptaskDescr.classList.remove("done")
+            task.done = false
+          }
+
+        })
       });
-
-      habitDiv.appendChild(pHabitDescr)
-      habitDiv.appendChild(habitDeleteButton)
-
-      tasksWiewContainer.appendChild(habitDiv)
-    });
+        
+      }
+      
+    
   }
 
-export function addTask(habitDescription, habitHour, addButton, habitsContainer, containerList) {
-    addButton.addEventListener("click", () => {
+export function addTask(taskDescription, taskHour, addButton, containerList, dayRef) {
+
+      console.log(taskDescription.value)
+
       try {
         
         
-        if (habitDescription.value.trim().length === 0 && habitHour.value.trim().length === 0) {
+        
+        if (taskDescription.value.trim().length === 0 && taskHour.value.trim().length === 0) {
           throw new Error("devi inserire un orario e la descrizione deve avere almeno una lettera");
-        }else if (habitHour.value.trim().length === 0) {
+        }else if (taskHour.value.trim().length === 0) {
           throw new Error("devi inserire un orario");
-        }else if (habitDescription.value.trim().length === 0) {
+        }else if (taskDescription.value.trim().length === 0) {
           throw new Error("La descrizione deve avere almeno una lettera");
         }
 
-        const newHabit = {
-          ora: habitHour.value,
-          descrizione: habitDescription.value
-        };
-      
-        habitsContainer.push(newHabit);
-      
-        // 🔽 Ordina per orario
-        habitsContainer.sort((a, b) => a.ora.localeCompare(b.ora));
-    
-        // 🔐 Aggiorna il localStorage
-        localStorage.setItem("habits", JSON.stringify(habitsContainer));
-    
-        // 🔄 Pulisci e ricostruisci il DOM
-        renderHabits(habitsContainer, containerList);
-      
-        // 🧼 Reset campi input
-        habitDescription.value = "";
-        habitHour.value = "";
+        
+        const id = dayRef.tasks.length+1
+        const description = taskDescription.value
+        const time = taskHour.value
+        const done = false
+        const notes = ""
         
 
+        
+        const newtask = new Task(id, description, time,done,notes)
+        
+        newtask.dayRef = dayRef.dayName
+        dayRef.tasks.push(newtask);
+        console.log(dayRef.tasks)
+        // 🔽 Ordina per orario
+        //dayWeeks.sort((a, b) => a.time.localeCompare(b.ora));
+    
+        // 🔐 Aggiorna il localStorage
+        localStorage.setItem("tasks", JSON.stringify(dayRef.tasks));
+        
+        // 🔄 Pulisci e ricostruisci il DOM
+        renderTasks(dayRef, containerList);
+        // 🧼 Reset campi input
+        taskDescription.value = "";
+        taskHour.value = "";
+        
+        
       } catch (error) {
           const errorDiv = document.createElement("div");
           errorDiv.className = "errorMessage";
-          errorDiv.textContent = error.message
+          errorDiv.textContent = error.message + error.stack
 
           addButton.parentElement.appendChild(errorDiv);
 
@@ -81,26 +113,26 @@ export function addTask(habitDescription, habitHour, addButton, habitsContainer,
           }, 3000);
 
           // 🧼 Reset campi input
-          habitDescription.value = "";
-          habitHour.value = "";
+          taskDescription.value = "";
+          taskHour.value = "";
       }  
       
       
-      });
+      
   }
 
-export function deleteTask(habit, habitsContainer, containerList) {
+/*export function deleteTask(task, dayWeeks, containerList) {
 
   try {
     // 🗑️ Cancella se clicchi su di lui
         
-        const indexHabit = habitsContainer.indexOf(habit);
+        const indextask = dayWeeks.indexOf(task);
         
-        if (indexHabit !== -1) {
+        if (indextask !== -1) {
           
-          habitsContainer.splice(indexHabit, 1);
-          localStorage.setItem("habits", JSON.stringify(habitsContainer));
-          renderHabits(habitsContainer, containerList); // aggiorna la lista dopo l'eliminazione
+          dayWeeks.splice(indextask, 1);
+          localStorage.setItem("tasks", JSON.stringify(dayWeeks));
+          renderTasks(dayWeeks, containerList); // aggiorna la lista dopo l'eliminazione
 
         }
    
@@ -120,11 +152,11 @@ export function deleteTask(habit, habitsContainer, containerList) {
           }, 3000);
 
           // 🧼 Reset campi input
-          habitDescription.value = "";
-          habitHour.value = "";
+          taskDescription.value = "";
+          taskHour.value = "";
     }  
 }
-
+*/
 // views  
 export function showOnlySection(section, allSections) {
   
@@ -132,27 +164,27 @@ export function showOnlySection(section, allSections) {
   section.style.display = "block";
 }
 
-export function createNewWeekFromToday(userWeekColor, userWeekDescription) {
+export function createNewWeekFromToday(userWeekColor, userWeekDescription, tasks) {
 
   const start = new Date(); // oggi
   const end = new Date();
   end.setDate(start.getDate() + (7 - start.getDay())); // domenica corrente
   var title = ""
   if (userWeekDescription.value === "" || userWeekDescription.value.trim().length === 0) {
-        title = `SETTIMANA ${start.toLocaleDateString()} - ${end.toLocaleDateString()}`
+        title = `SETTIMANA ${start.toLocaleDateString("it-IT")} - ${end.toLocaleDateString("it-IT")}`
   }else{
         title = userWeekDescription.value
   }
  
   const color = userWeekColor.value // verde
   const week = new Week(start, end, title, color, [])
-  const days = generateDaysForWeek(start, end, week)
+  const days = generateDaysForWeek(start, end, week, tasks)
   week.days = days
   
   return week
 }
 
-export function createNewWeekFromNextMonday(userWeekColor, userWeekDescription) {
+export function createNewWeekFromNextMonday(userWeekColor, userWeekDescription,tasks) {
 
   const today = new Date();
   const nextMonday = new Date();
@@ -170,12 +202,12 @@ export function createNewWeekFromNextMonday(userWeekColor, userWeekDescription) 
  
   const color = userWeekColor.value // verde
   const week = new Week(nextMonday, nextSunday, title, color, []);
-  const days = generateDaysForWeek(nextMonday, nextSunday, week);
+  const days = generateDaysForWeek(nextMonday, nextSunday, week, tasks);
   week.days = days;
   return week
 }
 
-export function generateDaysForWeek(startDate, endDate, weekRef) {
+export function generateDaysForWeek(startDate, endDate, weekRef, savedTasks) {
 
   const days = []
   const current = new Date(startDate)
@@ -185,7 +217,7 @@ export function generateDaysForWeek(startDate, endDate, weekRef) {
   while (current <= endDate) {
 
     const name = dayNames[current.getDay()]
-    const newDay = new Day(new Date(current), name, [], false, weekRef)
+    const newDay = new Day(new Date(current), name, savedTasks, false, weekRef)
     days.push(newDay)
     current.setDate(current.getDate()+1)
     
@@ -265,7 +297,7 @@ export function renderWeeks(weekList, weeksViewContainer) {
       pWeekColor.style.backgroundColor = week.color
   
       // 🗑️ Cancella se clicchi su di lui
-      /*habitDeleteButton.addEventListener("click", () => {
+      /*taskDeleteButton.addEventListener("click", () => {
         deleteTask(week,weekList,weeksViewContainer)
       });*/
 
@@ -278,26 +310,31 @@ export function renderWeeks(weekList, weeksViewContainer) {
       weekDiv.addEventListener("click", () => {
             console.log("Hai cliccato sulla settimana:", weekDiv.id);
             showOnlySection(allSections[1],allSections)
-            renderWeekDays(weekList[index], elements.daysViewContainer)
+            renderWeekDays(weekList[index], elements.daysViewContainer,elements.taskDescription, elements.taskHour, elements.tasksViewContainer, elements.addTaskButton)
             // fai il cambio sezione o altra logica
       });
     });
   }
 
 // ----------------------------------------- DAYS ------------------------------------------
-
-export function renderWeekDays(selectedWeek, daysViewContainer) {
-    daysViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
+let currentTaskHandler = null;
+export function renderWeekDays(selectedWeek, daysViewContainer,taskDescription,taskHour,tasksViewContainer,addButton) {
+      daysViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
       const singleWeekTitle = document.createElement("h1");
       singleWeekTitle.className = "singleWeekTitle";
       singleWeekTitle.innerText = selectedWeek.title
       daysViewContainer.appendChild(singleWeekTitle)
 
-      selectedWeek.days.forEach(day => {
+      var idDay = 0
+      console.log(selectedWeek.days)
+      selectedWeek.days.forEach((day, index) => {
+
+
 
         const dayDiv = document.createElement("div");
         dayDiv.className = "dayCompleteDisplay";
-
+        dayDiv.id=index
+        
       
         const pDayName = document.createElement("p");
         pDayName.className = "dayName";
@@ -312,6 +349,62 @@ export function renderWeekDays(selectedWeek, daysViewContainer) {
 
         
         daysViewContainer.appendChild(dayDiv)
+        
+        
+        
+        // ✅ Aggiungi qui il tuo event listener
+        dayDiv.addEventListener("click", () => {
+            idDay=index
+            console.log("Hai cliccato sul giorno:", day.dayName, "con id: ", index, "della settimana: ", selectedWeek.title);
+            showOnlySection(allSections[2],allSections)
+            renderTasks(selectedWeek.days[index], elements.tasksViewContainer)
+            
+            if (currentTaskHandler) {
+              addButton.removeEventListener("click", currentTaskHandler);
+            }
+
+            currentTaskHandler = () => {
+                addTask(taskDescription, taskHour, addButton, tasksViewContainer, day);
+            };
+
+            addButton.addEventListener("click", currentTaskHandler);
+        });
+
+            // fai il cambio sezione o altra logica
+              //elements.addTaskButton.addEventListener("click", () => {
+          
+              //addTask(taskDescription, taskHour, addButton, tasksViewContainer,selectedWeek.days[index])
+              
+              //taskDescription, taskHour, addButton, containerList, dayRef
+              //})
+        });
+
+        /*console.log("idDay: "+ idDay)
+
+        elements.addTaskButton.addEventListener("click", () => {
+          
+          addTask(taskDescription, taskHour, addButton, tasksViewContainer,selectedWeek.days[idDay])
+          return
+        
+        })*/
       
-    });
+    ;
   }
+
+ /* export function sortAndRenderWeeks(weekList, up) {
+  const savedWeeks = localStorage.getItem("weeks");
+  if (savedWeeks) {
+    const parsed = JSON.parse(savedWeeks);
+    if (Array.isArray(parsed)) {
+      weekList = parsed.map(w => Week.fromJSON(w));
+
+      weekList.sort((a, b) => {
+        const dateA = new Date(a.startDate);
+        const dateB = new Date(b.startDate);
+        return up ? dateA - dateB : dateB - dateA;
+      });
+
+      renderWeeks(weekList, elements.weeksViewContainer);
+    }
+  }
+}*/
