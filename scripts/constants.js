@@ -1,1 +1,6 @@
-export const CAMBIO = "ciao"
+export const LOGO_TEMA_CHIARO = "./foto/logo_app_schermo_chiaro.png"
+export const LOGO_TEMA_SCURO = "./foto/logo_app.png"
+export const SORT_UP_TEMA_CHIARO = "https://img.icons8.com/fluency-systems-filled/48/161727/sort-amount-up.png"
+export const SORT_UP_TEMA_SCURO = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png"
+export const SORT_DOWN_TEMA_CHIARO = "https://img.icons8.com/fluency-systems-filled/48/161727/generic-sorting.png"
+export const SORT_DOWN_TEMA_SCURO = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/generic-sorting.png"

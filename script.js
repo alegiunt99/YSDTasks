@@ -1,6 +1,7 @@
 import {showOnlySection, addNewWeekFromToday, addNewWeekFromNextMonday, renderWeeks} from './scripts/functions.js'
 import * as elements from './scripts/domElements.js'
 import { Week } from "../items/Week.js";
+import * as constant from "./scripts/constants.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       document.body.classList.add("dark-theme");
       elements.homePageLink.src = "./foto/logo_app.png"; // default
-      elements.sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png"
+      elements.sortBtnImg.src = constant.SORT_UP_TEMA_SCURO
     }
 
     switchThemeBtn.addEventListener("click", () => {
@@ -42,8 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.classList.remove("dark-theme");
             document.body.classList.add("light-theme");
             
-            const newLogo = "./foto/logo_app_schermo_chiaro.png";
-            const newSortPngSrc = "https://img.icons8.com/fluency-systems-filled/48/161727/sort-amount-up.png"
+            const newLogo = constant.LOGO_TEMA_CHIARO;
+            const newSortPngSrc = constant.SORT_UP_TEMA_CHIARO
             elements.homePageLink.src = newLogo;
             elements.sortBtnImg.src = newSortPngSrc
             localStorage.setItem("logo-src", newLogo);
@@ -55,8 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.classList.remove("light-theme");
             document.body.classList.add("dark-theme");
             //elements.homePageLink.src = "./foto/logo_app.png"
-            const newLogo = "./foto/logo_app.png";
-            const newSortPngSrc = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png"
+            const newLogo = constant.LOGO_TEMA_SCURO;
+            const newSortPngSrc = constant.SORT_UP_TEMA_SCURO
             elements.homePageLink.src = newLogo;
             elements.sortBtnImg.src = newSortPngSrc
             localStorage.setItem("logo-src", newLogo);
@@ -72,10 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.sortBtn.addEventListener("click", () => {
         if (up === true) {
           if (document.body.classList.contains("dark-theme")) {
-            elements.sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/generic-sorting.png"
+            elements.sortBtnImg.src = constant.SORT_DOWN_TEMA_SCURO
             up = false
           }else{
-            elements.sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/161727/generic-sorting.png"
+            elements.sortBtnImg.src = constant.SORT_DOWN_TEMA_CHIARO
             up = false
           }
             
@@ -83,10 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
 
           if (document.body.classList.contains("dark-theme")) {
-            elements.sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png"
+            elements.sortBtnImg.src = constant.SORT_UP_TEMA_SCURO
             up=true
           } else {
-            elements.sortBtnImg.src = "https://img.icons8.com/fluency-systems-filled/48/161727/sort-amount-up.png"
+            elements.sortBtnImg.src = constant.SORT_UP_TEMA_CHIARO
             up=true
           }
             
@@ -124,12 +125,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     elements.startTodayBtn.addEventListener("click", () => {
       addNewWeekFromToday(weekList, elements.addWeekModale,elements.weeksViewContainer,elements.userWeekColor, elements.userWeekDescription)
-      console.log("Array su localStorage: " + savedWeeks)
     })
 
     elements.startNextMondayBtn.addEventListener("click", () => {
       addNewWeekFromNextMonday(weekList, elements.addWeekModale, weeksViewContainer,elements.userWeekColor, elements.userWeekDescription)
-      console.log("Array su localStorage: " + savedWeeks)
     })
 
     elements.clearLocalStorageBtn.addEventListener("click", () => {
