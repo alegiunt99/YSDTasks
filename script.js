@@ -2,21 +2,12 @@ import {showOnlySection, addNewWeekFromToday, addNewWeekFromNextMonday, renderWe
 import * as elements from './scripts/domElements.js'
 import { Week } from "../items/Week.js";
 import * as constant from "./scripts/constants.js";
-import { changeTheme } from './scripts/changeTheme.js';
+import { changeTheme } from './scripts/themeManager.js';
+import { switchSections} from "./scripts/sectionsManager.js"
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    
-    const allSections = [
-        elements.homePage, daySection, elements.loginSection,
-        elements.registrationSection, elements.themeSection, editTaskModale
-      ];
-    
-    elements.homePageLink.addEventListener("click", () => showOnlySection(elements.homePage, allSections));
-    elements.loginPageLink.addEventListener("click", () => showOnlySection(elements.loginSection, allSections));
-    elements.registrationPageLink.addEventListener("click", () => showOnlySection(elements.registrationSection, allSections));
-    elements.themeSectionLink.addEventListener("click", () => showOnlySection(elements.themeSection, allSections));
-    
+    // cambiare sezione in base ai click
+    switchSections()
 
     // --------------------------------------------------------- THEME --------------------------------------------------------------------
     //aggiungere il cambio di tema con le classi
