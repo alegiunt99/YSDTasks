@@ -6,7 +6,7 @@ import { Day } from "../items/Day.js";
 import { Task } from "../items/Task.js";
 //tasks
 
-export function renderTasks(dayRef, tasksViewContainer) {
+export function renderTasks(dayRef, tasksViewContainer, weekList) {
     
       tasksViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
       console.log(dayRef.date.toLocaleDateString("it-IT"))
@@ -16,7 +16,7 @@ export function renderTasks(dayRef, tasksViewContainer) {
       
       if (Array.isArray(dayRef.tasks)) {
         
-        dayRef.tasks.forEach(task => {
+        dayRef.tasks.forEach((task,index) => {
         const taskDiv = document.createElement("div");
         taskDiv.className = "taskCompleteDisplay";
 
@@ -30,17 +30,17 @@ export function renderTasks(dayRef, tasksViewContainer) {
         taskDeleteButton.className = "taskDelete";
         taskDeleteButton.innerHTML = "&#x1F5D1;";
         
-        /*🗑️ Cancella se clicchi su di lui
+        //🗑️ Cancella se clicchi su di lui
         taskDeleteButton.addEventListener("click", () => {
-          deleteTask(task,dayRef.tasks,tasksViewContainer)
-        });*/
+          deleteTask(dayRef, index, tasksViewContainer, weekList);
+        });
 
         taskDiv.appendChild(ptaskDescr)
         taskDiv.appendChild(taskDeleteButton)
 
         tasksViewContainer.appendChild(taskDiv)
 
-        taskDiv.addEventListener("click", () => {
+        ptaskDescr.addEventListener("click", () => {
           if (task.done == false) {
             ptaskDescr.classList.add("done")
             task.done = true
@@ -57,7 +57,7 @@ export function renderTasks(dayRef, tasksViewContainer) {
     
   }
 
-export function addTask(taskDescription, taskHour, addButton, containerList, dayRef) {
+export function addTask(taskDescription, taskHour, addButton, containerList, dayRef,weekList) {
 
       console.log(taskDescription.value)
 
@@ -91,7 +91,7 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
         //dayWeeks.sort((a, b) => a.time.localeCompare(b.ora));
     
         // 🔐 Aggiorna il localStorage
-        localStorage.setItem("tasks", JSON.stringify(dayRef.tasks));
+        localStorage.setItem("weeks", JSON.stringify(weekList.map(week => week.toJSON())))
         
         // 🔄 Pulisci e ricostruisci il DOM
         renderTasks(dayRef, containerList);
@@ -103,7 +103,7 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
       } catch (error) {
           const errorDiv = document.createElement("div");
           errorDiv.className = "errorMessage";
-          errorDiv.textContent = error.message + error.stack
+          errorDiv.textContent = error.message 
 
           addButton.parentElement.appendChild(errorDiv);
 
@@ -121,20 +121,52 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
       
   }
 
-/*export function deleteTask(task, dayWeeks, containerList) {
+export function deleteTask(dayRef, taskIndex, tasksViewContainer, weekList) {
+
+  console.log(weekList[0])
 
   try {
-    // 🗑️ Cancella se clicchi su di lui
-        
-        const indextask = dayWeeks.indexOf(task);
-        
-        if (indextask !== -1) {
-          
-          dayWeeks.splice(indextask, 1);
-          localStorage.setItem("tasks", JSON.stringify(dayWeeks));
-          renderTasks(dayWeeks, containerList); // aggiorna la lista dopo l'eliminazione
+      // 🗑️ Cancella se clicchi su di lui
+      console.log(weekList[1].days[2].tasks[0].id)
+      // 1. Rimuovi la task
+      
 
+        weekList.forEach( (week, weekIndex) => {
+        
+          week.days.forEach((day, dayIndex) => {
+
+            day.tasks.forEach((task, taskId) => {
+              
+              console.log("confronto tra task.id: "+ task.id+ " e "+ (taskIndex+1) )
+              
+              if(dayRef.tasks[taskIndex] === (taskIndex+1)){
+
+                dayRef.tasks.splice(taskIndex, 1);
+
+                weekList[weekIndex].days[dayIndex].tasks.splice(taskIndex, 1)
+
+                // 2. Salva nel localStorage
+                localStorage.setItem("weekList", JSON.stringify(weekList));
+
+                // 3. Rirenderizza la lista delle task
+                renderTasks(weekList[weekIndex].days[dayIndex], tasksViewContainer,weekList);
+
+                
+
+            }
+
+            })
+            
+
+          })
+          
         }
+
+        
+                
+      )
+
+      
    
     
 
@@ -144,7 +176,7 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
           errorDiv.className = "errorMessageDelete";
           errorDiv.textContent = error.message
 
-          addButton.parentElement.appendChild(errorDiv);
+          elements.addTaskButton.parentElement.appendChild(errorDiv);
 
           // (Opzionale) Rimuovilo dopo qualche secondo per non lasciarlo fisso
           setTimeout(() => {
@@ -152,11 +184,11 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
           }, 3000);
 
           // 🧼 Reset campi input
-          taskDescription.value = "";
-          taskHour.value = "";
+          elements.taskDescription.value = "";
+          elements.taskHour.value = "";
     }  
 }
-*/
+
 // views  
 export function showOnlySection(section, allSections) {
   
@@ -207,7 +239,7 @@ export function createNewWeekFromNextMonday(userWeekColor, userWeekDescription,t
   return week
 }
 
-export function generateDaysForWeek(startDate, endDate, weekRef, savedTasks) {
+export function generateDaysForWeek(startDate, endDate, weekRef) {
 
   const days = []
   const current = new Date(startDate)
@@ -217,7 +249,7 @@ export function generateDaysForWeek(startDate, endDate, weekRef, savedTasks) {
   while (current <= endDate) {
 
     const name = dayNames[current.getDay()]
-    const newDay = new Day(new Date(current), name, savedTasks, false, weekRef)
+    const newDay = new Day(new Date(current), name, [], false, weekRef)
     days.push(newDay)
     current.setDate(current.getDate()+1)
     
@@ -280,7 +312,7 @@ export function addNewWeekFromNextMonday(weeksList, addWeekModale, weeksViewCont
 
 export function renderWeeks(weekList, weeksViewContainer) {
     weeksViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
-  
+    console.log("weekList: "+ JSON.stringify(weekList, null, 2))
     weekList.forEach((week, index) => {
       const weekDiv = document.createElement("div");
       weekDiv.className = "weekCompleteDisplay";
@@ -310,7 +342,8 @@ export function renderWeeks(weekList, weeksViewContainer) {
       weekDiv.addEventListener("click", () => {
             console.log("Hai cliccato sulla settimana:", weekDiv.id);
             showOnlySection(allSections[1],allSections)
-            renderWeekDays(weekList[index], elements.daysViewContainer,elements.taskDescription, elements.taskHour, elements.tasksViewContainer, elements.addTaskButton)
+            renderWeekDays(weekList[index], elements.daysViewContainer,elements.taskDescription, elements.taskHour, elements.tasksViewContainer, elements.addTaskButton, weekList)
+            console.log("weekList: "+ console.log("weekList: "+ JSON.stringify(weekList, null, 2)))
             // fai il cambio sezione o altra logica
       });
     });
@@ -318,7 +351,7 @@ export function renderWeeks(weekList, weeksViewContainer) {
 
 // ----------------------------------------- DAYS ------------------------------------------
 let currentTaskHandler = null;
-export function renderWeekDays(selectedWeek, daysViewContainer,taskDescription,taskHour,tasksViewContainer,addButton) {
+export function renderWeekDays(selectedWeek, daysViewContainer,taskDescription,taskHour,tasksViewContainer,addButton,weekList) {
       daysViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
       const singleWeekTitle = document.createElement("h1");
       singleWeekTitle.className = "singleWeekTitle";
@@ -354,21 +387,24 @@ export function renderWeekDays(selectedWeek, daysViewContainer,taskDescription,t
         
         // ✅ Aggiungi qui il tuo event listener
         dayDiv.addEventListener("click", () => {
+            
             idDay=index
             console.log("Hai cliccato sul giorno:", day.dayName, "con id: ", index, "della settimana: ", selectedWeek.title);
             showOnlySection(allSections[2],allSections)
-            renderTasks(selectedWeek.days[index], elements.tasksViewContainer)
+            renderTasks(selectedWeek.days[index], elements.tasksViewContainer,weekList)
             
             if (currentTaskHandler) {
               addButton.removeEventListener("click", currentTaskHandler);
             }
 
             currentTaskHandler = () => {
-                addTask(taskDescription, taskHour, addButton, tasksViewContainer, day);
+                addTask(taskDescription, taskHour, addButton, tasksViewContainer, day, weekList);
             };
 
             addButton.addEventListener("click", currentTaskHandler);
         });
+
+        
 
             // fai il cambio sezione o altra logica
               //elements.addTaskButton.addEventListener("click", () => {

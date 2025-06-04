@@ -31,13 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const parsed = JSON.parse(savedWeeks);
         if (Array.isArray(parsed)) {
-          // weekList = parsed.map(w => Week.fromJSON(w)).sort((a, b) => a.startDate - b.startDate);
-          if (elements.sortBtnImg.src == constant.SORT_UP_TEMA_SCURO  || elements.sortBtnImg.src == constant.SORT_UP_TEMA_CHIARO) {
-            weekList = parsed.map(w => Week.fromJSON(w)).sort((a, b) => a.startDate - b.startDate);
-          }else{
-            weekList = parsed.map(w => Week.fromJSON(w)).sort((a, b) => b.startDate - a.startDate);
-          }
+          // weekList = parsed.map(w => Week.fromJSON(w)).sort((a, b) => a.startDate - b.startDate)
+          weekList = parsed.map(w => Week.fromJSON(w))
           renderWeeks(weekList, elements.weeksViewContainer)
+          console.log(weekList)
         } else {
           console.warn("Formato non valido per weeks:", parsed);
         }
