@@ -29,10 +29,17 @@ document.addEventListener("DOMContentLoaded", () => {
     var weekList = []
     if (savedWeeks) {
       try {
-        const parsed = JSON.parse(savedWeeks);
+        const parsed = JSON.parse(savedWeeks) || [];
         if (Array.isArray(parsed)) {
+          parsed.forEach(week => {
+            week.days.forEach(day => {
+              day.date = new Date(day.date); // 🔁 converte la stringa in oggetto Date
+            });
+          });
           // weekList = parsed.map(w => Week.fromJSON(w)).sort((a, b) => a.startDate - b.startDate)
           weekList = parsed.map(w => Week.fromJSON(w))
+
+          
           renderWeeks(weekList, elements.weeksViewContainer)
           console.log(weekList)
         } else {

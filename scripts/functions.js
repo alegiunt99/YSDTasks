@@ -8,51 +8,37 @@ import { Task } from "../items/Task.js";
 
 export function renderTasks(dayRef, tasksViewContainer, weekList) {
     
-      tasksViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
-      console.log(dayRef.date.toLocaleDateString("it-IT"))
-      elements.singleDayTitle.innerText = dayRef.dayName + " - " +dayRef.date.toLocaleDateString("it-IT")
+      tasksViewContainer.innerHTML = "";
+  elements.singleDayTitle.innerText = `${dayRef.dayName} - ${dayRef.date.toLocaleDateString("it-IT")}`;
 
-      console.log(dayRef.tasks)
-      
-      if (Array.isArray(dayRef.tasks)) {
-        
-        dayRef.tasks.forEach((task,index) => {
-        const taskDiv = document.createElement("div");
-        taskDiv.className = "taskCompleteDisplay";
+  if (Array.isArray(dayRef.tasks)) {
+    dayRef.tasks.forEach((task, index) => {
+      const taskDiv = document.createElement("div");
+      taskDiv.className = "taskCompleteDisplay";
 
-        
-        const ptaskDescr = document.createElement("p");
-        ptaskDescr.className = "taskDescr";
-        ptaskDescr.textContent = task.time + " - " + task.description;
+      const ptaskDescr = document.createElement("p");
+      ptaskDescr.className = "taskDescr";
+      ptaskDescr.textContent = `${task.time} - ${task.description}`;
 
-        
-        const taskDeleteButton = document.createElement("button");
-        taskDeleteButton.className = "taskDelete";
-        taskDeleteButton.innerHTML = "&#x1F5D1;";
-        
-        //🗑️ Cancella se clicchi su di lui
-        taskDeleteButton.addEventListener("click", () => {
-          deleteTask(dayRef, index, tasksViewContainer, weekList);
-        });
+      const taskDeleteButton = document.createElement("button");
+      taskDeleteButton.className = "taskDelete";
+      taskDeleteButton.innerHTML = "&#x1F5D1;";
 
-        taskDiv.appendChild(ptaskDescr)
-        taskDiv.appendChild(taskDeleteButton)
-
-        tasksViewContainer.appendChild(taskDiv)
-
-        ptaskDescr.addEventListener("click", () => {
-          if (task.done == false) {
-            ptaskDescr.classList.add("done")
-            task.done = true
-          }else{
-            ptaskDescr.classList.remove("done")
-            task.done = false
-          }
-
-        })
+      // ✅ Invece di passare dayRef, passiamo la sua data
+      taskDeleteButton.addEventListener("click", () => {
+        deleteTask(dayRef.date, index, tasksViewContainer);
       });
-        
-      }
+
+      taskDiv.appendChild(ptaskDescr);
+      taskDiv.appendChild(taskDeleteButton);
+      tasksViewContainer.appendChild(taskDiv);
+
+      ptaskDescr.addEventListener("click", () => {
+        task.done = !task.done;
+        ptaskDescr.classList.toggle("done", task.done);
+      });
+    });
+  }
       
     
   }
@@ -121,55 +107,72 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
       
   }
 
-export function deleteTask(dayRef, taskIndex, tasksViewContainer, weekList) {
 
+export function deleteTask(dayDate, taskIndex, tasksViewContainer) {
   
 
+  const savedWeeks = localStorage.getItem("weeks");
+    var weekList = []
+    if (savedWeeks) {
+      
+        const parsed = JSON.parse(savedWeeks) || [];
+        if (Array.isArray(parsed)) {
+          parsed.forEach(week => {
+            week.days.forEach(day => {
+              day.date = new Date(day.date); // 🔁 converte la stringa in oggetto Date
+            });
+          });
+        }
+
+        weekList = parsed.map(w => Week.fromJSON(w))
+
+    }
+
+    console.log("✅ deleteTask chiamata con:", { weekList });
+  
   try {
-      // 🔍 Trova la settimana che contiene il giorno
-    const weekIndex = weekList.findIndex(week =>
-      week.days.some(day =>
-        new Date(day.date).toDateString() === new Date(dayRef.date).toDateString()
-      )
+     const dayDateString = new Date(dayDate).toDateString();
+
+    // Trova la settimana e il giorno
+    const week = weekList.find(week =>
+      week.days.some(day => new Date(day.date).toDateString() === dayDateString)
     );
 
-    if (weekIndex === -1) throw new Error("Settimana non trovata");
-
-    // 🔍 Trova l'indice del giorno esatto
-    const dayIndex = weekList[weekIndex].days.findIndex(day =>
-      new Date(day.date).toDateString() === new Date(dayRef.date).toDateString()
+    if (!week) throw new Error("Settimana non trovata");
+    console.log("✅ deleteTask chiamata con:", { week});
+    const day = week.days.find(day =>
+      new Date(day.date).toDateString() === dayDateString
     );
 
-    if (dayIndex === -1) throw new Error("Giorno non trovato");
+    if (!day) throw new Error("Giorno non trovato");
 
-    // 🗑️ Rimuovi la task dall'array corretto
-    weekList[weekIndex].days[dayIndex].tasks.splice(taskIndex, 1);
+    if (!Array.isArray(day.tasks)) throw new Error("Tasks non è un array");
 
-    // 💾 Salva nel localStorage
-    localStorage.setItem("weekList", JSON.stringify(weekList));
+    // Elimina la task
+    day.tasks.splice(taskIndex, 1);
 
-    // 🔄 Rirenderizza
-    renderTasks(weekList[weekIndex].days[dayIndex], tasksViewContainer, weekList);
-   
-    
+    // Aggiorna il localStorage
+    localStorage.setItem("weeks", JSON.stringify(weekList));
+
+    const updatedWeekList = JSON.parse(localStorage.getItem("weeks"));
+    updatedWeekList.forEach(week => {
+        week.days.forEach(day => {
+            day.date = new Date(day.date); // riconversione a Date
+        });
+    });
+    // Rirenderizza
+    renderTasks(day, tasksViewContainer, weekList);
 
   } catch (error) {
-    error.message = "Errore nell'eliminazione della Task"
     const errorDiv = document.createElement("div");
-          errorDiv.className = "errorMessageDelete";
-          errorDiv.textContent = error.message
+    errorDiv.className = "errorMessageDelete";
+    errorDiv.textContent = error.message;
+    tasksViewContainer.appendChild(errorDiv);
 
-          elements.addTaskButton.parentElement.appendChild(errorDiv);
-
-          // (Opzionale) Rimuovilo dopo qualche secondo per non lasciarlo fisso
-          setTimeout(() => {
-              errorDiv.remove();
-          }, 3000);
-
-          // 🧼 Reset campi input
-          elements.taskDescription.value = "";
-          elements.taskHour.value = "";
-    }  
+    setTimeout(() => {
+      errorDiv.remove();
+    }, 3000);
+  }
 }
 
 // views  
