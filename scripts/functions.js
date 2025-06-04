@@ -123,50 +123,33 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
 
 export function deleteTask(dayRef, taskIndex, tasksViewContainer, weekList) {
 
-  console.log(weekList[0])
+  
 
   try {
-      // 🗑️ Cancella se clicchi su di lui
-      console.log(weekList[1].days[2].tasks[0].id)
-      // 1. Rimuovi la task
-      
-
-        weekList.forEach( (week, weekIndex) => {
-        
-          week.days.forEach((day, dayIndex) => {
-
-            day.tasks.forEach((task, taskId) => {
-              
-              console.log("confronto tra task.id: "+ task.id+ " e "+ (taskIndex+1) )
-              
-              if(dayRef.tasks[taskIndex] === (taskIndex+1)){
-
-                dayRef.tasks.splice(taskIndex, 1);
-
-                weekList[weekIndex].days[dayIndex].tasks.splice(taskIndex, 1)
-
-                // 2. Salva nel localStorage
-                localStorage.setItem("weekList", JSON.stringify(weekList));
-
-                // 3. Rirenderizza la lista delle task
-                renderTasks(weekList[weekIndex].days[dayIndex], tasksViewContainer,weekList);
-
-                
-
-            }
-
-            })
-            
-
-          })
-          
-        }
-
-        
-                
+      // 🔍 Trova la settimana che contiene il giorno
+    const weekIndex = weekList.findIndex(week =>
+      week.days.some(day =>
+        new Date(day.date).toDateString() === new Date(dayRef.date).toDateString()
       )
+    );
 
-      
+    if (weekIndex === -1) throw new Error("Settimana non trovata");
+
+    // 🔍 Trova l'indice del giorno esatto
+    const dayIndex = weekList[weekIndex].days.findIndex(day =>
+      new Date(day.date).toDateString() === new Date(dayRef.date).toDateString()
+    );
+
+    if (dayIndex === -1) throw new Error("Giorno non trovato");
+
+    // 🗑️ Rimuovi la task dall'array corretto
+    weekList[weekIndex].days[dayIndex].tasks.splice(taskIndex, 1);
+
+    // 💾 Salva nel localStorage
+    localStorage.setItem("weekList", JSON.stringify(weekList));
+
+    // 🔄 Rirenderizza
+    renderTasks(weekList[weekIndex].days[dayIndex], tasksViewContainer, weekList);
    
     
 

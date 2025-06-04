@@ -160,7 +160,8 @@ body.light-theme .divMenu {
 }
 
 .weekCompleteDisplay,
-.dayCompleteDisplay{
+.dayCompleteDisplay,
+.taskCompleteDisplay{
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -180,7 +181,8 @@ body.light-theme .divMenu {
 }
 
 #weeksViewContainer,
-.daysViewContainer{
+.daysViewContainer,
+#tasksViewContainer{
     
     display: flex;
     align-items: center;
