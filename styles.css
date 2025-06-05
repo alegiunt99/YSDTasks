@@ -107,6 +107,21 @@ body.dark-theme #header-content {
   width: 100%;
 }
 
+
+body.light-theme #resetLocalStorage{
+     padding: 6px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: solid;
+    border-color: #161727; 
+}
+
+
+body.light-theme #resetLocalStorage:hover{
+     background-color: #161727; 
+     color: #aeaeae; 
+}
+
  
 body.dark-theme{
     background-color: #161727;

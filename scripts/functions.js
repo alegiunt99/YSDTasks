@@ -46,7 +46,7 @@ export function renderTasks(dayRef, tasksViewContainer) {
 
 export function addTask(taskDescription, taskHour, addButton, containerList, dayRef,weekList) {
 
-      console.log(taskDescription.value)
+      
 
       try {
         
@@ -73,24 +73,22 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
         
         newtask.dayRef = dayRef.dayName
         dayRef.tasks.push(newtask);
-        console.log(dayRef.tasks)
         // 🔽 Ordina per orario
         dayRef.tasks.sort((a, b) => a.time.localeCompare(b.ora));
     
         // 🔐 Aggiorna il localStorage
         localStorage.setItem("weeks", JSON.stringify(weekList.map(week => week.toJSON())))
-        
         // 🔄 Pulisci e ricostruisci il DOM
         renderTasks(dayRef, containerList);
         // 🧼 Reset campi input
         taskDescription.value = "";
-        taskHour.value = "";
+        taskHour.value = "00:00";
         
         
       } catch (error) {
           const errorDiv = document.createElement("div");
           errorDiv.className = "errorMessage";
-          errorDiv.textContent = error.message 
+          errorDiv.textContent = error.message + error.stack
 
           addButton.parentElement.appendChild(errorDiv);
 
@@ -101,7 +99,7 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
 
           // 🧼 Reset campi input
           taskDescription.value = "";
-          taskHour.value = "";
+          taskHour.value = "00:00";
       }  
       
       
@@ -143,7 +141,6 @@ export function deleteTask(dayDate, taskIndex, tasksViewContainer) {
     );
 
     if (!week) throw new Error("Settimana non trovata");
-    console.log("✅ deleteTask chiamata con:", { week});
     const day = week.days.find(day =>
       new Date(day.date).toDateString() === dayDateString
     );
@@ -260,7 +257,6 @@ export function addNewWeekFromToday(weeksList, addWeekModale, weeksViewContainer
     
         addWeekModale.classList.add("hidden")
 
-        console.log(weeksList)
         // 🔄 Pulisci e ricostruisci il DOM
         renderWeeks(weeksList,weeksViewContainer)
       
@@ -286,7 +282,6 @@ export function addNewWeekFromNextMonday(weeksList, addWeekModale, weeksViewCont
     
         addWeekModale.classList.add("hidden")
 
-        console.log(weeksList)
         // 🔄 Pulisci e ricostruisci il DOM
         renderWeeks(weeksList,weeksViewContainer)
 
@@ -297,7 +292,6 @@ export function addNewWeekFromNextMonday(weeksList, addWeekModale, weeksViewCont
 
 export function renderWeeks(weekList, weeksViewContainer) {
     weeksViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
-    console.log("weekList: "+ JSON.stringify(weekList, null, 2))
     weekList.forEach((week, index) => {
       const weekDiv = document.createElement("div");
       weekDiv.className = "weekCompleteDisplay";
@@ -326,10 +320,8 @@ export function renderWeeks(weekList, weeksViewContainer) {
 
       // ✅ Aggiungi qui il tuo event listener
       weekDiv.addEventListener("click", () => {
-            console.log("Hai cliccato sulla settimana:", weekDiv.id);
             showOnlySection(allSections[1],allSections)
             renderWeekDays(weekList[index], elements.daysViewContainer,elements.taskDescription, elements.taskHour, elements.tasksViewContainer, elements.addTaskButton, weekList)
-            console.log("weekList: "+ console.log("weekList: "+ JSON.stringify(weekList, null, 2)))
             // fai il cambio sezione o altra logica
       });
     });
@@ -345,7 +337,6 @@ export function renderWeekDays(selectedWeek, daysViewContainer,taskDescription,t
       daysViewContainer.appendChild(singleWeekTitle)
 
       var idDay = 0
-      console.log(selectedWeek.days)
       selectedWeek.days.forEach((day, index) => {
 
 
@@ -375,7 +366,6 @@ export function renderWeekDays(selectedWeek, daysViewContainer,taskDescription,t
         dayDiv.addEventListener("click", () => {
             
             idDay=index
-            console.log("Hai cliccato sul giorno:", day.dayName, "con id: ", index, "della settimana: ", selectedWeek.title);
             showOnlySection(allSections[2],allSections)
             renderTasks(selectedWeek.days[index], elements.tasksViewContainer,weekList)
             

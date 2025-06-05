@@ -4,7 +4,7 @@ import { Week } from "../items/Week.js";
 import * as constant from "./scripts/constants.js";
 import { changeTheme } from './scripts/themeManager.js';
 import { switchSections} from "./scripts/sectionsManager.js"
-import { showSavedTheme } from "./scripts/localStorageManager.js"
+import { getWeekListFromStorage, showSavedTheme } from "./scripts/localStorageManager.js"
 import { Task } from './items/Task.js';
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -24,31 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // --------------------------------------------------------- WEEKS LIST--------------------------------------------------------------------
     
 
-    
-    const savedWeeks = localStorage.getItem("weeks");
-    var weekList = []
-    if (savedWeeks) {
-      try {
-        const parsed = JSON.parse(savedWeeks) || [];
-        if (Array.isArray(parsed)) {
-          parsed.forEach(week => {
-            week.days.forEach(day => {
-              day.date = new Date(day.date); // 🔁 converte la stringa in oggetto Date
-            });
-          });
-          // weekList = parsed.map(w => Week.fromJSON(w)).sort((a, b) => a.startDate - b.startDate)
-          weekList = parsed.map(w => Week.fromJSON(w))
-
-          
-          renderWeeks(weekList, elements.weeksViewContainer)
-          console.log(weekList)
-        } else {
-          console.warn("Formato non valido per weeks:", parsed);
-        }
-        } catch (e) {
-          console.error("Errore nel parsing di weeks:", e);
-        }
-    }
+    var weekList = getWeekListFromStorage() || []
+    renderWeeks(weekList, elements.weeksViewContainer)
+    console.log(weekList)
 
 
     elements.addWeekButton.addEventListener("click", () => {
