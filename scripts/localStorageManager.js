@@ -8,15 +8,25 @@ export function showSavedTheme() {
     if (savedTheme) {
       elements.domBody.classList.add(savedTheme);
       if (savedLogo) {
-        elements.homePageLink.src = savedLogo;
+        elements.logoImg.src = savedLogo;
       }
       if (savedLogo) {
         elements.sortBtnImg.src = savedSortBtnSrc;
       }
     } else {
       elements.domBody.classList.add("dark-theme");
-      elements.homePageLink.src = constant.LOGO_TEMA_SCURO; // default
+      elements.logoImg.src = constant.LOGO_TEMA_SCURO; // default
       elements.sortBtnImg.src = constant.SORT_UP_TEMA_SCURO
     }
     
+}
+
+export function getWeekListFromStorage() {
+  const parsed = JSON.parse(localStorage.getItem("weeks")) || [];
+  parsed.forEach(week => {
+    week.days.forEach(day => {
+      day.date = new Date(day.date);
+    });
+  });
+  return parsed;
 }

@@ -28,7 +28,7 @@
     color: red;
 }
 
-#toHomePage{
+#logoImg{
     width: 100%;
     max-width: 260px;
     min-width: 150px;
@@ -215,3 +215,16 @@ body.light-theme .divMenu {
     color: green;
 
 }
+
+#resetLocalStorage{
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: solid;
+    border-color: #aeaeae;
+}
+
+#resetLocalStorage:hover{
+     background-color: #aeaeae; 
+     color: #161727; 
+   }

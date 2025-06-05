@@ -4,12 +4,13 @@ import * as elements from './domElements.js'
 import { Week } from "../items/Week.js";
 import { Day } from "../items/Day.js";
 import { Task } from "../items/Task.js";
+import { getWeekListFromStorage } from "./localStorageManager.js";
 //tasks
 
-export function renderTasks(dayRef, tasksViewContainer, weekList) {
+export function renderTasks(dayRef, tasksViewContainer) {
     
       tasksViewContainer.innerHTML = "";
-  elements.singleDayTitle.innerText = `${dayRef.dayName} - ${dayRef.date.toLocaleDateString("it-IT")}`;
+      elements.singleDayTitle.innerText = `${dayRef.dayName} - ${dayRef.date.toLocaleDateString("it-IT")}`;
 
   if (Array.isArray(dayRef.tasks)) {
     dayRef.tasks.forEach((task, index) => {
@@ -74,7 +75,7 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
         dayRef.tasks.push(newtask);
         console.log(dayRef.tasks)
         // 🔽 Ordina per orario
-        //dayWeeks.sort((a, b) => a.time.localeCompare(b.ora));
+        dayRef.tasks.sort((a, b) => a.time.localeCompare(b.ora));
     
         // 🔐 Aggiorna il localStorage
         localStorage.setItem("weeks", JSON.stringify(weekList.map(week => week.toJSON())))
@@ -111,7 +112,7 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
 export function deleteTask(dayDate, taskIndex, tasksViewContainer) {
   
 
-  const savedWeeks = localStorage.getItem("weeks");
+  /*const savedWeeks = localStorage.getItem("weeks");
     var weekList = []
     if (savedWeeks) {
       
@@ -129,8 +130,11 @@ export function deleteTask(dayDate, taskIndex, tasksViewContainer) {
     }
 
     console.log("✅ deleteTask chiamata con:", { weekList });
-  
+  */
   try {
+
+    var weekList = getWeekListFromStorage()
+
      const dayDateString = new Date(dayDate).toDateString();
 
     // Trova la settimana e il giorno
@@ -154,14 +158,9 @@ export function deleteTask(dayDate, taskIndex, tasksViewContainer) {
     // Aggiorna il localStorage
     localStorage.setItem("weeks", JSON.stringify(weekList));
 
-    const updatedWeekList = JSON.parse(localStorage.getItem("weeks"));
-    updatedWeekList.forEach(week => {
-        week.days.forEach(day => {
-            day.date = new Date(day.date); // riconversione a Date
-        });
-    });
+    const updatedWeekList = getWeekListFromStorage()
     // Rirenderizza
-    renderTasks(day, tasksViewContainer, weekList);
+    renderTasks(day, tasksViewContainer, updatedWeekList);
 
   } catch (error) {
     const errorDiv = document.createElement("div");
@@ -303,6 +302,7 @@ export function renderWeeks(weekList, weeksViewContainer) {
       const weekDiv = document.createElement("div");
       weekDiv.className = "weekCompleteDisplay";
       weekDiv.id = index
+      weekDiv.title = week.title
 
       
       const pWeekTile = document.createElement("p");

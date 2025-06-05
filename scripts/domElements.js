@@ -3,6 +3,7 @@ const dom = document
 const domBody = document.body
 // tutto il codice dentro questo blocco
 const homePageLink = document.getElementById("toHomePage")
+const logoImg = document.getElementById("logoImg")
 const themeSectionLink = document.getElementById("toTheme")
 const loginPageLink = document.getElementById("toLogin")
 const registrationPageLink = document.getElementById("toSignup")
@@ -48,6 +49,7 @@ export {
             domBody,          
             homePage, 
             homePageLink,
+            logoImg,
             singleWeekSection, 
             weeksViewContainer,
             themeSectionLink,

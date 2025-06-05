@@ -10,7 +10,7 @@ export function changeTheme(){
             
             const newLogo = constant.LOGO_TEMA_CHIARO;
             const newSortPngSrc = constant.SORT_UP_TEMA_CHIARO
-            elements.homePageLink.src = newLogo;
+            elements.logoImg.src = newLogo;
             elements.sortBtnImg.src = newSortPngSrc
             localStorage.setItem("logo-src", newLogo);
             localStorage.setItem("sort-png-src", newSortPngSrc);
@@ -23,7 +23,7 @@ export function changeTheme(){
             //elements.homePageLink.src = "./foto/logo_app.png"
             const newLogo = constant.LOGO_TEMA_SCURO;
             const newSortPngSrc = constant.SORT_UP_TEMA_SCURO
-            elements.homePageLink.src = newLogo;
+            elements.logoImg.src = newLogo;
             elements.sortBtnImg.src = newSortPngSrc
             localStorage.setItem("logo-src", newLogo);
             localStorage.setItem("sort-png-src", newSortPngSrc);
