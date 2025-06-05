@@ -1,6 +1,7 @@
 import * as elements from "./domElements.js";
 import * as constant from "./constants.js";
 import { Week } from "../items/Week.js";
+import { showOnlySection, renderWeeks, renderTasks, addNewWeekFromToday, addNewWeekFromNextMonday, addTask } from "./functions.js";
 export function showSavedTheme() {
     const savedTheme = localStorage.getItem("theme");
     const savedLogo = localStorage.getItem("logo-src")
@@ -55,3 +56,14 @@ export function getWeekListFromStorage() {
   });
   return parsed;*/
 }
+
+export function deleteAllWeeks(weekList) {
+  elements.clearLocalStorageBtn.addEventListener("click", () => {
+        localStorage.removeItem("weeks")
+        weekList.length = 0; // 🧹 Svuota anche l'array in memoria
+        elements.weeksViewContainer.innerHTML = ""; // 🧹 Svuota anche il DOM (opzionale ma sicuro)
+        renderWeeks(weekList,weeksViewContainer)
+        console.log(weekList)
+  })
+}
+

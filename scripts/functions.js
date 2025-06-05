@@ -13,6 +13,7 @@ export function renderTasks(dayRef, tasksViewContainer) {
       elements.singleDayTitle.innerText = `${dayRef.dayName} - ${dayRef.date.toLocaleDateString("it-IT")}`;
 
   if (Array.isArray(dayRef.tasks)) {
+    dayRef.tasks.sort((a, b) => a.time.localeCompare(b.time));
     dayRef.tasks.forEach((task, index) => {
       const taskDiv = document.createElement("div");
       taskDiv.className = "taskCompleteDisplay";
@@ -61,7 +62,7 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
         }
 
         
-        const id = dayRef.tasks.length+1
+        const id = new Date()
         const description = taskDescription.value
         const time = taskHour.value
         const done = false
@@ -74,7 +75,7 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
         newtask.dayRef = dayRef.dayName
         dayRef.tasks.push(newtask);
         // 🔽 Ordina per orario
-        dayRef.tasks.sort((a, b) => a.time.localeCompare(b.ora));
+        dayRef.tasks.sort((a, b) => a.time.localeCompare(b.time));
     
         // 🔐 Aggiorna il localStorage
         localStorage.setItem("weeks", JSON.stringify(weekList.map(week => week.toJSON())))

@@ -3,7 +3,7 @@ import * as elements from './scripts/domElements.js'
 import { Week } from "../items/Week.js";
 import * as constant from "./scripts/constants.js";
 import { changeTheme } from './scripts/themeManager.js';
-import { switchSections} from "./scripts/sectionsManager.js"
+import { switchSections, loadHomePageData} from "./scripts/sectionsManager.js"
 import { getWeekListFromStorage, showSavedTheme } from "./scripts/localStorageManager.js"
 import { Task } from './items/Task.js';
 
@@ -23,35 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --------------------------------------------------------- WEEKS LIST--------------------------------------------------------------------
     
-
-    var weekList = getWeekListFromStorage() || []
-    renderWeeks(weekList, elements.weeksViewContainer)
-    console.log(weekList)
-
-
-    elements.addWeekButton.addEventListener("click", () => {
-      elements.addWeekModale.classList.remove("hidden")
-    })
-
-    elements.exitAddWeekModale.addEventListener("click", () => {
-      elements.addWeekModale.classList.add("hidden")
-    })
-
-    elements.startTodayBtn.addEventListener("click", () => {
-      addNewWeekFromToday(weekList, elements.addWeekModale,elements.weeksViewContainer,elements.userWeekColor, elements.userWeekDescription)
-    })
-
-    elements.startNextMondayBtn.addEventListener("click", () => {
-      addNewWeekFromNextMonday(weekList, elements.addWeekModale, weeksViewContainer,elements.userWeekColor, elements.userWeekDescription)
-    })
-
-    elements.clearLocalStorageBtn.addEventListener("click", () => {
-      localStorage.removeItem("weeks")
-      weekList.length = 0; // 🧹 Svuota anche l'array in memoria
-      elements.weeksViewContainer.innerHTML = ""; // 🧹 Svuota anche il DOM (opzionale ma sicuro)
-      renderWeeks(weekList,weeksViewContainer)
-      console.log(weekList)
-    })
+    loadHomePageData()
 
     var up = true
 
