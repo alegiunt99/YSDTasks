@@ -34,9 +34,9 @@ export function getWeekListFromStorage() {
                 day.date = new Date(day.date); // 🔁 converte la stringa in oggetto Date
               });
             });
-            // weekList = parsed.map(w => Week.fromJSON(w)).sort((a, b) => a.startDate - b.startDate)
+            //weekList = parsed.map(w => Week.fromJSON(w)).sort((a, b) => a.startDate - b.startDate)
             weekList = parsed.map(w => Week.fromJSON(w))
-            
+
             return weekList
 
           } else {

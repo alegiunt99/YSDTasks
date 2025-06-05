@@ -8,8 +8,7 @@ import { getWeekListFromStorage, showSavedTheme } from "./scripts/localStorageMa
 import { Task } from './items/Task.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-    // cambiare sezione in base ai click
-    switchSections()
+    
 
     // --------------------------------------------------------- THEME --------------------------------------------------------------------
     
@@ -23,9 +22,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --------------------------------------------------------- WEEKS LIST--------------------------------------------------------------------
     
-    loadHomePageData()
 
-    var up = true
+    let up = true
+    // cambiare sezione in base ai click
+    switchSections(up)
+    loadHomePageData(up);
+
+    /*elements.sortBtn.addEventListener("click", () => {
+      up = !up; // inverti ordine
+      loadHomePageData(up); // ricarica la home con nuovo ordine
+    });*/
+
+    
+    
 
     elements.sortBtn.addEventListener("click", () => {
         if (up === true) {
@@ -37,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
             up = false
           }
             
-            
+        loadHomePageData(up)    
         } else {
 
           if (elements.domBody.classList.contains("dark-theme")) {
@@ -47,10 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
             elements.sortBtnImg.src = constant.SORT_UP_TEMA_CHIARO
             up=true
           }
-            
+
+        loadHomePageData(up)    
         }
     }); 
-
+    
     // --------------------------------------------------------- SINGLE WEEK DAYS --------------------------------------------------------------------
     
 

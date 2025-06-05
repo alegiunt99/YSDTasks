@@ -421,3 +421,13 @@ export function renderWeekDays(selectedWeek, daysViewContainer,taskDescription,t
     }
   }
 }*/
+
+
+export function sortWeeks(weeks, isAscending) {
+  return weeks.sort((a, b) => {
+    const nameA = a.title;
+    const nameB = b.title;
+
+    return isAscending ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+  });
+}

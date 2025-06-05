@@ -1,12 +1,13 @@
 import * as elements from './domElements.js'
-import { showOnlySection, renderWeeks, renderTasks, addNewWeekFromToday, addNewWeekFromNextMonday, addTask } from "./functions.js";
+import { showOnlySection, renderWeeks, renderTasks, addNewWeekFromToday, addNewWeekFromNextMonday, addTask, sortWeeks } from "./functions.js";
+import * as constant from "./constants.js";
 import { getWeekListFromStorage, deleteAllWeeks } from "./localStorageManager.js";
 export const allSections = [
         elements.homePage, elements.singleWeekSection, elements.daySection, elements.loginSection,
         elements.registrationSection, elements.themeSection, elements.editTaskModale
       ];
 
-export function switchSections() {
+export function switchSections(isAscending) {
     elements.homePageLink.addEventListener("click", () => {
 
       
@@ -14,7 +15,7 @@ export function switchSections() {
       showOnlySection(elements.homePage, allSections);
 
     // Aggiorna dati e UI per la home
-      loadHomePageData();
+      loadHomePageData(isAscending);
     });
 
     elements.loginPageLink.addEventListener("click", () => showOnlySection(elements.loginSection, allSections));
@@ -22,18 +23,15 @@ export function switchSections() {
     elements.themeSectionLink.addEventListener("click", () => showOnlySection(elements.themeSection, allSections));
 }
       
-export function loadHomePageData() {
+export function loadHomePageData(isAscending) {
 
-
-    // 1. Prendi i dati aggiornati da storage o stato in memoria
-    const weeks = getWeekListFromStorage() || []; // funzione da implementare
-
+    var weeks = getWeekListFromStorage()|| []
     
-    // 2. Pulisci e aggiorna la lista settimane in homePage
-    
+    var sortedWeeks = sortWeeks(weeks, isAscending)
+
     elements.weeksViewContainer.innerHTML = ""; // svuota
-
-    renderWeeks(weeks, elements.weeksViewContainer)
+    renderWeeks(sortedWeeks, elements.weeksViewContainer)  
+    console.log(weeks)
 
 
     console.log("settimane aggiornate: ", weeks)
@@ -47,11 +45,11 @@ export function loadHomePageData() {
     })
 
     elements.startTodayBtn.addEventListener("click", () => {
-      addNewWeekFromToday(weeks, elements.addWeekModale,elements.weeksViewContainer,elements.userWeekColor, elements.userWeekDescription)
+      addNewWeekFromToday(sortedWeeks, elements.addWeekModale,elements.weeksViewContainer,elements.userWeekColor, elements.userWeekDescription)
     })
 
     elements.startNextMondayBtn.addEventListener("click", () => {
-      addNewWeekFromNextMonday(weeks, elements.addWeekModale, weeksViewContainer,elements.userWeekColor, elements.userWeekDescription)
+      addNewWeekFromNextMonday(sortedWeeks, elements.addWeekModale, weeksViewContainer,elements.userWeekColor, elements.userWeekDescription)
     })
 
     deleteAllWeeks(weeks)
