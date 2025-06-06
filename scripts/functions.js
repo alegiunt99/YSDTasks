@@ -404,24 +404,6 @@ export function renderWeekDays(selectedWeek, daysViewContainer,taskDescription,t
     ;
   }
 
- /* export function sortAndRenderWeeks(weekList, up) {
-  const savedWeeks = localStorage.getItem("weeks");
-  if (savedWeeks) {
-    const parsed = JSON.parse(savedWeeks);
-    if (Array.isArray(parsed)) {
-      weekList = parsed.map(w => Week.fromJSON(w));
-
-      weekList.sort((a, b) => {
-        const dateA = new Date(a.startDate);
-        const dateB = new Date(b.startDate);
-        return up ? dateA - dateB : dateB - dateA;
-      });
-
-      renderWeeks(weekList, elements.weeksViewContainer);
-    }
-  }
-}*/
-
 
 export function sortWeeks(weeks, isAscending) {
   return weeks.sort((a, b) => {
