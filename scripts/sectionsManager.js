@@ -99,6 +99,13 @@ export function loadHomePageData(isAscending) {
       elements.addWeekModale.classList.add("hidden")
     })
 
+    
+    elements.exitEditWeekModale.addEventListener("click", () => {
+           elements.editWeekModale.classList.add("hidden")
+    })
+
+    
+
     elements.startTodayBtn.addEventListener("click", () => {
       console.log("Valore userWeekDescription all'evento click:", elements.userWeekDescription.value);
       console.log("Valore userWeekColor all'evento click:", elements.userWeekColor.value);

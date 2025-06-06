@@ -298,8 +298,12 @@ export function addNewWeekFromNextMonday(weeksList, addWeekModale, weeksViewCont
 }
 
 export function renderWeeks(weekList, weeksViewContainer) {
+    
+  let indice = null
     weeksViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
     weekList.forEach((week, index) => {
+
+      
       const weekDiv = document.createElement("div");
       weekDiv.className = "weekCompleteDisplay";
       weekDiv.id = index
@@ -314,7 +318,14 @@ export function renderWeeks(weekList, weeksViewContainer) {
       const pWeekColor = document.createElement("p");
       pWeekColor.className = "weekColor";
       pWeekColor.style.backgroundColor = week.color
+
+      const pEditWeekButton = document.createElement("p");
+      pEditWeekButton.className = "pEditWeekButton";
+      pEditWeekButton.title = "Modifica settimana";
+      pEditWeekButton.innerHTML = "&#128736;"
   
+      elements.editedWeekTitle.value = week.title
+      elements.editedWeekColor.value = week.color
       // 🗑️ Cancella se clicchi su di lui
       /*taskDeleteButton.addEventListener("click", () => {
         deleteTask(week,weekList,weeksViewContainer)
@@ -322,16 +333,46 @@ export function renderWeeks(weekList, weeksViewContainer) {
 
       weekDiv.appendChild(pWeekTile)
       weekDiv.appendChild(pWeekColor)
+      weekDiv.appendChild(pEditWeekButton)
 
       weeksViewContainer.appendChild(weekDiv)
+      
+      pEditWeekButton.addEventListener("click", (event) => {
+        event.stopPropagation(); // 👈 Prima cosa!
+        console.log("MODIFICA SETTIMANA CLICCATA");
+
+        elements.editedWeekTitle.value = week.title
+        elements.editedWeekColor.value = week.color
+        indice = index
+        // Rimanda l'apertura della modale alla prossima iterazione del ciclo event-loop
+        setTimeout(() => {
+          elements.editWeekModale.classList.remove("hidden");
+        }, 0);
+      });
+
+      
+
+
 
       // ✅ Aggiungi qui il tuo event listener
-      weekDiv.addEventListener("click", () => {
-            showOnlySection(userSubSections[1],userSubSections)
-            renderWeekDays(weekList[index], elements.daysViewContainer,elements.taskDescription, elements.taskHour, elements.tasksViewContainer, elements.addTaskButton, weekList)
+      weekDiv.addEventListener("click", (event) => {
+        console.log("div CLICCATo", indice);
+        showOnlySection(userSubSections[1],userSubSections)
+        renderWeekDays(weekList[index], elements.daysViewContainer,elements.taskDescription, elements.taskHour, elements.tasksViewContainer, elements.addTaskButton, weekList)
             // fai il cambio sezione o altra logica
       });
+      
+          
     });
+
+    elements.saveEditWeekBtn.addEventListener("click", () => {
+        
+          console.log("ho cliccato la settimana:" + indice )
+        
+        editWeek(elements.editedWeekTitle.value, elements.editedWeekColor.value, indice)
+        elements.editWeekModale.classList.add("hidden")
+        showOnlySection(elements.userHomeSection,userSubSections)
+      })
   }
 
 // ----------------------------------------- DAYS ------------------------------------------
@@ -418,4 +459,20 @@ export function sortWeeks(weeks, isAscending) {
 
     return isAscending ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
   });
+}
+
+
+//----------------------------------------------------------------- EDITS
+
+export function editWeek(editedTitle, editedColor, index) {
+
+  const weeks = getWeekListFromStorage()
+  console.log("lista weeks da editare", weeks)
+  console.log("week index", index)
+  console.log("week da editare", weeks[index])
+  weeks[index].title = editedTitle
+  weeks[index].color = editedColor
+  
+
+  localStorage.setItem("weeks", JSON.stringify(weeks))
 }

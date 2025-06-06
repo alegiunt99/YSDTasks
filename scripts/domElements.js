@@ -35,6 +35,11 @@ const logoutBtn = dom.getElementById("logoutBtn")
 
 // logoutSection logoutBtn
 const editTaskModale = document.querySelector(".editTaskModale")
+const editWeekModale = document.querySelector("#editWeekModale")
+const editedWeekTitle = document.querySelector("#editedWeekTitle")
+const editedWeekColor = document.querySelector("#editedWeekColor")
+const exitEditWeekModale = document.querySelector("#exitEditWeekModale")
+const saveEditWeekBtn = dom.querySelector("#saveEditWeekBtn")
 //weeks button and elements
 const addWeekModale = document.getElementById("weekModal")
 const addWeekButton = document.getElementById("addWeekBtn")
@@ -111,5 +116,10 @@ export {
             logoutBtn,
             generalHomeSection,
             generalMenuLinks,
-            userMenuLinks
+            userMenuLinks,
+            editWeekModale,
+            editedWeekTitle,
+            editedWeekColor,
+            exitEditWeekModale,
+            saveEditWeekBtn
         }

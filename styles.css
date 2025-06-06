@@ -196,9 +196,18 @@ body.light-theme .divMenu {
     border-radius: 20px;
 }
 
-.weekCompleteDisplay:hover,
+
 .dayCompleteDisplay:hover{
     background-color: #257b34;
+}
+
+body.dark-theme .weekCompleteDisplay:hover{
+    background-color: #383b6a;
+}
+
+
+body.light-theme .weekCompleteDisplay:hover{
+    background-color: #6b6b6b;
 }
 
 #weeksViewContainer,
@@ -249,3 +258,9 @@ body.light-theme .divMenu {
      background-color: #aeaeae; 
      color: #161727; 
    }
+
+.pEditWeekButton:hover{
+
+    cursor: pointer;
+    color: #59ff00;
+}

@@ -145,8 +145,25 @@
                         <input type="color" placeholder="" id="userWeekColor">
                     </div>
                 </div>
-            </section>
+                <div id="editWeekModale" class="modal hidden">
+                    <div class="modal-content">
+                        <div>
+                            <button id="exitEditWeekModale">X</button>
+                        </div>
+                        <h2>Quando vuoi iniziare la settimana?</h2>
 
+                        <label for="">Modifica il titolo della tua settimana</label>
+                        <input type="text" placeholder="" id="editedWeekTitle"><br>
+                        <label for="">Se vuoi, cambia il colore della tua settimana</label>
+                        <input type="text" placeholder="" id="editedWeekColor">
+                        <div>
+                            <button id="saveEditWeekBtn">Salva</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </section>
+            
 
             <!-- 🔄 CONTENUTO settimana -->
             <section id="weekSection" style="display: none;">
@@ -154,6 +171,8 @@
                 <div class="daysViewContainer">
 
                 </div>
+
+                
             </section>
 
 
