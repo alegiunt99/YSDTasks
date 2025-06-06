@@ -89,14 +89,14 @@ export function showLog(up, isLogged) {
         // Mostra la sezione homePage
         showOnlySection(elements.generalHomeSection, generalSubSections);
         // Aggiorna dati e UI per la home
-        loadHomePageData(up);
+        //loadHomePageData(up);
       })
       elements.themeSectionLink.addEventListener("click", () => showOnlySection(elements.themeSection, allSections));
     } else {
       showOnlySection(elements.userViewSection, allSections);
       showOnlySection(elements.userHomeSection, userSubSections); 
       // Aggiorna dati e UI per la home
-      loadHomePageData(up);
+      //loadHomePageData(up);
       elements.userMenuLinks.classList.remove("hidden")
       elements.generalMenuLinks.classList.add("hidden")
       elements.homePageLink.addEventListener("click", () => {
@@ -104,7 +104,7 @@ export function showLog(up, isLogged) {
           // Mostra la sezione homePage
           showOnlySection(elements.userHomeSection, userSubSections);
           // Aggiorna dati e UI per la home
-          loadHomePageData(up);
+          //loadHomePageData(up);
       });
 
 

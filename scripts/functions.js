@@ -89,7 +89,7 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
       } catch (error) {
           const errorDiv = document.createElement("div");
           errorDiv.className = "errorMessage";
-          errorDiv.textContent = error.message + error.stack
+          errorDiv.textContent = error.message
 
           addButton.parentElement.appendChild(errorDiv);
 
@@ -185,13 +185,15 @@ export function createNewWeekFromToday(userWeekColor, userWeekDescription, tasks
   const end = new Date();
   end.setDate(start.getDate() + (7 - start.getDay())); // domenica corrente
   var title = ""
-  if (userWeekDescription.value === "" || userWeekDescription.value.trim().length === 0) {
+  if (userWeekDescription === "" || userWeekDescription.trim().length === 0) {
         title = `SETTIMANA ${start.toLocaleDateString("it-IT")} - ${end.toLocaleDateString("it-IT")}`
   }else{
-        title = userWeekDescription.value
+        title = userWeekDescription
+        console.log(title)
   }
- 
-  const color = userWeekColor.value // verde
+  console.log(userWeekDescription)
+  console.log("titolo week: ", title)
+  const color = userWeekColor // verde
   const week = new Week(start, end, title, color, [])
   const days = generateDaysForWeek(start, end, week, tasks)
   week.days = days
@@ -209,13 +211,14 @@ export function createNewWeekFromNextMonday(userWeekColor, userWeekDescription,t
   const nextSunday = new Date(nextMonday);
   nextSunday.setDate(nextMonday.getDate() + 6);
   var title = ""
-  if (userWeekDescription.value === "" || userWeekDescription.value.trim().length === 0) {
+  if (userWeekDescription === "" || userWeekDescription.trim().length === 0) {
         title = `SETTIMANA ${nextMonday.toLocaleDateString()} - ${nextSunday.toLocaleDateString()}`
+
   }else{
-        title = userWeekDescription.value
+        title = userWeekDescription
   }
  
-  const color = userWeekColor.value // verde
+  const color = userWeekColor // verde
   const week = new Week(nextMonday, nextSunday, title, color, []);
   const days = generateDaysForWeek(nextMonday, nextSunday, week, tasks);
   week.days = days;
@@ -244,8 +247,8 @@ export function generateDaysForWeek(startDate, endDate, weekRef) {
 
 
 export function addNewWeekFromToday(weeksList, addWeekModale, weeksViewContainer,userWeekColor, userWeekDescription) {
-
-        const newWeek = createNewWeekFromToday(userWeekColor, userWeekDescription)
+        console.log("addNewWeekFromToday riceve:", userWeekColor.value, userWeekDescription.value);
+        const newWeek = createNewWeekFromToday(userWeekColor.value, userWeekDescription.value)
 
         weeksList.push(newWeek);
       
@@ -262,15 +265,18 @@ export function addNewWeekFromToday(weeksList, addWeekModale, weeksViewContainer
         renderWeeks(weeksList,weeksViewContainer)
       
        
-        
         userWeekColor.value = "#000000"
         userWeekDescription.value = ""
+}
 
+export function resetImputs(input){
+
+  input = ""
 }
 
 export function addNewWeekFromNextMonday(weeksList, addWeekModale, weeksViewContainer,userWeekColor, userWeekDescription) {
 
-        const newWeek = createNewWeekFromNextMonday(userWeekColor, userWeekDescription)
+        const newWeek = createNewWeekFromNextMonday(userWeekColor.value, userWeekDescription.value)
 
         weeksList.push(newWeek);
       

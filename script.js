@@ -1,4 +1,4 @@
-import {renderTasks, addNewWeekFromToday, addNewWeekFromNextMonday, renderWeeks, addTask} from './scripts/functions.js'
+//import {renderTasks, addNewWeekFromToday, addNewWeekFromNextMonday, renderWeeks, addTask} from './scripts/functions.js'
 import * as elements from './scripts/domElements.js'
 import { Week } from "../items/Week.js";
 import * as constant from "./scripts/constants.js";

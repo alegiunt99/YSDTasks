@@ -1,3 +1,6 @@
+/* per allineare verticalmente al centro */
+
+
 .habitCompleteDisplay {
     display: flex;
     align-items: center; /* per allineare verticalmente al centro */

@@ -24,14 +24,14 @@ export function switchSections(isAscending, logged) {
       showOnlySection(elements.userViewSection, allSections);
       showOnlySection(elements.userHomeSection, userSubSections);
     // Aggiorna dati e UI per la home
-      loadHomePageData(isAscending);
+      //loadHomePageData(isAscending);
       elements.userMenuLinks.classList.remove("hidden")
       elements.generalMenuLinks.classList.add("hidden")
       elements.homePageLink.addEventListener("click", () => {
     // Mostra la sezione homePage
-        showOnlySection(elements.userHomeSection, userSubSections);
+      showOnlySection(elements.userHomeSection, userSubSections);
     // Aggiorna dati e UI per la home
-        loadHomePageData(isAscending);
+        //loadHomePageData(isAscending);
       });
 
       elements.toAccountBtn.addEventListener("click", () =>  {
@@ -65,14 +65,14 @@ export function switchSections(isAscending, logged) {
       
       if (logged) {
         showOnlySection(elements.userViewSection, allSections)
-        showOnlySection(elements.userHomeSection, userSubSections)
+        
         // Aggiorna dati e UI per la home
-        loadHomePageData(isAscending);
+        //loadHomePageData(isAscending);
         console.log("sono loggato!")
       }else{
         showOnlySection(elements.generalViewSection, allSections)
         // Mostra la sezione homePage
-        showOnlySection(elements.generalHomeSection, generalSubSections)
+        //showOnlySection(elements.generalHomeSection, generalSubSections)
         console.log("non sono loggato!")
       }
         
@@ -89,10 +89,7 @@ export function loadHomePageData(isAscending) {
 
     elements.weeksViewContainer.innerHTML = ""; // svuota
     renderWeeks(sortedWeeks, elements.weeksViewContainer)  
-    console.log(weeks)
-
-
-    console.log("settimane aggiornate: ", weeks)
+    
 
     elements.addWeekButton.addEventListener("click", () => {
       elements.addWeekModale.classList.remove("hidden")
@@ -103,6 +100,8 @@ export function loadHomePageData(isAscending) {
     })
 
     elements.startTodayBtn.addEventListener("click", () => {
+      console.log("Valore userWeekDescription all'evento click:", elements.userWeekDescription.value);
+      console.log("Valore userWeekColor all'evento click:", elements.userWeekColor.value);
       addNewWeekFromToday(sortedWeeks, elements.addWeekModale,elements.weeksViewContainer,elements.userWeekColor, elements.userWeekDescription)
     })
 
