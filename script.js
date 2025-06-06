@@ -4,7 +4,7 @@ import { Week } from "../items/Week.js";
 import * as constant from "./scripts/constants.js";
 import { changeTheme } from './scripts/themeManager.js';
 import { switchSections, loadHomePageData} from "./scripts/sectionsManager.js"
-import { getWeekListFromStorage, showSavedTheme } from "./scripts/localStorageManager.js"
+import { getLoggedIn, getWeekListFromStorage, showLog, showSavedTheme } from "./scripts/localStorageManager.js"
 import { Task } from './items/Task.js';
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -19,14 +19,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     
-
+    //showLog()
     // --------------------------------------------------------- WEEKS LIST--------------------------------------------------------------------
     
-
+    let loggedIn = getLoggedIn()
     let up = true
+
+    showLog(up, loggedIn)
     // cambiare sezione in base ai click
-    switchSections(up)
+    switchSections(up, loggedIn)
+    
+    
     loadHomePageData(up);
+
 
     /*elements.sortBtn.addEventListener("click", () => {
       up = !up; // inverti ordine

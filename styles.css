@@ -21,7 +21,10 @@
 }
 
 
-
+#siteMenuLinks{
+    display: flex;
+    align-items: center;
+}
 
 
 .errorMessage{

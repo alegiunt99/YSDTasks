@@ -20,11 +20,19 @@
                     </a>
                     
                 </div>
-                <div>
-                    <a class="menuItem"  href="#" title="Accedi" id="toLogin">Account</a>
-                    <a class="menuItem"  href="#" title="Registrati" id="toSignup">Logout</a>
+                <div id="siteMenuLinks">
+                    <div id="generalMenuLinks">
+                        <a class="menuItem"  href="#" title="Accedi" id="toLogin">Login</a>
+                        <a class="menuItem"  href="#" title="Registrati" id="toSignup">Sign Up</a>
+                    </div>
+                    <div id="userMenuLinks" class="hidden">
+                        <a class="menuItem"  href="#" title="Account" id="toAccountInfo">Account</a>
+                        <a class="menuItem"  href="#" title="Logout" id="toLogout">Logout</a>                   
+                    </div>
+
                     <a class="menuItem"  href="#" title="Cambia il tema"id="toTheme">Theme</a>
                 </div>
+
                 
             </nav>
             <!-- menu responsive -->
@@ -51,112 +59,153 @@
     
     <!--  -->
     <main id="main-content">
-
         
-        <!-- 🔄 CONTENUTO home -->
-        <section id="homeSection">
-            <h1>
-                Benvenuto su YSDTasks! 
-            </h1>
+        <!-- VISUALE PRINCIPALE PRIMA DI REGISTRARSI -->
+        <section class="generalViewSection">
 
-            <div id="filtersAndDeleteAllWeeks">
-                <div>
-                    <p id="resetLocalStorage">Delete All</p>
-                </div>
+            <!-- 🔄 CONTENUTO home -->
+            <section id="generalHomeSection" class="homeSection">
+                <h1>
+                    Benvenuto su YSDTasks! 
+                </h1>
+
+                
+            </section>
+
+
+            <!-- 🔄 CONTENUTO Login -->
+            <section id="loginSection" style="display: none;">
+                <h1>
+                    Login
+                </h1>
+                <form action="" method="post">
+                    <input type="button" value="Accedi" id="loginBtn">
+                </form>
+            </section>
+
+
+            <!-- 🔄 CONTENUTO Registrazione -->
+            <section id="registrationSection" style="display: none;">
+                <h1>
+                    Sign up
+                </h1>
+                <form action="" method="post">
+
+                </form>
+            </section>
+
+
+            
+
+        </section>
+        
+
+
+        <!-- VISUALE DELL-UTENTE LOGGATO -->
+        <section class="userViewSection hidden">
+
+            <!-- 🔄 CONTENUTO home -->
+            <section id="userHomeSection" class="homeSection">
+                <h1 id="userHomeTitle"></h1>
+
+                <div id="filtersAndDeleteAllWeeks">
+                    <div>
+                       <p id="resetLocalStorage">Delete All</p>
+                    </div>
                 
 
-                <div id="weekFilters">
-                    <img width="35" height="30" src="https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png" alt="sort-amount-up" id="imgSorting"/>
-                </div>
-            </div>
+                    <div id="weekFilters">
+                        <img width="35" height="30" src="https://img.icons8.com/fluency-systems-filled/48/AEAEAE/sort-amount-up.png" alt="sort-amount-up" id="imgSorting"/>
+                    </div>
+                 </div>
                                                     
-            <div id="weeksViewContainer">
+                <div id="weeksViewContainer">
 
-            </div>
-
-
-            <div>
-                <button id="addWeekBtn" class="add-week-btn">+</button>
-            </div>
-
-            <div id="weekModal" class="modal hidden">
-                <div class="modal-content">
-                    <div>
-                        <button id="exitAddWeekModale">X</button>
-                    </div>
-                    <h2>Quando vuoi iniziare la settimana?</h2>
-                    <div>
-                        <button id="startToday">Da oggi</button>
-                        <button id="startNextMonday">Dal prossimo lunedì</button>
-                    </div>
-
-                    <label for="">Vuoi dare una descrizione alla tua Settimana?</label>
-                    <input type="text" placeholder="inserisci descrizione" id="userWeekDescription"><br>
-                    <label for="">Se vuoi, Seleziona un colore per la tua settimana</label>
-                    <input type="color" placeholder="" id="userWeekColor">
                 </div>
-            </div>
-        </section>
 
 
-        <!-- 🔄 CONTENUTO settimana -->
-        <section id="weekSection" style="display: none;">
-            <h1 id="weekTitle"></h1>
-            <div class="daysViewContainer">
+                <div>
+                    <button id="addWeekBtn" class="add-week-btn">+</button>
+                </div>
 
-            </div>
-        </section>
+                <div id="weekModal" class="modal hidden">
+                    <div class="modal-content">
+                        <div>
+                            <button id="exitAddWeekModale">X</button>
+                        </div>
+                        <h2>Quando vuoi iniziare la settimana?</h2>
+                        <div>
+                            <button id="startToday">Da oggi</button>
+                            <button id="startNextMonday">Dal prossimo lunedì</button>
+                        </div>
+
+                        <label for="">Vuoi dare una descrizione alla tua Settimana?</label>
+                        <input type="text" placeholder="inserisci descrizione" id="userWeekDescription"><br>
+                        <label for="">Se vuoi, Seleziona un colore per la tua settimana</label>
+                        <input type="color" placeholder="" id="userWeekColor">
+                    </div>
+                </div>
+            </section>
 
 
-        <!-- 🔄 CONTENUTO giorno con le task -->
-        <section id="daySection" style="display: none;">
+            <!-- 🔄 CONTENUTO settimana -->
+            <section id="weekSection" style="display: none;">
+                <h1 id="weekTitle"></h1>
+                <div class="daysViewContainer">
+
+                </div>
+            </section>
+
+
+            <!-- 🔄 CONTENUTO giorno con le task -->
+            <section id="daySection" style="display: none;">
+
+                <h1 class="dayTitle"></h1>
+
+                <div>
+                    <input type="time" placeholder="Seleziona l'orario" id="newTaskTime" value="00:00">
+                    <input type="text" id="newTaskDescription" placeholder="Aggiungi una nuova attività" >
+                    <button name="aggiungi" id="addTaskBtn">Aggiungi</button>
+                </div>
+
+                <div id="tasksViewContainer"></div>
+
+                <!-- 🔄 modale modifica Task-->
+                <div class="editTaskModale hidden">
+                
+                    <h1>modifica Task</h1>
+
+                </div>
+
+            </section>
+
+            <!-- 🔄 CONTENUTO Login -->
+            <section id="accountInfoSection" style="display: none;">
+                <h1>
+                    Your account info
+                </h1>
+                <form action="" method="post"></form>
+            </section>
+
+
+            <!-- 🔄 CONTENUTO Registrazione -->
+            <section id="logoutSection" style="display: none;">
+                <h1>
+                    Logout
+                </h1>
+                <a href="" id="logoutBtn">Esci</a>
+            </section>
+
+
             
-            <h1 class="dayTitle"></h1>
-            
-            <div>
-                <input type="time" placeholder="Seleziona l'orario" id="newTaskTime" value="00:00">
-                <input type="text" id="newTaskDescription" placeholder="Aggiungi una nuova attività" >
-                <button name="aggiungi" id="addTaskBtn">Aggiungi</button>
-            </div>
-
-            <div id="tasksViewContainer"></div>
-
-            <!-- 🔄 modale modifica Task-->
-            <div class="editTaskModale hidden">
-            
-                <h1>modifica Task</h1>
-
-            </div>
 
         </section>
-
-        <!-- 🔄 CONTENUTO Login -->
-        <section id="loginSection" style="display: none;">
-            <h1>
-                Your account info
-            </h1>
-            
-        </section>
-
-
-        <!-- 🔄 CONTENUTO Registrazione -->
-        <section id="registrationSection" style="display: none;">
-            <h1>
-                Logout
-            </h1>
-            
-        </section>
-
-
-        <!-- 🔄 CONTENUTO scelta del tema -->
-        <section id="themeSection" style="display: none;">
-            <h1>scegli il tema: scuro o chiaro</h1>
-            <button id="switchThemeBtn">Cambia tema</button>
-        </section>
-
         
-
-
+        <!-- 🔄 CONTENUTO scelta del tema -->
+            <section id="themeSection" style="display: none;">
+                <h1>scegli il tema: scuro o chiaro</h1>
+                <button id="switchThemeBtn">Cambia tema</button>
+            </section>
     </main>
 
     <script type="module" src="script.js"></script>

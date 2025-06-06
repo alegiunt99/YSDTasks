@@ -2,19 +2,38 @@
 const dom = document
 const domBody = document.body
 // tutto il codice dentro questo blocco
+
+// ------------------------------------- general visualization --------------------------------------
+
+const generalViewSection = dom.querySelector(".generalViewSection")
 const homePageLink = document.getElementById("toHomePage")
 const logoImg = document.getElementById("logoImg")
 const themeSectionLink = document.getElementById("toTheme")
+const themeSection = document.getElementById("themeSection")
+const generalMenuLinks = dom.getElementById("generalMenuLinks")
+// ------------------------------------- general visualization menu --------------------------------------
 const loginPageLink = document.getElementById("toLogin")
+const loginBtn = document.getElementById("loginBtn")
 const registrationPageLink = document.getElementById("toSignup")
-const editTaskLink = document.getElementById("toEditTask")
+const registrationSection = document.getElementById("registrationSection")
 //PAGINE DA ATTIVARE E DISATTIVARE
-const homePage = document.getElementById("homeSection")
+const homePage = document.querySelector(".homeSection")
+const generalHomeSection = dom.getElementById("generalHomeSection")
+
+// ------------------------------------- user visualization --------------------------------------
+const userViewSection = dom.querySelector(".userViewSection")
+const userHomeSection = dom.getElementById("userHomeSection")
+const userMenuLinks = dom.getElementById("userMenuLinks")
 const singleWeekSection = document.getElementById("weekSection")
 const daySection = document.getElementById("daySection")
 const loginSection = document.getElementById("loginSection")
-const registrationSection = document.getElementById("registrationSection")
-const themeSection = document.getElementById("themeSection")
+const toAccountBtn = dom.getElementById("toAccountInfo")
+const accountInfoSection = dom.getElementById("accountInfoSection")
+const toLogoutBtn = dom.getElementById("toLogout")
+const logoutSection = dom.getElementById("logoutSection")
+const logoutBtn = dom.getElementById("logoutBtn")
+
+// logoutSection logoutBtn
 const editTaskModale = document.querySelector(".editTaskModale")
 //weeks button and elements
 const addWeekModale = document.getElementById("weekModal")
@@ -25,6 +44,8 @@ const weeksViewContainer = document.getElementById("weeksViewContainer")
 
 const daysViewContainer = document.querySelector(".daysViewContainer")
 const dayPreviewOnWeekPage = document.getElementsByClassName("dayCompleteDisplay")
+
+const editTaskLink = document.getElementById("toEditTask")
 // --- week buttons
 const startTodayBtn = document.getElementById("startToday")
 const startNextMondayBtn = document.getElementById("startNextMonday")
@@ -78,5 +99,17 @@ export {
             switchThemeBtn,
             daysViewContainer,
             dayPreviewOnWeekPage,
-            singleDayTitle
+            singleDayTitle,
+            loginBtn,
+            generalViewSection,
+            userViewSection,
+            userHomeSection,
+            toAccountBtn,
+            accountInfoSection,
+            toLogoutBtn,
+            logoutSection,
+            logoutBtn,
+            generalHomeSection,
+            generalMenuLinks,
+            userMenuLinks
         }

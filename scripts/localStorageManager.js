@@ -1,7 +1,8 @@
+import { allSections, userSubSections, generalSubSections ,loadHomePageData} from "./sectionsManager.js"
 import * as elements from "./domElements.js";
 import * as constant from "./constants.js";
 import { Week } from "../items/Week.js";
-import { showOnlySection, renderWeeks, renderTasks, addNewWeekFromToday, addNewWeekFromNextMonday, addTask } from "./functions.js";
+import { showOnlySection, renderWeeks,  renderTasks, addNewWeekFromToday, addNewWeekFromNextMonday, addTask } from "./functions.js";
 export function showSavedTheme() {
     const savedTheme = localStorage.getItem("theme");
     const savedLogo = localStorage.getItem("logo-src")
@@ -67,3 +68,52 @@ export function deleteAllWeeks(weekList) {
   })
 }
 
+export function showLog(up, isLogged) {
+    
+    if (!isLogged) {
+      
+      showOnlySection(elements.generalViewSection, allSections);
+            elements.userMenuLinks.classList.add("hidden")
+            elements.generalMenuLinks.classList.remove("hidden")
+          
+      
+          elements.loginPageLink.addEventListener("click", () => showOnlySection(elements.loginSection, generalSubSections));
+          elements.registrationPageLink.addEventListener("click", () => showOnlySection(elements.registrationSection, generalSubSections));
+    } else {
+     
+      showOnlySection(elements.userViewSection, allSections);
+      
+      showOnlySection(elements.userHomeSection, userSubSections);
+      
+      // Aggiorna dati e UI per la home
+      loadHomePageData(up);
+      
+      elements.userMenuLinks.classList.remove("hidden")
+      elements.generalMenuLinks.classList.add("hidden")
+      
+      elements.homePageLink.addEventListener("click", () => {
+      
+            
+          // Mostra la sezione homePage
+          showOnlySection(elements.userHomeSection, userSubSections);
+      
+        // Aggiorna dati e UI per la home
+          loadHomePageData(up);
+      });
+
+
+      elements.toAccountBtn.addEventListener("click", () => showOnlySection(elements.accountInfoSection, userSubSections));
+      elements.toLogoutBtn.addEventListener("click", () => showOnlySection(elements.logoutSection, userSubSections));
+      
+    }
+    
+}
+
+export function getLoggedIn(){
+
+  const savedLog = localStorage.getItem("logged");
+  const parsedLog = JSON.parse(savedLog)
+
+  return parsedLog
+
+}

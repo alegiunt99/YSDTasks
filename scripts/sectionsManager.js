@@ -3,23 +3,66 @@ import { showOnlySection, renderWeeks, renderTasks, addNewWeekFromToday, addNewW
 import * as constant from "./constants.js";
 import { getWeekListFromStorage, deleteAllWeeks } from "./localStorageManager.js";
 export const allSections = [
-        elements.homePage, elements.singleWeekSection, elements.daySection, elements.loginSection,
-        elements.registrationSection, elements.themeSection, elements.editTaskModale
+        elements.generalViewSection, elements.userViewSection, elements.themeSection
       ];
 
-export function switchSections(isAscending) {
-    elements.homePageLink.addEventListener("click", () => {
 
+
+export const generalSubSections = [
+        elements.generalHomeSection,elements.loginSection, elements.registrationSection
+      ]
+export const userSubSections = [
+  elements.userHomeSection, elements.singleWeekSection, elements.daySection, elements.editTaskModale, elements.accountInfoSection, elements.logoutSection
+]
+
+export function switchSections(isAscending, logged) {
+   elements.loginBtn.addEventListener("click", () => {
+
+     logged = true
       
+     localStorage.setItem("logged", JSON.stringify(logged))
     // Mostra la sezione homePage
-      showOnlySection(elements.homePage, allSections);
+      showOnlySection(elements.userViewSection, allSections);
+
+      showOnlySection(elements.userHomeSection, userSubSections);
 
     // Aggiorna dati e UI per la home
       loadHomePageData(isAscending);
-    });
 
-    elements.loginPageLink.addEventListener("click", () => showOnlySection(elements.loginSection, allSections));
-    elements.registrationPageLink.addEventListener("click", () => showOnlySection(elements.registrationSection, allSections));
+      elements.userMenuLinks.classList.remove("hidden")
+      elements.generalMenuLinks.classList.add("hidden")
+
+      elements.homePageLink.addEventListener("click", () => {
+
+      
+    // Mostra la sezione homePage
+        showOnlySection(elements.userHomeSection, userSubSections);
+
+    // Aggiorna dati e UI per la home
+        loadHomePageData(isAscending);
+      });
+
+      elements.toAccountBtn.addEventListener("click", () => showOnlySection(elements.accountInfoSection, userSubSections));
+      elements.toLogoutBtn.addEventListener("click", () => showOnlySection(elements.logoutSection, userSubSections));
+
+
+    })
+
+    elements.logoutBtn.addEventListener("click", () => {
+      
+      showOnlySection(elements.generalViewSection, allSections);
+      logged = false
+      localStorage.setItem("logged", JSON.stringify(logged))
+      elements.userMenuLinks.classList.add("hidden")
+      elements.generalMenuLinks.classList.remove("hidden")
+    })
+
+    elements.loginPageLink.addEventListener("click", () => showOnlySection(elements.loginSection, generalSubSections));
+    elements.registrationPageLink.addEventListener("click", () => showOnlySection(elements.registrationSection, generalSubSections));
+
+    
+
+    
     elements.themeSectionLink.addEventListener("click", () => showOnlySection(elements.themeSection, allSections));
 }
       

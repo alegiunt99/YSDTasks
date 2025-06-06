@@ -1,5 +1,5 @@
 
-import { allSections} from "./sectionsManager.js"
+import { allSections, userSubSections} from "./sectionsManager.js"
 import * as elements from './domElements.js'
 import { Week } from "../items/Week.js";
 import { Day } from "../items/Day.js";
@@ -321,7 +321,7 @@ export function renderWeeks(weekList, weeksViewContainer) {
 
       // ✅ Aggiungi qui il tuo event listener
       weekDiv.addEventListener("click", () => {
-            showOnlySection(allSections[1],allSections)
+            showOnlySection(userSubSections[1],userSubSections)
             renderWeekDays(weekList[index], elements.daysViewContainer,elements.taskDescription, elements.taskHour, elements.tasksViewContainer, elements.addTaskButton, weekList)
             // fai il cambio sezione o altra logica
       });
@@ -367,7 +367,7 @@ export function renderWeekDays(selectedWeek, daysViewContainer,taskDescription,t
         dayDiv.addEventListener("click", () => {
             
             idDay=index
-            showOnlySection(allSections[2],allSections)
+            showOnlySection(userSubSections[2],userSubSections)
             renderTasks(selectedWeek.days[index], elements.tasksViewContainer,weekList)
             
             if (currentTaskHandler) {
