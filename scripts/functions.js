@@ -1,5 +1,5 @@
 
-import { allSections, userSubSections} from "./sectionsManager.js"
+import { allSections, loadHomePageData, userSubSections} from "./sectionsManager.js"
 import * as elements from './domElements.js'
 import { Week } from "../items/Week.js";
 import { Day } from "../items/Day.js";
@@ -281,17 +281,19 @@ export function addNewWeekFromNextMonday(weeksList, addWeekModale, weeksViewCont
 
 }
 
+let idWeek = null
+
 export function renderWeeks(weekList, weeksViewContainer) {
     
-  let indice = null
-  let idWeek = null
+  
+  
     weeksViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
     weekList.forEach((week, index) => {
 
       
       const weekDiv = document.createElement("div");
       weekDiv.className = "weekCompleteDisplay";
-      weekDiv.id = index
+      weekDiv.id = week.id
       weekDiv.title = week.title
 
       
@@ -328,7 +330,7 @@ export function renderWeeks(weekList, weeksViewContainer) {
 
         elements.editedWeekTitle.value = week.title
         elements.editedWeekColor.value = week.color
-        indice = index
+        
         idWeek = week.id
         // Rimanda l'apertura della modale alla prossima iterazione del ciclo event-loop
         setTimeout(() => {
@@ -342,7 +344,7 @@ export function renderWeeks(weekList, weeksViewContainer) {
 
       // ✅ Aggiungi qui il tuo event listener
       weekDiv.addEventListener("click", (event) => {
-        console.log("div CLICCATo", indice);
+        console.log("div CLICCATo", week.id);
         showOnlySection(userSubSections[1],userSubSections)
         renderWeekDays(weekList[index], elements.daysViewContainer,elements.taskDescription, elements.taskHour, elements.tasksViewContainer, elements.addTaskButton, weekList)
             // fai il cambio sezione o altra logica
@@ -351,17 +353,25 @@ export function renderWeeks(weekList, weeksViewContainer) {
           
     });
 
-    elements.saveEditWeekBtn.addEventListener("click", () => {
-        
-        console.log("ho cliccato la settimana:" + indice )  
-        editWeek(elements.editedWeekTitle.value, elements.editedWeekColor.value, indice, weekList, idWeek)
-        elements.editWeekModale.classList.add("hidden")
-        
-        weekList.sort((a, b) => a.title.localeCompare(b.title) )
-        renderWeeks(weekList,weeksViewContainer)
-      })
+    
   }
 
+ 
+
+    elements.saveEditWeekBtn.addEventListener("click", () => {
+        console.log("ho cliccato la settimana:", idWeek);
+        if (idWeek !== null) {
+          editWeek(elements.editedWeekTitle.value, elements.editedWeekColor.value,getWeekListFromStorage(), idWeek);
+          elements.editWeekModale.classList.add("hidden");
+          const sortedWeek = getWeekListFromStorage().sort((a, b) => a.title.localeCompare(b.title))
+          renderWeeks(sortedWeek, elements.weeksViewContainer); // attenzione che qui devi avere weeksViewContainer definito correttamente
+        } else {
+          console.warn("Nessuna settimana selezionata per la modifica");
+        }
+    })
+  
+
+  
 // ----------------------------------------- DAYS ------------------------------------------
 let currentTaskHandler = null;
 export function renderWeekDays(selectedWeek, daysViewContainer,taskDescription,taskHour,tasksViewContainer,addButton,weekList) {
@@ -434,19 +444,17 @@ export function sortWeeks(weeks, isAscending) {
 
 //----------------------------------------------------------------- EDITS
 
-export function editWeek(editedTitle, editedColor, index, weekList, idWeek) {
+export function editWeek(editedTitle, editedColor, weekList, idWeek) {
 
-  console.log("lista weeks da editare", weekList)
-  console.log("week index", index)
-  console.log("week da editare", weekList[index])
-  
-  console.log("id week da editare", weekList[index].id, " e ", idWeek)
-  if (weekList[index].id === idWeek) {
-    weekList[index].title = editedTitle
-    weekList[index].color = editedColor
+  const weekToEdit = weekList.find(w => w.id === idWeek);
+
+  if (weekToEdit) {
+    weekToEdit.title = editedTitle;
+    weekToEdit.color = editedColor;
+    localStorage.setItem("weeks", JSON.stringify(weekList));
+  } else {
+    console.warn("Settimana da modificare non trovata con ID:", idWeek);
   }
-
-  localStorage.setItem("weeks", JSON.stringify(weekList))
 }
 
 export function setupUIEventListeners() {
