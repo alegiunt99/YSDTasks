@@ -140,7 +140,7 @@
                         </div>
 
                         <label for="userWeekDescription">Vuoi dare una descrizione alla tua Settimana?</label>
-                        <input type="text" placeholder="inserisci descrizione" id="userWeekDescription" class="text-area"><br>
+                        <input type="text" placeholder="inserisci descrizione" id="userWeekDescription" class="text-area" autocomplete="off"><br>
                         <label for="userWeekColor">Se vuoi, Seleziona un colore per la tua settimana</label>
                         <input type="color" placeholder="" id="userWeekColor" class="color-area">
                     </div>
@@ -153,7 +153,7 @@
                         <h2>Vuoi modificare la tua settimana?</h2>
 
                         <label for="editedWeekTitle">Modifica il titolo della tua settimana</label>
-                        <input type="text" placeholder="" id="editedWeekTitle" class="text-area"><br>
+                        <input type="text" placeholder="" id="editedWeekTitle" class="text-area" autocomplete="off"><br>
                         <label for="editedWeekColor">Se vuoi, cambia il colore della tua settimana</label>
                         <input type="color" placeholder="" id="editedWeekColor" class="color-area">
                         <div id="saveEditContainer">
@@ -190,10 +190,22 @@
                 <div id="tasksViewContainer"></div>
 
                 <!-- 🔄 modale modifica Task-->
-                <div class="editTaskModale hidden">
-                
-                    <h1>modifica Task</h1>
+                <div id="editTaskModale" class="modal hidden">
+                    <div class="modal-content">
+                        <div class="exitContainer">
+                            <button id="exitEditTaskModale">X</button>
+                        </div>
+                        <h2>Vuoi modificare la task selezionata?</h2>
 
+                        <label for="editedTaskTitle">Modifica l'orario della task</label>
+                        <input type="time" placeholder="" id="editedTaskTime"><br>
+                        <label for="editedTaskDescription">Modifica il titolo della task</label>
+                        <input type="text" placeholder="" id="editedTaskDescription" class="text-area" autocomplete="off">
+                        <div id="saveEditContainer">
+                            <button id="saveEditTaskBtn">Salva</button>
+                        </div>
+                        
+                    </div>
                 </div>
 
             </section>
@@ -203,7 +215,15 @@
                 <h1>
                     Your account info
                 </h1>
-                <form action="" method="post"></form>
+
+                <div class="accountInfoContainer">
+
+                    <p>NOME: </p> <p id="nameAccount"></p>
+                    <p>COGNOME: </p> <p id="surnameAccount"></p>
+                    <p>USERNAME: </p> <p id="nameAccount"></p>
+                    <p>EMAIL: </p> <p id="nameAccount"></p>
+                    <p>PASSWORD: </p> <p id="nameAccount"></p>
+                </div>
             </section>
 
 

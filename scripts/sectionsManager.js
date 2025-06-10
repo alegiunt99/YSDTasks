@@ -12,7 +12,7 @@ export const generalSubSections = [
         elements.generalHomeSection,elements.loginSection, elements.registrationSection
       ]
 export const userSubSections = [
-  elements.userHomeSection, elements.singleWeekSection, elements.daySection, elements.editTaskModale, elements.accountInfoSection, elements.logoutSection
+  elements.userHomeSection, elements.singleWeekSection, elements.daySection, elements.accountInfoSection, elements.logoutSection
 ]
 
 export function switchSections(isAscending, logged) {
@@ -68,6 +68,8 @@ export function switchSections(isAscending, logged) {
         
         // Aggiorna dati e UI per la home
         //loadHomePageData(isAscending);
+        var weeks = getWeekListFromStorage() || []
+        renderWeeks(weeks, elements.weeksViewContainer)
         console.log("sono loggato!")
       }else{
         showOnlySection(elements.generalViewSection, allSections)

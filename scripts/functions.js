@@ -5,8 +5,11 @@ import { Week } from "../items/Week.js";
 import { Day } from "../items/Day.js";
 import { Task } from "../items/Task.js";
 import { getWeekListFromStorage, deleteAllWeeks } from "./localStorageManager.js";
-//tasks
 
+//------------------------------------------- TASKS ------------------------------------------
+let idTask = null
+let daySelected = null
+let dayDateSelected = null
 export function renderTasks(dayRef, tasksViewContainer) {
     
       tasksViewContainer.innerHTML = "";
@@ -18,11 +21,20 @@ export function renderTasks(dayRef, tasksViewContainer) {
       const taskDiv = document.createElement("div");
       taskDiv.className = "taskCompleteDisplay";
 
+      const taskEditDeleteDiv= document.createElement("div");
+      taskEditDeleteDiv.className = "taskEditDeleteDiv";
+
+
       const ptaskDescr = document.createElement("p");
       ptaskDescr.className = "taskDescr";
       ptaskDescr.textContent = `${task.time} - ${task.description}`;
 
-      const taskDeleteButton = document.createElement("button");
+      const pEditTaskButton = document.createElement("p");
+      pEditTaskButton.className = "pEditTaskButton";
+      pEditTaskButton.title = "Modifica task";
+      pEditTaskButton.innerHTML = "&#128736;"
+
+      const taskDeleteButton = document.createElement("p");
       taskDeleteButton.className = "taskDelete";
       taskDeleteButton.innerHTML = "&#x1F5D1;";
 
@@ -31,8 +43,29 @@ export function renderTasks(dayRef, tasksViewContainer) {
         deleteTask(dayRef.date, index, tasksViewContainer);
       });
 
+      pEditTaskButton.addEventListener("click", (event) => {
+    
+        console.log("MODIFICA task CLICCATA", task.id);
+        console.log("dayRef", dayRef);
+        console.log("dayRef.date", dayRef.date);
+
+        elements.editedTaskTime.value = task.time
+        elements.editedTaskDescription.value = task.description
+        
+        idTask = task.id
+        daySelected = dayRef
+        dayDateSelected = dayRef.date
+        // Rimanda l'apertura della modale alla prossima iterazione del ciclo event-loop
+        elements.editTaskModale.classList.remove("hidden");
+      });
+
+      
+      taskEditDeleteDiv.appendChild(pEditTaskButton);
+      taskEditDeleteDiv.appendChild(taskDeleteButton);
+
+      
       taskDiv.appendChild(ptaskDescr);
-      taskDiv.appendChild(taskDeleteButton);
+      taskDiv.appendChild(taskEditDeleteDiv);
       tasksViewContainer.appendChild(taskDiv);
 
       ptaskDescr.addEventListener("click", () => {
@@ -153,13 +186,89 @@ export function deleteTask(dayDate, taskIndex, tasksViewContainer) {
   }
 }
 
-// views  
+elements.saveEditTaskBtn.addEventListener("click", () => {
+    console.log("ho cliccato la task:", idTask);
+    var weekList = getWeekListFromStorage()
+    const updatedDay = getDayByDate(weekList, dayDateSelected);
+    if (idTask !== null) {
+      editTask(dayDateSelected, elements.editedTaskTime.value, elements.editedTaskDescription.value, idTask, weekList);
+      elements.editTaskModale.classList.add("hidden");
+      
+      if (updatedDay) {
+        console.log(updatedDay)
+        renderTasks(updatedDay, elements.tasksViewContainer);
+      } else {
+        console.warn("Giorno aggiornato non trovato!");
+      } 
+    } else {
+      console.warn("Nessuna settimana selezionata per la modifica");
+    }
+    
+})
+
+export function editTask(dayDate, editedTime, editedDescr, idTask, weekList) {
+
+  try {
+
+    const dayDateString = new Date(dayDate).toDateString();
+
+    // Trova la settimana e il giorno
+    const week = weekList.find(week =>
+      week.days.some(day => new Date(day.date).toDateString() === dayDateString)
+    );
+
+    if (!week) throw new Error("Settimana non trovata");
+    const day = week.days.find(day =>
+      new Date(day.date).toDateString() === dayDateString
+    );
+
+    if (!day) throw new Error("Giorno non trovato");
+
+    if (!Array.isArray(day.tasks)) throw new Error("Tasks non è un array");
+
+    const taskToEdit = day.tasks.find(t => t.id === idTask);
+
+    if (taskToEdit) {
+      taskToEdit.time = editedTime;
+      taskToEdit.description = editedDescr;
+      localStorage.setItem("weeks", JSON.stringify(weekList));
+    } else {
+      console.warn("Task da modificare non trovata con ID:", idTask);
+    }
+
+  } catch (error) {
+    const errorDiv = document.createElement("div");
+    errorDiv.className = "errorMessageDelete";
+    errorDiv.textContent = error.message;
+    tasksViewContainer.appendChild(errorDiv);
+
+    setTimeout(() => {
+      errorDiv.remove();
+    }, 3000);
+  }
+}
+
+
+export function getDayByDate(weekList, targetDate) {
+  const targetDateStr = new Date(targetDate).toDateString();
+
+  for (const week of weekList) {
+    const day = week.days.find(d => new Date(d.date).toDateString() === targetDateStr);
+    if (day) return day;
+  }
+
+  return null; // Nessun giorno trovato
+}
+
+
+// ----------------------------------------------- views  ---------------------------------------------------------- 
 export function showOnlySection(section, allSections) {
   
   allSections.forEach(sec => sec.style.display = "none");
   section.style.display = "block";
 }
 
+// ----------------------------------------------- WEEKS  ---------------------------------------
 export function createNewWeekFromToday(userWeekColor, userWeekDescription, tasks) {
 
   const start = new Date(); // oggi
@@ -369,7 +478,30 @@ export function renderWeeks(weekList, weeksViewContainer) {
           console.warn("Nessuna settimana selezionata per la modifica");
         }
     })
-  
+
+
+export function sortWeeks(weeks, isAscending) {
+  return weeks.sort((a, b) => {
+    const nameA = a.title;
+    const nameB = b.title;
+
+    return isAscending ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+  });
+}
+
+
+export function editWeek(editedTitle, editedColor, weekList, idWeek) {
+
+  const weekToEdit = weekList.find(w => w.id === idWeek);
+
+  if (weekToEdit) {
+    weekToEdit.title = editedTitle;
+    weekToEdit.color = editedColor;
+    localStorage.setItem("weeks", JSON.stringify(weekList));
+  } else {
+    console.warn("Settimana da modificare non trovata con ID:", idWeek);
+  }
+}
 
   
 // ----------------------------------------- DAYS ------------------------------------------
@@ -432,30 +564,7 @@ export function renderWeekDays(selectedWeek, daysViewContainer,taskDescription,t
   }
 
 
-export function sortWeeks(weeks, isAscending) {
-  return weeks.sort((a, b) => {
-    const nameA = a.title;
-    const nameB = b.title;
 
-    return isAscending ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
-  });
-}
-
-
-//----------------------------------------------------------------- EDITS
-
-export function editWeek(editedTitle, editedColor, weekList, idWeek) {
-
-  const weekToEdit = weekList.find(w => w.id === idWeek);
-
-  if (weekToEdit) {
-    weekToEdit.title = editedTitle;
-    weekToEdit.color = editedColor;
-    localStorage.setItem("weeks", JSON.stringify(weekList));
-  } else {
-    console.warn("Settimana da modificare non trovata con ID:", idWeek);
-  }
-}
 
 export function setupUIEventListeners() {
     const weeks = getWeekListFromStorage()
@@ -470,6 +579,10 @@ export function setupUIEventListeners() {
 
     elements.exitEditWeekModale.addEventListener("click", () => {
         elements.editWeekModale.classList.add("hidden");
+    });
+
+    elements.exitEditTaskModale.addEventListener("click", () => {
+        elements.editTaskModale.classList.add("hidden");
     });
 
     elements.startTodayBtn.addEventListener("click", () => {

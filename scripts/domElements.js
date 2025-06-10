@@ -34,7 +34,7 @@ const logoutSection = dom.getElementById("logoutSection")
 const logoutBtn = dom.getElementById("logoutBtn")
 
 // logoutSection logoutBtn
-const editTaskModale = document.querySelector(".editTaskModale")
+// ------------ edit week -----------------
 const editWeekModale = document.querySelector("#editWeekModale")
 const editedWeekTitle = document.querySelector("#editedWeekTitle")
 const editedWeekColor = document.querySelector("#editedWeekColor")
@@ -57,14 +57,18 @@ const startNextMondayBtn = document.getElementById("startNextMonday")
 const userWeekDescription = document.getElementById("userWeekDescription")
 const userWeekColor= document.getElementById("userWeekColor")
 const clearLocalStorageBtn= document.getElementById("resetLocalStorage")
-
+// -------------------------------- TASKS ----------------------------------------
 const taskDescription = document.getElementById("newTaskDescription");
 const taskHour = document.getElementById("newTaskTime");
 const addTaskButton = document.getElementById("addTaskBtn");
 const tasksViewContainer = document.getElementById("tasksViewContainer");
 const singleDayTitle = document.querySelector(".dayTitle")
-
-
+// ----------------- EDIT TASK ------------------------
+const editTaskModale = document.querySelector("#editTaskModale")
+const editedTaskTime = document.querySelector("#editedTaskTime")
+const editedTaskDescription = document.querySelector("#editedTaskDescription")
+const exitEditTaskModale = document.querySelector("#exitEditTaskModale")
+const saveEditTaskBtn = dom.querySelector("#saveEditTaskBtn")
 const sortBtnImg = document.getElementById("imgSorting")
 const sortBtn = document.getElementById("weekFilters")
 
@@ -121,5 +125,9 @@ export {
             editedWeekTitle,
             editedWeekColor,
             exitEditWeekModale,
-            saveEditWeekBtn
+            saveEditWeekBtn,
+            editedTaskTime,
+            editedTaskDescription,
+            exitEditTaskModale,
+            saveEditTaskBtn,
         }

@@ -1,5 +1,35 @@
 /* per allineare verticalmente al centro */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent; /* o il colore di sfondo dark */
+}
+::-webkit-scrollbar-thumb {
+  background: #59FF00; /* verde fluo */
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #59FF00; /* leggermente più scuro sul hover */
+}
 
+body.dark-theme * {
+  scrollbar-color: #59ff00 #161727; /* Firefox */
+  scrollbar-width: thin;
+}
+
+body.light-theme * {
+  scrollbar-color: #161727 #aeaeae; /* Firefox */
+  scrollbar-width: thin;
+}
+
+button{
+    cursor: pointer;
+}
+
+#imgSorting{
+    cursor: pointer;
+}
 
 .habitCompleteDisplay {
     display: flex;
@@ -11,6 +41,21 @@
     margin-right: 60;
     margin-top: 20;
     margin-bottom: 20;
+}
+
+.accountInfoContainer{
+    TEXT-ALIGN: justify;
+    PADDING: 30PX 50PX 30PX 80PX;
+    DISPLAY: FLEX;
+    FLEX-DIRECTION: COLUMN;
+    ALIGN-SELF: CENTER;
+    BORDER: SOLID;
+    BORDER-RADIUS: 20PX;
+    margin: 30px 60px 30px 60px;
+}
+#accountInfoSection{
+    display: flex;
+    flex-direction: column;
 }
 
 #main-content{
@@ -318,4 +363,16 @@ background: #161727;
 
     cursor: pointer;
     color: #59ff00;
+}
+
+.taskEditDeleteDiv{
+    display: flex;
+    align-items: center;
+    width: 16%;
+    justify-content: space-between;
+}
+
+#editedTaskTime{
+    width: 67px;
+    align-self: center;
 }
