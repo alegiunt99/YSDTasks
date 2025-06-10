@@ -22,7 +22,7 @@ export class Week {
     //get e set
     get id(){
 
-        return this.#startDate
+        return this.#id
     }
 
     /**
@@ -104,19 +104,22 @@ export class Week {
 
     static fromJSON(obj) {
 
+        
         const start = new Date(obj.startDate)
         const end = new Date(obj.endDate)
         const title = obj.title
         const color = obj.color
         const days = Array.isArray(obj.days) ? obj.days.map(day => Day.fromJSON(day)) : [];
-
-        return new Week(start, end, title, color, days)
+        const week = new Week(start, end, title, color, days)
+        week.id = obj.id
+        return week
 
         
     }
 
     toJSON() {
         return {
+            id: this.#id,
             startDate: this.#startDate,
             endDate: this.#endDate,
             title: this.#title,
