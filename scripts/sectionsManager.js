@@ -83,7 +83,7 @@ export function switchSections(isAscending, logged) {
       
 export function loadHomePageData(isAscending) {
 
-    var weeks = getWeekListFromStorage()|| []
+    var weeks = getWeekListFromStorage() || []
     
     var sortedWeeks = sortWeeks(weeks, isAscending)
 
@@ -91,30 +91,4 @@ export function loadHomePageData(isAscending) {
     renderWeeks(sortedWeeks, elements.weeksViewContainer)  
     
 
-    elements.addWeekButton.addEventListener("click", () => {
-      elements.addWeekModale.classList.remove("hidden")
-    })
-
-    elements.exitAddWeekModale.addEventListener("click", () => {
-      elements.addWeekModale.classList.add("hidden")
-    })
-
-    
-    elements.exitEditWeekModale.addEventListener("click", () => {
-           elements.editWeekModale.classList.add("hidden")
-    })
-
-    
-
-    elements.startTodayBtn.addEventListener("click", () => {
-      console.log("Valore userWeekDescription all'evento click:", elements.userWeekDescription.value);
-      console.log("Valore userWeekColor all'evento click:", elements.userWeekColor.value);
-      addNewWeekFromToday(sortedWeeks, elements.addWeekModale,elements.weeksViewContainer,elements.userWeekColor, elements.userWeekDescription)
-    })
-
-    elements.startNextMondayBtn.addEventListener("click", () => {
-      addNewWeekFromNextMonday(sortedWeeks, elements.addWeekModale, weeksViewContainer,elements.userWeekColor, elements.userWeekDescription)
-    })
-
-    deleteAllWeeks(weeks)
 }

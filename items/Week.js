@@ -1,6 +1,7 @@
 import { Day } from './Day.js'
 export class Week {
 
+    #id
     #startDate
     #endDate
     #title
@@ -16,6 +17,20 @@ export class Week {
         this.#days = days
 
 
+    }
+
+    //get e set
+    get id(){
+
+        return this.#startDate
+    }
+
+    /**
+     * @param {string} value
+     */
+    set id(value){
+
+        this.#id = value
     }
 
     //get e set

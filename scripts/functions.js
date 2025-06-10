@@ -4,7 +4,7 @@ import * as elements from './domElements.js'
 import { Week } from "../items/Week.js";
 import { Day } from "../items/Day.js";
 import { Task } from "../items/Task.js";
-import { getWeekListFromStorage } from "./localStorageManager.js";
+import { getWeekListFromStorage, deleteAllWeeks } from "./localStorageManager.js";
 //tasks
 
 export function renderTasks(dayRef, tasksViewContainer) {
@@ -111,30 +111,11 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
 export function deleteTask(dayDate, taskIndex, tasksViewContainer) {
   
 
-  /*const savedWeeks = localStorage.getItem("weeks");
-    var weekList = []
-    if (savedWeeks) {
-      
-        const parsed = JSON.parse(savedWeeks) || [];
-        if (Array.isArray(parsed)) {
-          parsed.forEach(week => {
-            week.days.forEach(day => {
-              day.date = new Date(day.date); // 🔁 converte la stringa in oggetto Date
-            });
-          });
-        }
-
-        weekList = parsed.map(w => Week.fromJSON(w))
-
-    }
-
-    console.log("✅ deleteTask chiamata con:", { weekList });
-  */
   try {
 
     var weekList = getWeekListFromStorage()
 
-     const dayDateString = new Date(dayDate).toDateString();
+    const dayDateString = new Date(dayDate).toDateString();
 
     // Trova la settimana e il giorno
     const week = weekList.find(week =>
@@ -253,7 +234,7 @@ export function addNewWeekFromToday(weeksList, addWeekModale, weeksViewContainer
         weeksList.push(newWeek);
       
         // 🔽 Ordina per orario
-        //weeksList.sort((a, b) => a.ora.localeCompare(b.ora));
+         weeksList.sort((a, b) => a.title.localeCompare(b.title));
     
         // 🔐 Aggiorna il localStorage
         const salvate = weeksList.map(week => week.toJSON());
@@ -281,7 +262,7 @@ export function addNewWeekFromNextMonday(weeksList, addWeekModale, weeksViewCont
         weeksList.push(newWeek);
       
         // 🔽 Ordina per orario
-        //weeksList.sort((a, b) => a.ora.localeCompare(b.ora));
+        weeksList.sort((a, b) => a.title.localeCompare(b.title));
     
         // 🔐 Aggiorna il localStorage
         const salvate = weeksList.map(week => week.toJSON());
@@ -367,11 +348,10 @@ export function renderWeeks(weekList, weeksViewContainer) {
 
     elements.saveEditWeekBtn.addEventListener("click", () => {
         
-          console.log("ho cliccato la settimana:" + indice )
-        
-        editWeek(elements.editedWeekTitle.value, elements.editedWeekColor.value, indice)
+        console.log("ho cliccato la settimana:" + indice )  
+        editWeek(elements.editedWeekTitle.value, elements.editedWeekColor.value, indice, weekList)
         elements.editWeekModale.classList.add("hidden")
-        showOnlySection(elements.userHomeSection,userSubSections)
+        
       })
   }
 
@@ -428,25 +408,8 @@ export function renderWeekDays(selectedWeek, daysViewContainer,taskDescription,t
             addButton.addEventListener("click", currentTaskHandler);
         });
 
-        
-
-            // fai il cambio sezione o altra logica
-              //elements.addTaskButton.addEventListener("click", () => {
-          
-              //addTask(taskDescription, taskHour, addButton, tasksViewContainer,selectedWeek.days[index])
-              
-              //taskDescription, taskHour, addButton, containerList, dayRef
-              //})
         });
 
-        /*console.log("idDay: "+ idDay)
-
-        elements.addTaskButton.addEventListener("click", () => {
-          
-          addTask(taskDescription, taskHour, addButton, tasksViewContainer,selectedWeek.days[idDay])
-          return
-        
-        })*/
       
     ;
   }
@@ -464,15 +427,43 @@ export function sortWeeks(weeks, isAscending) {
 
 //----------------------------------------------------------------- EDITS
 
-export function editWeek(editedTitle, editedColor, index) {
+export function editWeek(editedTitle, editedColor, index, weekList) {
 
-  const weeks = getWeekListFromStorage()
-  console.log("lista weeks da editare", weeks)
+  console.log("lista weeks da editare", weekList)
   console.log("week index", index)
-  console.log("week da editare", weeks[index])
-  weeks[index].title = editedTitle
-  weeks[index].color = editedColor
+  console.log("week da editare", weekList[index])
+  weekList[index].title = editedTitle
+  weekList[index].color = editedColor
   
 
-  localStorage.setItem("weeks", JSON.stringify(weeks))
+  localStorage.setItem("weeks", JSON.stringify(weekList))
+}
+
+export function setupUIEventListeners() {
+    const weeks = getWeekListFromStorage()
+   
+    elements.addWeekButton.addEventListener("click", () => {
+        elements.addWeekModale.classList.remove("hidden");
+    });
+
+    elements.exitAddWeekModale.addEventListener("click", () => {
+        elements.addWeekModale.classList.add("hidden");
+    });
+
+    elements.exitEditWeekModale.addEventListener("click", () => {
+        elements.editWeekModale.classList.add("hidden");
+    });
+
+    elements.startTodayBtn.addEventListener("click", () => {
+        console.log(weeks)
+        addNewWeekFromToday(weeks, elements.addWeekModale, elements.weeksViewContainer, elements.userWeekColor, elements.userWeekDescription);
+    });
+
+    elements.startNextMondayBtn.addEventListener("click", () => {
+      
+        console.log(weeks)
+        addNewWeekFromNextMonday(weeks, elements.addWeekModale, elements.weeksViewContainer, elements.userWeekColor, elements.userWeekDescription);
+    });
+
+    deleteAllWeeks(weeks)
 }

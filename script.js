@@ -6,6 +6,7 @@ import { changeTheme } from './scripts/themeManager.js';
 import { switchSections, loadHomePageData} from "./scripts/sectionsManager.js"
 import { getLoggedIn, getWeekListFromStorage, showLog, showSavedTheme } from "./scripts/localStorageManager.js"
 import { Task } from './items/Task.js';
+import {addNewWeekFromNextMonday, addNewWeekFromToday, setupUIEventListeners} from './scripts/functions.js'
 
 document.addEventListener("DOMContentLoaded", () => {
     
@@ -18,8 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
       changeTheme()   
     });
 
-    
-    //showLog()
+  
     // --------------------------------------------------------- WEEKS LIST--------------------------------------------------------------------
     
     let loggedIn = getLoggedIn()
@@ -31,12 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
     
     
     loadHomePageData(up);
-
-
-    /*elements.sortBtn.addEventListener("click", () => {
-      up = !up; // inverti ordine
-      loadHomePageData(up); // ricarica la home con nuovo ordine
-    });*/
 
     
     
@@ -66,30 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }); 
     
-    // --------------------------------------------------------- SINGLE WEEK DAYS --------------------------------------------------------------------
-    
 
+    setupUIEventListeners();
+  
 
-    // --------------------------------------------------------- TASKS --------------------------------------------------------------------
-    // Caricamento iniziale da localStorage
-    /*const savedtasks = localStorage.getItem("tasks");
-    console.log(savedtasks)
-    var tasksContainer = []
-    
-      
-   
-    if (savedtasks) {
-      const parsed = JSON.parse(savedtasks);
-      tasksContainer = parsed.map(t => Task.fromJSON(t))
-      console.log(tasksContainer)
-      //tasksContainer.sort((a, b) => a.time.localeCompare(b.time)); // ordina anche al load  
-      renderTasks(tasksContainer, elements.tasksViewContainer)
-    }
-
-    elements.addTaskButton.addEventListener("click", () => {
-      addTask(elements.taskDescription, elements.taskHour,elements.addTaskButton, tasksContainer, elements.tasksViewContainer)
-    })/*/
-    
 })
 
 

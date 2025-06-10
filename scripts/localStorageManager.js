@@ -36,9 +36,9 @@ export function getWeekListFromStorage() {
               });
             });
             //weekList = parsed.map(w => Week.fromJSON(w)).sort((a, b) => a.startDate - b.startDate)
-            weekList = parsed.map(w => Week.fromJSON(w))
+            weekList = parsed.map(w => Week.fromJSON(w)) 
 
-            return weekList
+            return weekList 
 
           } else {
             console.warn("Formato non valido per weeks:", parsed);
@@ -47,15 +47,10 @@ export function getWeekListFromStorage() {
             console.error("Errore nel parsing di weeks:", e);
           }
     }
+
+    return []
   
     
-  /*const parsed = JSON.parse(localStorage.getItem("weeks")) || [];
-  parsed.forEach(week => {
-    week.days.forEach(day => {
-      day.date = new Date(day.date);
-    });
-  });
-  return parsed;*/
 }
 
 export function deleteAllWeeks(weekList) {
