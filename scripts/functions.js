@@ -293,7 +293,7 @@ export function renderWeeks(weekList, weeksViewContainer) {
       
       const weekDiv = document.createElement("div");
       weekDiv.className = "weekCompleteDisplay";
-      weekDiv.id = week.id
+      weekDiv.dataset.id = week.id
       weekDiv.title = week.title
 
       

@@ -130,33 +130,33 @@
 
                 <div id="weekModal" class="modal hidden">
                     <div class="modal-content">
-                        <div>
+                        <div class="exitContainer">
                             <button id="exitAddWeekModale">X</button>
                         </div>
                         <h2>Quando vuoi iniziare la settimana?</h2>
-                        <div>
+                        <div class="addWeekBtnsContainer">
                             <button id="startToday">Da oggi</button>
                             <button id="startNextMonday">Dal prossimo lunedì</button>
                         </div>
 
-                        <label for="">Vuoi dare una descrizione alla tua Settimana?</label>
-                        <input type="text" placeholder="inserisci descrizione" id="userWeekDescription"><br>
-                        <label for="">Se vuoi, Seleziona un colore per la tua settimana</label>
-                        <input type="color" placeholder="" id="userWeekColor">
+                        <label for="userWeekDescription">Vuoi dare una descrizione alla tua Settimana?</label>
+                        <input type="text" placeholder="inserisci descrizione" id="userWeekDescription" class="text-area"><br>
+                        <label for="userWeekColor">Se vuoi, Seleziona un colore per la tua settimana</label>
+                        <input type="color" placeholder="" id="userWeekColor" class="color-area">
                     </div>
                 </div>
                 <div id="editWeekModale" class="modal hidden">
                     <div class="modal-content">
-                        <div>
+                        <div class="exitContainer">
                             <button id="exitEditWeekModale">X</button>
                         </div>
-                        <h2>Quando vuoi iniziare la settimana?</h2>
+                        <h2>Vuoi modificare la tua settimana?</h2>
 
-                        <label for="">Modifica il titolo della tua settimana</label>
-                        <input type="text" placeholder="" id="editedWeekTitle"><br>
-                        <label for="">Se vuoi, cambia il colore della tua settimana</label>
-                        <input type="color" placeholder="" id="editedWeekColor">
-                        <div>
+                        <label for="editedWeekTitle">Modifica il titolo della tua settimana</label>
+                        <input type="text" placeholder="" id="editedWeekTitle" class="text-area"><br>
+                        <label for="editedWeekColor">Se vuoi, cambia il colore della tua settimana</label>
+                        <input type="color" placeholder="" id="editedWeekColor" class="color-area">
+                        <div id="saveEditContainer">
                             <button id="saveEditWeekBtn">Salva</button>
                         </div>
                         

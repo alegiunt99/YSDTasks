@@ -229,13 +229,68 @@ body.light-theme .weekCompleteDisplay:hover{
     padding-right: 5%;
 }
 
-.modal-content {
-  background: white;
-  padding: 20px 30px;
-  border-radius: 10px;
-  text-align: center;
+body.light-theme .modal-content {
+  background: #aeaeae;
+  border-color: #161727;
 }
 
+/* Tema scuro */
+body.dark-theme .modal-content {
+  background: #161727;
+  border-color: #59FF00;
+}
+
+  
+
+.modal-content {
+    padding: 40px 50px;
+    border-radius: 10px;
+    text-align: center;
+    border: solid;
+    border: solid;
+    DISPLAY: FLEX;
+    FLEX-DIRECTION: COLUMN;
+    JUSTIFY-CONTENT: CENTER;
+}
+
+.exitContainer{
+    display: flex;
+    justify-content: end;
+}
+
+.addWeekBtnsContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+        padding: 10px 10px 40px 10px;
+
+}
+
+
+.text-area{
+    align-self: center;
+    width: 140px;
+}
+
+.color-area{
+    align-self: center;
+}
+
+#saveEditContainer{
+    padding-top: 50px;
+}
+/*
+background: #161727;
+    padding: 40px 50px;
+    border-radius: 10px;
+    text-align: center;
+    border: solid;
+    border-color: #59FF00;
+    DISPLAY: FLEX;
+    FLEX-DIRECTION: COLUMN;
+    JUSTIFY-CONTENT: CENTER;
+
+*/
 .hidden {
   display: none;
 }
