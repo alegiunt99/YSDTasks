@@ -359,7 +359,16 @@ background: #161727;
      color: #161727; 
    }
 
-.pEditWeekButton:hover{
+
+#pEditWeekButton{
+    background-color: yellow;
+    border-radius: 5px;
+    padding: 1px 5px 5px 5px;
+    align-self: center;
+    color: #161727;
+}
+
+#pEditWeekButton:hover{
 
     cursor: pointer;
     color: #59ff00;
@@ -374,5 +383,34 @@ background: #161727;
 
 #editedTaskTime{
     width: 67px;
+    align-self: center;
+}
+
+.editBtn{
+    background-color: yellow;
+    
+    color: #161727;
+}
+
+.editBtn:hover{
+
+    cursor: pointer;
+    background-color: rgb(208, 208, 3);
+}
+
+.deleteBtn{
+    background-color: red;
+    color: white;
+    width: 25px;
+}
+
+.deleteBtn:hover{
+    cursor: pointer;
+    background-color: rgb(167, 0, 0);
+}
+
+.btn{
+    border-radius: 5px;
+    padding: 1px 5px 5px 5px;
     align-self: center;
 }

@@ -30,12 +30,16 @@ export function renderTasks(dayRef, tasksViewContainer, weekList) {
       ptaskDescr.textContent = `${task.time} - ${task.description}`;
 
       const pEditTaskButton = document.createElement("p");
-      pEditTaskButton.className = "pEditTaskButton";
+      pEditTaskButton.id = "pEditTaskButton";
+      pEditTaskButton.classList.add("editBtn")
+      pEditTaskButton.classList.add("btn")
       pEditTaskButton.title = "Modifica task";
       pEditTaskButton.innerHTML = "&#128736;"
 
       const taskDeleteButton = document.createElement("p");
-      taskDeleteButton.className = "taskDelete";
+      taskDeleteButton.id = "taskDelete";
+      taskDeleteButton.classList.add("deleteBtn")
+      taskDeleteButton.classList.add("btn")
       taskDeleteButton.innerHTML = "&#x1F5D1;";
 
       // ✅ Invece di passare dayRef, passiamo la sua data
@@ -51,7 +55,7 @@ export function renderTasks(dayRef, tasksViewContainer, weekList) {
 
         elements.editedTaskTime.value = task.time
         elements.editedTaskDescription.value = task.description
-        
+        elements.taskNotes.value = task.notes
         idTask = task.id
         daySelected = dayRef
         dayDateSelected = dayRef.date
@@ -191,7 +195,7 @@ elements.saveEditTaskBtn.addEventListener("click", () => {
     var weekList = getWeekListFromStorage()
     
     if (idTask !== null) {
-      editTask(dayDateSelected, elements.editedTaskTime.value, elements.editedTaskDescription.value, idTask, weekList);
+      editTask(dayDateSelected, elements.editedTaskTime.value, elements.editedTaskDescription.value, elements.taskNotes.value , idTask, weekList);
       elements.editTaskModale.classList.add("hidden");
       const updatedDay = getDayByDate(weekList, dayDateSelected);
       if (updatedDay) {
@@ -206,7 +210,7 @@ elements.saveEditTaskBtn.addEventListener("click", () => {
     
 })
 
-export function editTask(dayDate, editedTime, editedDescr, idTask, weekList) {
+export function editTask(dayDate, editedTime, editedDescr, editedNotes,idTask, weekList) {
 
   try {
 
@@ -231,6 +235,7 @@ export function editTask(dayDate, editedTime, editedDescr, idTask, weekList) {
     if (taskToEdit) {
       taskToEdit.time = editedTime;
       taskToEdit.description = editedDescr;
+      taskToEdit.notes = editedNotes
       localStorage.setItem("weeks", JSON.stringify(weekList));
     } else {
       console.warn("Task da modificare non trovata con ID:", idTask);
@@ -417,6 +422,8 @@ export function renderWeeks(weekList, weeksViewContainer) {
 
       const pEditWeekButton = document.createElement("p");
       pEditWeekButton.className = "pEditWeekButton";
+      pEditWeekButton.classList.add("editBtn")
+      pEditWeekButton.classList.add("btn")
       pEditWeekButton.title = "Modifica settimana";
       pEditWeekButton.innerHTML = "&#128736;"
   

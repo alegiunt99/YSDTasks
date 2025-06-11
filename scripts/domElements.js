@@ -69,6 +69,7 @@ const editedTaskTime = document.querySelector("#editedTaskTime")
 const editedTaskDescription = document.querySelector("#editedTaskDescription")
 const exitEditTaskModale = document.querySelector("#exitEditTaskModale")
 const saveEditTaskBtn = dom.querySelector("#saveEditTaskBtn")
+const taskNotes = dom.querySelector("#taskNotes")
 const sortBtnImg = document.getElementById("imgSorting")
 const sortBtn = document.getElementById("weekFilters")
 
@@ -130,4 +131,5 @@ export {
             editedTaskDescription,
             exitEditTaskModale,
             saveEditTaskBtn,
+            taskNotes
         }

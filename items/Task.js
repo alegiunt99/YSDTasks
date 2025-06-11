@@ -10,7 +10,7 @@ export class Task {
     #weekRef
     #notes
 
-    constructor(id, description, time, done = false, dayRef, weekRef, notes ) {
+    constructor(id, description, time, done = false, dayRef, weekRef, notes = "" ) {
         
         this.#id = id;
         this.#description = description;
@@ -123,7 +123,7 @@ export class Task {
             done: this.#done,
             dayRef: this.#dayRef ,
             weekRef: this.#weekRef,
-            notes: this.#notes 
+            notes: this.#notes || ""
         };
     }
 }
