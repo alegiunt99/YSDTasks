@@ -7,18 +7,34 @@ const domBody = document.body
 
 const generalViewSection = dom.querySelector(".generalViewSection")
 const homePageLink = document.getElementById("toHomePage")
+const welcomeMessage = dom.querySelector("#welcomeMessage")
 const logoImg = document.getElementById("logoImg")
 const themeSectionLink = document.getElementById("toTheme")
 const themeSection = document.getElementById("themeSection")
 const generalMenuLinks = dom.getElementById("generalMenuLinks")
 // ------------------------------------- general visualization menu --------------------------------------
 const loginPageLink = document.getElementById("toLogin")
-const loginBtn = document.getElementById("loginBtn")
 const registrationPageLink = document.getElementById("toSignup")
 const registrationSection = document.getElementById("registrationSection")
 //PAGINE DA ATTIVARE E DISATTIVARE
 const homePage = document.querySelector(".homeSection")
 const generalHomeSection = dom.getElementById("generalHomeSection")
+
+// --------------------------------------- REGISTRAZIONE UTENTE--------------------------------------------------
+
+const newUserName = dom.querySelector("#userName")
+const newUserSurname = dom.querySelector("#userSurname")
+const newUserId = dom.querySelector("#newUserid")
+const newEmailUser = dom.querySelector("#newEmailUser")
+const newUserPassword = dom.querySelector("#newUserPassword")
+const registrationBtn = dom.querySelector("#registrationBtn")
+const errorDivRegistration = dom.querySelector("#errorDivRegistration")
+
+// --------------------------------------- LOGIN UTENTE--------------------------------------------------
+
+const userId = dom.querySelector("#userName")
+const password = dom.querySelector("#password")
+const loginBtn = document.getElementById("loginBtn")
 
 // ------------------------------------- user visualization --------------------------------------
 const userViewSection = dom.querySelector(".userViewSection")
@@ -131,5 +147,15 @@ export {
             editedTaskDescription,
             exitEditTaskModale,
             saveEditTaskBtn,
-            taskNotes
+            taskNotes,
+            newUserName,
+            newUserSurname,
+            newUserId,
+            newEmailUser,
+            newUserPassword,
+            registrationBtn,
+            userId,
+            password,
+            welcomeMessage,
+            errorDivRegistration
         }

@@ -65,7 +65,7 @@
 
             <!-- 🔄 CONTENUTO home -->
             <section id="generalHomeSection" class="homeSection">
-                <h1>
+                <h1 id="welcomeMessage">
                     Benvenuto su YSDTasks! 
                 </h1>
 
@@ -78,8 +78,25 @@
                 <h1>
                     Login
                 </h1>
-                <form action="" method="post">
-                    <input type="button" value="Accedi" id="loginBtn">
+                
+                <div id="errorDivLogin" >
+
+                </div>
+                <form action="" method="post" id="loginForm">
+
+                    <div class="registration-div">
+                        <label for="userid">Userid</label>
+                        <input type="text" name="userid" id="userid" autocomplete="off">
+                    </div>
+                    <div class="registration-div">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" autocomplete="off">
+                    </div>
+                    <div>
+                        <input type="button" value="Accedi" id="loginBtn">
+                    </div>
+                    
+                    
                 </form>
             </section>
 
@@ -89,8 +106,35 @@
                 <h1>
                     Sign up
                 </h1>
-                <form action="" method="post">
+                <div id="errorDivRegistration">
 
+                </div>
+                <form action="" method="post" id="registrationForm">
+
+                    <div class="registration-div">
+                        <label for="userName">Nome:</label>
+                        <input type="text" name="userName" id="userName"  autocomplete="off">
+                    </div>
+                    <div class="registration-div">
+                        <label for="userSurname">Cognome</label>
+                        <input type="text" name="userSurname" id="userSurname" autocomplete="off">
+                    </div>
+                    <div class="registration-div">
+                        <label for="newUserid">Userid</label>
+                        <input type="text" name="userid" id="newUserid" autocomplete="off">
+                    </div>
+                    <div class="registration-div">
+                        <label for="newEmailUser">Indirizzo email</label>
+                        <input type="email" name="newEmailUser" id="newEmailUser" autocomplete="off">
+                    </div>
+                    <div class="registration-div">
+                        <label for="newUserPassword">Password</label>
+                        <input type="password" name="password" id="newUserPassword" autocomplete="off">
+                    </div>
+                    <div>
+                        <input type="button" value="Continua" id="registrationBtn">
+                    </div>
+                    
                 </form>
             </section>
 

@@ -10,7 +10,12 @@ import {addNewWeekFromNextMonday, addNewWeekFromToday, setupUIEventListeners} fr
 
 document.addEventListener("DOMContentLoaded", () => {
     
+    const users = localStorage.getItem("users")
+    const savedUsers = JSON.parse(users)|| []
 
+    if(Array.isArray(savedUsers)){
+      console.log(savedUsers)
+    }
     // --------------------------------------------------------- THEME --------------------------------------------------------------------
     
     showSavedTheme()
@@ -63,7 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setupUIEventListeners();
   
-
+    elements.welcomeMessage.addEventListener("click", () =>{
+      localStorage.removeItem("users")
+      console.log(savedUsers)
+    })
 })
 
 

@@ -1,20 +1,20 @@
-import { Week } from "./Week"
+import { Week } from "./Week.js"
 export class User{
 
     #id
     #name
     #surname
-    #username
+    #userid
     #email
     #password
     #weeks
     #isLogged
 
-    constructor(id, name, surname, username, email, password, weeks, isLogged){
+    constructor(id, name, surname, userid, email, password, weeks, isLogged){
         this.#id = id
         this.#name = name
         this.#surname = surname
-        this.#username = username
+        this.#userid = userid
         this.#email = email
         this.#password = password
         this.#weeks = weeks
@@ -26,7 +26,7 @@ export class User{
     getId() { return this.#id; }
     getName() { return this.#name; }
     getSurname() { return this.#surname; }
-    getUsername() { return this.#username; }
+    getuserid() { return this.#userid; }
     getEmail() { return this.#email; }
     getPassword() { return this.#password; }
     getWeeks() { return this.#weeks; }
@@ -36,7 +36,7 @@ export class User{
     setId(id) { this.#id = id; }
     setName(name) { this.#name = name; }
     setSurname(surname) { this.#surname = surname; }
-    setUsername(username) { this.#username = username; }
+    setuserid(userid) { this.#userid = userid; }
     setEmail(email) { this.#email = email; }
     setPassword(password) { this.#password = password; }
     setWeeks(weeks) { this.#weeks = weeks; }
@@ -48,7 +48,7 @@ export class User{
         id: this.#id,
         name: this.#name,
         surname: this.#surname,
-        username: this.#username,
+        userid: this.#userid,
         email: this.#email,
         password: this.#password,
         weeks: this.#weeks, // assicurati che anche le week abbiano toJSON se oggetti
@@ -62,7 +62,7 @@ export class User{
         json.id,
         json.name,
         json.surname,
-        json.username,
+        json.userid,
         json.email,
         json.password,
         json.weeks || [],

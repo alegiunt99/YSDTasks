@@ -5,6 +5,7 @@ import { Week } from "../items/Week.js";
 import { Day } from "../items/Day.js";
 import { Task } from "../items/Task.js";
 import { getWeekListFromStorage, deleteAllWeeks } from "./localStorageManager.js";
+import { createNewUser } from "./userManager.js";
 
 //------------------------------------------- TASKS ------------------------------------------
 let idTask = null
@@ -574,6 +575,7 @@ export function renderWeekDays(selectedWeek, daysViewContainer,taskDescription,t
 
 
 export function setupUIEventListeners() {
+    let savedUsers = JSON.parse(localStorage.getItem("users"))|| []
     const weeks = getWeekListFromStorage()
    
     elements.addWeekButton.addEventListener("click", () => {
@@ -603,7 +605,15 @@ export function setupUIEventListeners() {
         addNewWeekFromNextMonday(weeks, elements.addWeekModale, elements.weeksViewContainer, elements.userWeekColor, elements.userWeekDescription);
     });
 
+    elements.registrationBtn.addEventListener("click", () =>{
+      createNewUser(savedUsers)
+    
+      
+    })
+
     deleteAllWeeks(weeks)
+
+
 }
 
 export function generateWeekId() {
