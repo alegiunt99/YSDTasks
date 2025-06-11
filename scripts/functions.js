@@ -10,7 +10,7 @@ import { getWeekListFromStorage, deleteAllWeeks } from "./localStorageManager.js
 let idTask = null
 let daySelected = null
 let dayDateSelected = null
-export function renderTasks(dayRef, tasksViewContainer) {
+export function renderTasks(dayRef, tasksViewContainer, weekList) {
     
       tasksViewContainer.innerHTML = "";
       elements.singleDayTitle.innerText = `${dayRef.dayName} - ${dayRef.date.toLocaleDateString("it-IT")}`;
@@ -40,7 +40,7 @@ export function renderTasks(dayRef, tasksViewContainer) {
 
       // ✅ Invece di passare dayRef, passiamo la sua data
       taskDeleteButton.addEventListener("click", () => {
-        deleteTask(dayRef.date, index, tasksViewContainer);
+        deleteTask(dayRef.date, index, tasksViewContainer, weekList);
       });
 
       pEditTaskButton.addEventListener("click", (event) => {
@@ -55,6 +55,7 @@ export function renderTasks(dayRef, tasksViewContainer) {
         idTask = task.id
         daySelected = dayRef
         dayDateSelected = dayRef.date
+        console.log("idTask =", idTask);
         // Rimanda l'apertura della modale alla prossima iterazione del ciclo event-loop
         elements.editTaskModale.classList.remove("hidden");
       });
@@ -95,7 +96,8 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
         }
 
         
-        const id = new Date()
+        const id = Date.now()
+        console.log("su addTask(), id =", id)
         const description = taskDescription.value
         const time = taskHour.value
         const done = false
@@ -113,7 +115,7 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
         // 🔐 Aggiorna il localStorage
         localStorage.setItem("weeks", JSON.stringify(weekList.map(week => week.toJSON())))
         // 🔄 Pulisci e ricostruisci il DOM
-        renderTasks(dayRef, containerList);
+        renderTasks(dayRef, containerList, weekList);
         // 🧼 Reset campi input
         taskDescription.value = "";
         taskHour.value = "00:00";
@@ -141,12 +143,10 @@ export function addTask(taskDescription, taskHour, addButton, containerList, day
   }
 
 
-export function deleteTask(dayDate, taskIndex, tasksViewContainer) {
+export function deleteTask(dayDate, taskIndex, tasksViewContainer, weekList) {
   
 
   try {
-
-    var weekList = getWeekListFromStorage()
 
     const dayDateString = new Date(dayDate).toDateString();
 
@@ -164,20 +164,20 @@ export function deleteTask(dayDate, taskIndex, tasksViewContainer) {
 
     if (!Array.isArray(day.tasks)) throw new Error("Tasks non è un array");
 
+    console.log("task da eliminare",day.tasks[taskIndex])
     // Elimina la task
     day.tasks.splice(taskIndex, 1);
 
     // Aggiorna il localStorage
-    localStorage.setItem("weeks", JSON.stringify(weekList));
-
-    const updatedWeekList = getWeekListFromStorage()
+    // 🔐 Aggiorna il localStorage
+    localStorage.setItem("weeks", JSON.stringify(weekList))
     // Rirenderizza
-    renderTasks(day, tasksViewContainer, updatedWeekList);
+    renderTasks(day, tasksViewContainer,weekList);
 
   } catch (error) {
     const errorDiv = document.createElement("div");
     errorDiv.className = "errorMessageDelete";
-    errorDiv.textContent = error.message;
+    errorDiv.textContent = error.message + error.stack;
     tasksViewContainer.appendChild(errorDiv);
 
     setTimeout(() => {
@@ -189,14 +189,14 @@ export function deleteTask(dayDate, taskIndex, tasksViewContainer) {
 elements.saveEditTaskBtn.addEventListener("click", () => {
     console.log("ho cliccato la task:", idTask);
     var weekList = getWeekListFromStorage()
-    const updatedDay = getDayByDate(weekList, dayDateSelected);
+    
     if (idTask !== null) {
       editTask(dayDateSelected, elements.editedTaskTime.value, elements.editedTaskDescription.value, idTask, weekList);
       elements.editTaskModale.classList.add("hidden");
-      
+      const updatedDay = getDayByDate(weekList, dayDateSelected);
       if (updatedDay) {
         console.log(updatedDay)
-        renderTasks(updatedDay, elements.tasksViewContainer);
+        renderTasks(updatedDay, elements.tasksViewContainer, weekList);
       } else {
         console.warn("Giorno aggiornato non trovato!");
       } 
