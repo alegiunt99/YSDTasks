@@ -3,6 +3,7 @@ import * as elements from "./domElements.js";
 import * as constant from "./constants.js";
 import { Week } from "../items/Week.js";
 import { showOnlySection, renderWeeks,  renderTasks, addNewWeekFromToday, addNewWeekFromNextMonday, addTask } from "./functions.js";
+import { User } from "../items/User.js";
 export function showSavedTheme() {
     const savedTheme = localStorage.getItem("theme");
     const savedLogo = localStorage.getItem("logo-src")
@@ -22,6 +23,40 @@ export function showSavedTheme() {
     }
     
 }
+
+
+export function getUserListFromStorage() {
+  const  savedUsers = localStorage.getItem("users");
+  var users = []
+    if (savedUsers) {
+        try {
+          const parsed = JSON.parse(savedUsers) || [];
+          if (Array.isArray(parsed)) {
+            parsed.forEach(user => {
+              user.weeks.forEach(week => {
+                week.days.forEach(day => {
+                  day.date = new Date(day.date); // 🔁 converte la stringa in oggetto Date
+              });
+              });
+            });
+            //weekList = parsed.map(w => Week.fromJSON(w)).sort((a, b) => a.startDate - b.startDate)
+            users = parsed.map(u => User.fromJSON(u)) 
+
+            return users 
+
+          } else {
+            console.warn("Formato non valido per weeks:", parsed);
+          }
+          } catch (e) {
+            console.error("Errore nel parsing di weeks:", e);
+          }
+    }
+
+    return []
+  
+    
+}
+
 
 export function getWeekListFromStorage() {
   const savedWeeks = localStorage.getItem("weeks");

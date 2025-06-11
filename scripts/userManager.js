@@ -14,20 +14,32 @@ export function createNewUser(savedUsers){
 
     try {
         
-        if (elements.newUserId.value.trim().length === 0) {
+
+        console.log("savedUsers",savedUsers)
+        console.log("newUserId",elements.newUserId.value)
+
+        if(savedUsers.some(user => user.userid === elements.newUserId.value)){
+            throw new Error("user già presente")
+        }else if (elements.newUserId.value.trim().length === 0) {
           throw new Error("la userid deve avere almeno una lettera");
         }
+
+        if(savedUsers.some(user => user.email === elements.newEmailUser.value)){
+            throw new Error("email già presente")
+        }else if (elements.newEmailUser.value.trim().length === 0) {
+            throw new Error("L'indirizzo email deve avere almeno una lettera");
+        }else if(!elements.newEmailUser.value.includes('@')){
+            throw new Error("L'indirizzo email deve avere almeno una '@' ");
+        }
+
+
         if (elements.newUserName.value.trim().length === 0) {
           throw new Error("Il nome deve avere almeno una lettera");
         }
         if (elements.newUserSurname.value.trim().length === 0) {
           throw new Error("Il cognome deve avere almeno una lettera");
         }
-        if (elements.newEmailUser.value.trim().length === 0) {
-            throw new Error("L'indirizzo email deve avere almeno una lettera");
-        }else if(!elements.newEmailUser.value.contains('@')){
-            throw new Error("L'indirizzo email deve avere almeno una '@' ");
-        }
+        
         if (elements.newUserPassword.value.trim().length === 0) {
           throw new Error("La descrizione deve avere almeno una lettera");
         }
@@ -42,19 +54,8 @@ export function createNewUser(savedUsers){
         
         const newUser = new User(id,name, surname, userid,emailAddress,password, [],false)
 
-        savedUsers.push(newUser)
-        console.log(savedUsers)
-
-        localStorage.setItem("users", JSON.stringify(savedUsers))
-
-        azzeraTestoInput(
+        return newUser
         
-            elements.newUserId,
-            elements.newUserName,
-            elements.newUserSurname,
-            elements.newEmailUser,
-            elements.newUserPassword
-        )
 
     } catch (error) {
         const errorDiv = document.createElement("div");
@@ -79,7 +80,28 @@ export function createNewUser(savedUsers){
             elements.newUserPassword
         )
     }
+
+    return null
     
+}
+
+export function addNewUser(savedUsers){
+
+    const newUser = createNewUser(savedUsers)
+    savedUsers.push(newUser)
+    console.log(savedUsers)
+
+    localStorage.setItem("users", JSON.stringify(savedUsers))
+
+    azzeraTestoInput(
+        
+        elements.newUserId,
+        elements.newUserName,
+        elements.newUserSurname,
+        elements.newEmailUser,
+        elements.newUserPassword
+    )
+
 }
 
 export function azzeraTestoInput(...input){

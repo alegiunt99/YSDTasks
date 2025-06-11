@@ -4,8 +4,8 @@ import * as elements from './domElements.js'
 import { Week } from "../items/Week.js";
 import { Day } from "../items/Day.js";
 import { Task } from "../items/Task.js";
-import { getWeekListFromStorage, deleteAllWeeks } from "./localStorageManager.js";
-import { createNewUser } from "./userManager.js";
+import { getWeekListFromStorage, deleteAllWeeks, getUserListFromStorage } from "./localStorageManager.js";
+import { addNewUser } from "./userManager.js";
 
 //------------------------------------------- TASKS ------------------------------------------
 let idTask = null
@@ -575,7 +575,7 @@ export function renderWeekDays(selectedWeek, daysViewContainer,taskDescription,t
 
 
 export function setupUIEventListeners() {
-    let savedUsers = JSON.parse(localStorage.getItem("users"))|| []
+    let savedUsers = getUserListFromStorage()
     const weeks = getWeekListFromStorage()
    
     elements.addWeekButton.addEventListener("click", () => {
@@ -606,12 +606,39 @@ export function setupUIEventListeners() {
     });
 
     elements.registrationBtn.addEventListener("click", () =>{
-      createNewUser(savedUsers)
-    
+      addNewUser(savedUsers)
+      logged = true 
+      localStorage.setItem("logged", JSON.stringify(logged))
+          // Mostra la sezione homePage
+      showOnlySection(elements.userViewSection, allSections);
+      showOnlySection(elements.userHomeSection, userSubSections);
+          // Aggiorna dati e UI per la home
+            //loadHomePageData(isAscending);
+      elements.userMenuLinks.classList.remove("hidden")
+      elements.generalMenuLinks.classList.add("hidden")
+      elements.homePageLink.addEventListener("click", () => {
+          // Mostra la sezione homePage
+      showOnlySection(elements.userHomeSection, userSubSections);
+          // Aggiorna dati e UI per la home
+              //loadHomePageData(isAscending);
+      });
+      
+      elements.toAccountBtn.addEventListener("click", () =>  {
+          showOnlySection(elements.userViewSection, allSections)
+          showOnlySection(elements.accountInfoSection, userSubSections)});
+      elements.toLogoutBtn.addEventListener("click", () =>  {
+          showOnlySection(elements.userViewSection, allSections)
+          showOnlySection(elements.logoutSection, userSubSections)});
       
     })
 
     deleteAllWeeks(weeks)
+
+    elements.welcomeMessage.addEventListener("click", () =>{
+      localStorage.removeItem("users")
+      savedUsers.length = 0
+      console.log(savedUsers)
+    })
 
 
 }

@@ -68,10 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setupUIEventListeners();
   
-    elements.welcomeMessage.addEventListener("click", () =>{
-      localStorage.removeItem("users")
-      console.log(savedUsers)
-    })
+    
 })
 
 
