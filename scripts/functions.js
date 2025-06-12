@@ -634,7 +634,7 @@ export function setupUIEventListeners() {
       addNewUser(savedUsers)
     })
 
-    deleteAllWeeks(weeks)
+    deleteAllWeeks(getLoggedIn(), savedUsers)
 
     elements.welcomeMessage.addEventListener("click", () =>{
       localStorage.removeItem("users")

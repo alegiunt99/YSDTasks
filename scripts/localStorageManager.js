@@ -88,13 +88,14 @@ export function getWeekListFromStorage() {
     
 }
 
-export function deleteAllWeeks(weekList) {
+export function deleteAllWeeks(logged, users) {
   elements.clearLocalStorageBtn.addEventListener("click", () => {
-        localStorage.removeItem("weeks")
-        weekList.length = 0; // 🧹 Svuota anche l'array in memoria
-        elements.weeksViewContainer.innerHTML = ""; // 🧹 Svuota anche il DOM (opzionale ma sicuro)
-        renderWeeks(weekList,weeksViewContainer)
-        console.log(weekList)
+        const indexdUser = users.findIndex((user, index) => user.userid === logged.userid)
+        console.log("indexdUser", indexdUser)
+        if (indexdUser === -1) return;
+        users[indexdUser].weeks.length = 0
+        saveUserListToStorage(users)
+        loadHomePageData(logged,true)
   })
 }
 
