@@ -32,7 +32,12 @@ export function switchSections(user, users) {
     elements.homePageLink.onclick = () => {
       showOnlySection(elements.userHomeSection, userSubSections);
 
-       elements.userHomeTitle.innerText = "Benvenuto su YSDTASK " + user.name + "!"
+      elements.userHomeTitle.innerText = "Benvenuto su YSDTASK " + user.name + "!"
+
+      const indexdUser = users.findIndex((u, index) => u.userid === user.userid)
+      console.log("indexdUser", indexdUser)
+      if (indexdUser === -1) return;
+      renderWeeks(users[indexdUser], weeksViewContainer);
       // Qui puoi caricare dati e aggiornare UI
     };
 
@@ -180,15 +185,15 @@ export function switchSections(user, users) {
     elements.themeSectionLink.addEventListener("click", () => showOnlySection(elements.themeSection, allSections));*/
 
       
-export function loadHomePageData(isAscending) {
+export function loadHomePageData(logged, sorting) {
 
-    var users = getUserListFromStorage() || []
-    
-    //var sortedWeeks = sortWeeks(weeks, isAscending)
+    console.log("sorting", sorting)
+    var users = getUserListFromStorage()
+    const userIndex = users.findIndex((user, index) => user.userid === logged.userid)
+    sortWeeks(users, users[userIndex].weeks, sorting)
 
     elements.weeksViewContainer.innerHTML = ""; // svuota
-    //renderWeeks(sortedWeeks, elements.weeksViewContainer)  
-    
+    renderWeeks(users[userIndex], elements.weeksViewContainer)   
 
 }
 

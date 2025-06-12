@@ -164,3 +164,13 @@ export function getLoggedIn(){
   return parsedLog
 
 }
+
+
+export function saveUserListToStorage(users) {
+  try {
+    const plain = users.map(u => u.toJSON());
+    localStorage.setItem("users", JSON.stringify(plain));
+  } catch (err) {
+    console.error("Impossibile serializzare users:", err);
+  }
+}

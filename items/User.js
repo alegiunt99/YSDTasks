@@ -92,6 +92,7 @@ export class User{
     
     // 🔵 Serializzazione per localStorage
     toJSON() {
+      
       return {
         id: this.#id,
         name: this.#name,
@@ -99,7 +100,7 @@ export class User{
         userid: this.#userid,
         email: this.#email,
         password: this.#password,
-        weeks: this.#weeks, // assicurati che anche le week abbiano toJSON se oggetti
+        weeks: this.#weeks||[], // assicurati che anche le week abbiano toJSON se oggetti
         isLogged: this.#isLogged
       };
     }
@@ -113,7 +114,7 @@ export class User{
         json.userid,
         json.email,
         json.password,
-        json.weeks || [],
+        json.weeks,
         json.isLogged || false
       );
     }

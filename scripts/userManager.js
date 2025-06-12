@@ -3,6 +3,7 @@ import * as elements from './domElements.js'
 import { showUserVisual, switchSections } from "./sectionsManager.js";
 import * as functions from './functions.js';
 import {userSubSections} from "./sectionsManager.js"
+import { saveUserListToStorage } from './localStorageManager.js';
 
 
 export function createNewUser(savedUsers){
@@ -94,6 +95,7 @@ export function addNewUser(savedUsers){
 
 
         console.log("addNewUser, savedUsers: ", savedUsers)
+        //saveUserListToStorage(savedUsers)
         localStorage.setItem("users", JSON.stringify(savedUsers))
         
         console.log("addNewUser, NewUser: ", newUser)
@@ -145,12 +147,13 @@ export function renderUserView(userId, users){
     if(users.some(user => user.userid === userId)){
 
         const selectedUser = users.find(user => user.userid === userId)
+        const userIndex = users.findIndex((user, index) => user.userid === userId)
         console.log(userId)
-        console.log("user selezionato",selectedUser)
+        console.log("user selezionato",users[userIndex])
         functions.showOnlySection(elements.userHomeSection, userSubSections);
-        elements.userHomeTitle.innerText = "Benvenuto su YSDTASK " + selectedUser.name + "!"
-        switchSections(selectedUser,users)
-        functions.renderWeeks(selectedUser,elements.weeksViewContainer)
+        elements.userHomeTitle.innerText = "Benvenuto su YSDTASK " + users[userIndex].name + "!"
+        switchSections(users[userIndex],users)
+        functions.renderWeeks(users[userIndex],elements.weeksViewContainer)
         
         
 

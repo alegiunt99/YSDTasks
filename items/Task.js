@@ -121,8 +121,6 @@ export class Task {
             description: this.#description,
             time: this.#time ,
             done: this.#done,
-            dayRef: this.#dayRef ,
-            weekRef: this.#weekRef,
             notes: this.#notes || ""
         };
     }

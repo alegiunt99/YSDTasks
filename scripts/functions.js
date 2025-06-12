@@ -4,10 +4,11 @@ import * as elements from './domElements.js'
 import { Week } from "../items/Week.js";
 import { Day } from "../items/Day.js";
 import { Task } from "../items/Task.js";
-import { getWeekListFromStorage, deleteAllWeeks, getUserListFromStorage } from "./localStorageManager.js";
+import { getWeekListFromStorage, deleteAllWeeks, getUserListFromStorage, getLoggedIn } from "./localStorageManager.js";
 import { addNewUser } from "./userManager.js";
 import { User } from "../items/User.js";
-
+import { saveUserListToStorage } from './localStorageManager.js';
+import * as constant from "./constants.js";
 //------------------------------------------- TASKS ------------------------------------------
 let idTask = null
 let daySelected = null
@@ -349,15 +350,33 @@ export function generateDaysForWeek(startDate, endDate, weekRef) {
 export function addNewWeekFromToday(userRef, users, addWeekModale, weeksViewContainer,userWeekColor, userWeekDescription) {
         console.log("addNewWeekFromToday riceve:", userWeekColor.value, userWeekDescription.value);
         const newWeek = createNewWeekFromToday(userWeekColor.value, userWeekDescription.value)
+        console.log("userRef",  userRef)
 
-        userRef.weeks.push(newWeek);
+        
+        const indexdUser = users.findIndex((user, index) => user.userid === userRef.userid)
+        console.log("indexdUser", indexdUser)
+        if (indexdUser === -1) return;
+        // Trova e aggiorna l'utente direttamente nella lista
+        
+        
+        
+        users[indexdUser].weeks.push(newWeek);
+        users[indexdUser].weeks.sort((a, b) => a.title.localeCompare(b.title));
+
+        saveUserListToStorage(users);
+        addWeekModale.classList.add("hidden");
+        renderWeeks(users[indexdUser], weeksViewContainer);
+
+        userWeekColor.value = "#000000";
+        userWeekDescription.value = "";
+
+        /*userRef.weeks.push(newWeek);
       
         // 🔽 Ordina per orario
         userRef.weeks.sort((a, b) => a.title.localeCompare(b.title));
     
         // 🔐 Aggiorna il localStorage
-
-        localStorage.setItem("users", JSON.stringify(users));
+        saveUserListToStorage(users)
     
         addWeekModale.classList.add("hidden")
 
@@ -366,7 +385,7 @@ export function addNewWeekFromToday(userRef, users, addWeekModale, weeksViewCont
       
        
         userWeekColor.value = "#000000"
-        userWeekDescription.value = ""
+        userWeekDescription.value = ""*/
 }
 
 export function resetImputs(input){
@@ -378,20 +397,19 @@ export function addNewWeekFromNextMonday(userRef, users, addWeekModale, weeksVie
 
         const newWeek = createNewWeekFromNextMonday(userWeekColor.value, userWeekDescription.value)
 
-        userRef.weeks.push(newWeek);
-      
-        // 🔽 Ordina per orario
-        userRef.weeks.sort((a, b) => a.title.localeCompare(b.title));
+        const indexdUser = users.findIndex((user, index) => user.userid === userRef.userid)
+        console.log("indexdUser", indexdUser)
+        if (indexdUser === -1) return;
+        // Trova e aggiorna l'utente direttamente nella lista
+        
+        
+        
+        users[indexdUser].weeks.push(newWeek);
+        users[indexdUser].weeks.sort((a, b) => a.title.localeCompare(b.title));
 
-        console.log(users.map(u => u.toJSON()))
-        // 🔐 Aggiorna il localStorage
-        const salvate = users.map(u => u.toJSON());
-        localStorage.setItem("users", JSON.stringify(salvate));
-    
-        addWeekModale.classList.add("hidden")
-
-        // 🔄 Pulisci e ricostruisci il DOM
-        renderWeeks(userRef,weeksViewContainer)
+        saveUserListToStorage(users);
+        addWeekModale.classList.add("hidden");
+        renderWeeks(users[indexdUser], weeksViewContainer);
 
         userWeekColor.value = "#000000"
         userWeekDescription.value = ""
@@ -468,7 +486,7 @@ export function renderWeeks(userRef, weeksViewContainer) {
       weekDiv.addEventListener("click", (event) => {
         console.log("div CLICCATo", week.id);
         showOnlySection(userSubSections[1],userSubSections)
-        renderWeekDays(weekList[index], elements.daysViewContainer,elements.taskDescription, elements.taskHour, elements.tasksViewContainer, elements.addTaskButton, userRef.weeks)
+        renderWeekDays(userRef.weeks[index], elements.daysViewContainer,elements.taskDescription, elements.taskHour, elements.tasksViewContainer, elements.addTaskButton, userRef.weeks)
             // fai il cambio sezione o altra logica
       });
       
@@ -504,12 +522,22 @@ export function renderWeeks(userRef, weeksViewContainer) {
     })
 
 
-export function sortWeeks(weeks, isAscending) {
-  return weeks.sort((a, b) => {
+export function sortWeeks(users, weeks, sorting) {
+  weeks.sort((a, b) => {
+
     const nameA = a.title;
     const nameB = b.title;
 
-    return isAscending ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+    if(sorting){
+
+      nameA.localeCompare(nameB)
+      saveUserListToStorage(users)
+    }else{
+
+      nameB.localeCompare(nameA);
+      saveUserListToStorage(users)
+    } 
+    
   });
 }
 
@@ -625,8 +653,31 @@ export function setupUIEventListeners() {
       savedUsers.length = 0
       console.log(savedUsers)
     })
+    let up = true
+    elements.sortBtn.addEventListener("click", () => {
+        if (up === true) {
+          if (elements.domBody.classList.contains("dark-theme")) {
+            elements.sortBtnImg.src = constant.SORT_DOWN_TEMA_SCURO
+            up = false
+          }else{
+            elements.sortBtnImg.src = constant.SORT_DOWN_TEMA_CHIARO
+            up = false
+          }
+            
+          loadHomePageData(getLoggedIn(), up)    
+        } else {
 
-    
+          if (elements.domBody.classList.contains("dark-theme")) {
+            elements.sortBtnImg.src = constant.SORT_UP_TEMA_SCURO
+            up=true
+          } else {
+            elements.sortBtnImg.src = constant.SORT_UP_TEMA_CHIARO
+            up=true
+          }
+
+          loadHomePageData(getLoggedIn(), up) 
+        }
+    });
 
 }
 

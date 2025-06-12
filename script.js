@@ -6,16 +6,12 @@ import { changeTheme } from './scripts/themeManager.js';
 import { switchSections, loadHomePageData} from "./scripts/sectionsManager.js"
 import { getLoggedIn, getUserListFromStorage, getWeekListFromStorage, showLog, showSavedTheme } from "./scripts/localStorageManager.js"
 import { Task } from './items/Task.js';
-import {addNewWeekFromNextMonday, addNewWeekFromToday, setupUIEventListeners} from './scripts/functions.js'
+import {addNewWeekFromNextMonday, addNewWeekFromToday, renderWeekDays, renderWeeks, setupUIEventListeners} from './scripts/functions.js'
 
 document.addEventListener("DOMContentLoaded", () => {
     
     
-    const savedUsers = getUserListFromStorage()
-
-    if(Array.isArray(savedUsers)){
-      console.log(savedUsers)
-    }
+    
     // --------------------------------------------------------- THEME --------------------------------------------------------------------
     
     showSavedTheme()
@@ -27,21 +23,22 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // --------------------------------------------------------- WEEKS LIST--------------------------------------------------------------------
     
-    let loggedIn = getLoggedIn()
-    console.log(loggedIn)
+    
     let up = true
 
-    showLog(loggedIn)
+    showLog(getLoggedIn())
     // cambiare sezione in base ai click
-    switchSections(loggedIn, savedUsers)
+    switchSections(getLoggedIn(), getUserListFromStorage())
     
-    
-    loadHomePageData(up);
+
+
+  loadHomePageData(getLoggedIn())
+
 
     
     
 
-    elements.sortBtn.addEventListener("click", () => {
+    /*elements.sortBtn.addEventListener("click", () => {
         if (up === true) {
           if (elements.domBody.classList.contains("dark-theme")) {
             elements.sortBtnImg.src = constant.SORT_DOWN_TEMA_SCURO
@@ -64,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         loadHomePageData(up)    
         }
-    }); 
+    });*/ 
     
 
     setupUIEventListeners();
