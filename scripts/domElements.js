@@ -29,6 +29,7 @@ const newEmailUser = dom.querySelector("#newEmailUser")
 const newUserPassword = dom.querySelector("#newUserPassword")
 const registrationBtn = dom.querySelector("#registrationBtn")
 const errorDivRegistration = dom.querySelector("#errorDivRegistration")
+const userHomeTitle = dom.getElementById("userHomeTitle")
 
 // --------------------------------------- LOGIN UTENTE--------------------------------------------------
 
@@ -48,6 +49,14 @@ const accountInfoSection = dom.getElementById("accountInfoSection")
 const toLogoutBtn = dom.getElementById("toLogout")
 const logoutSection = dom.getElementById("logoutSection")
 const logoutBtn = dom.getElementById("logoutBtn")
+
+// -------------------- account info ---------------------------------------
+
+const nameAccount = dom.querySelector("#nameAccount")
+const surnameAccount = dom.querySelector("#surnameAccount")
+const useridAccount = dom.querySelector("#useridAccount")
+const emailAccount = dom.querySelector("#emailAccount")
+const passwordAccount = dom.querySelector("#passwordAccount")
 
 // logoutSection logoutBtn
 // ------------ edit week -----------------
@@ -157,5 +166,11 @@ export {
             userId,
             password,
             welcomeMessage,
-            errorDivRegistration
+            errorDivRegistration,
+            userHomeTitle,
+            nameAccount,
+            surnameAccount,
+            useridAccount,
+            emailAccount,
+            passwordAccount
         }

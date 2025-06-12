@@ -431,3 +431,8 @@ background: #161727;
     justify-content: space-between;
     width: 63%;
 }
+
+.accountInfoDiv{
+    display: flex;
+    gap: 20px;
+}

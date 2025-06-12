@@ -4,14 +4,14 @@ import { Week } from "../items/Week.js";
 import * as constant from "./scripts/constants.js";
 import { changeTheme } from './scripts/themeManager.js';
 import { switchSections, loadHomePageData} from "./scripts/sectionsManager.js"
-import { getLoggedIn, getWeekListFromStorage, showLog, showSavedTheme } from "./scripts/localStorageManager.js"
+import { getLoggedIn, getUserListFromStorage, getWeekListFromStorage, showLog, showSavedTheme } from "./scripts/localStorageManager.js"
 import { Task } from './items/Task.js';
 import {addNewWeekFromNextMonday, addNewWeekFromToday, setupUIEventListeners} from './scripts/functions.js'
 
 document.addEventListener("DOMContentLoaded", () => {
     
-    const users = localStorage.getItem("users")
-    const savedUsers = JSON.parse(users)|| []
+    
+    const savedUsers = getUserListFromStorage()
 
     if(Array.isArray(savedUsers)){
       console.log(savedUsers)
@@ -28,11 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // --------------------------------------------------------- WEEKS LIST--------------------------------------------------------------------
     
     let loggedIn = getLoggedIn()
+    console.log(loggedIn)
     let up = true
 
-    showLog(up, loggedIn)
+    showLog(loggedIn)
     // cambiare sezione in base ai click
-    switchSections(up, loggedIn)
+    switchSections(loggedIn, savedUsers)
     
     
     loadHomePageData(up);

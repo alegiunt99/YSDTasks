@@ -98,9 +98,9 @@ export function deleteAllWeeks(weekList) {
   })
 }
 
-export function showLog(up, isLogged) {
+export function showLog(user) {
     
-    if (!isLogged) {
+    if (user === null) {
       
       showOnlySection(elements.generalViewSection, allSections);
       elements.userMenuLinks.classList.add("hidden")
@@ -125,6 +125,10 @@ export function showLog(up, isLogged) {
     } else {
       showOnlySection(elements.userViewSection, allSections);
       showOnlySection(elements.userHomeSection, userSubSections); 
+
+      showOnlySection(elements.userHomeSection, userSubSections);
+      
+      elements.userHomeTitle.innerText = "Benvenuto su YSDTASK " + user.name + "!"
       // Aggiorna dati e UI per la home
       //loadHomePageData(up);
       elements.userMenuLinks.classList.remove("hidden")

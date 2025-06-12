@@ -23,24 +23,72 @@ export class User{
 
 
     // 🟢 Getter
-    getId() { return this.#id; }
-    getName() { return this.#name; }
-    getSurname() { return this.#surname; }
-    getuserid() { return this.#userid; }
-    getEmail() { return this.#email; }
-    getPassword() { return this.#password; }
-    getWeeks() { return this.#weeks; }
-    isLoggedIn() { return this.#isLogged; }
+    // 👇 Aggiungi questi metodi getter
+  get userid() {
+    return this.#userid;
+  }
+
+  get email() {
+    return this.#email;
+  }
+
+  get name() {
+    return this.#name;
+  }
+
+  get surname() {
+    return this.#surname;
+  }
+
+  get id() {
+    return this.#id;
+  }
+
+  get password() {
+    return this.#password;
+  }
+
+  get weeks() {
+    return this.#weeks;
+  }
+
+  get isLogged() {
+    return this.#isLogged;
+  }
+
     
-    // 🟠 Setter
-    setId(id) { this.#id = id; }
-    setName(name) { this.#name = name; }
-    setSurname(surname) { this.#surname = surname; }
-    setuserid(userid) { this.#userid = userid; }
-    setEmail(email) { this.#email = email; }
-    setPassword(password) { this.#password = password; }
-    setWeeks(weeks) { this.#weeks = weeks; }
-    setLoggedIn(status) { this.#isLogged = status; }
+    // --- Setter ---
+  set id(value) {
+    this.#id = value;
+  }
+
+  set name(value) {
+    this.#name = value;
+  }
+
+  set surname(value) {
+    this.#surname = value;
+  }
+
+  set userid(value) {
+    this.#userid = value;
+  }
+
+  set email(value) {
+    this.#email = value;
+  }
+
+  set password(value) {
+    this.#password = value;
+  }
+
+  set weeks(value) {
+    this.#weeks = value;
+  }
+
+  set isLogged(value) {
+    this.#isLogged = value;
+  }
     
     // 🔵 Serializzazione per localStorage
     toJSON() {

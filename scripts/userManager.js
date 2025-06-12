@@ -1,16 +1,12 @@
 import { User } from '../items/User.js'
 import * as elements from './domElements.js'
+import { showUserVisual, switchSections } from "./sectionsManager.js";
+import * as functions from './functions.js';
+import {userSubSections} from "./sectionsManager.js"
 
 
 export function createNewUser(savedUsers){
 
-    /**#name
-    #surname
-    #userid
-    #email
-    #password
-    #weeks
-    #isLogged */
 
     try {
         
@@ -88,21 +84,88 @@ export function createNewUser(savedUsers){
 export function addNewUser(savedUsers){
 
     const newUser = createNewUser(savedUsers)
-    savedUsers.push(newUser)
-    console.log(savedUsers)
-
-    localStorage.setItem("users", JSON.stringify(savedUsers))
-
-    azzeraTestoInput(
+    try {
         
-        elements.newUserId,
-        elements.newUserName,
-        elements.newUserSurname,
-        elements.newEmailUser,
-        elements.newUserPassword
-    )
+        if(newUser === null){
+            throw new Error("User non valida")
+        }
+
+        savedUsers.push(newUser)
+
+
+        console.log("addNewUser, savedUsers: ", savedUsers)
+        localStorage.setItem("users", JSON.stringify(savedUsers))
+        
+        console.log("addNewUser, NewUser: ", newUser)
+        newUser.isLogged = true;
+        localStorage.setItem("logged", JSON.stringify(newUser))
+        renderUserView(newUser.userid,savedUsers);
+        azzeraTestoInput(
+        
+            elements.newUserId,
+            elements.newUserName,
+            elements.newUserSurname,
+            elements.newEmailUser,
+            elements.newUserPassword
+        )
+
+    } catch (error) {
+        
+        const errorDiv = document.createElement("div");
+          errorDiv.className = "errorMessage";
+          errorDiv.color ="red"
+          errorDiv.textContent = error.message
+
+          elements.errorDivRegistration.appendChild(errorDiv);
+
+          // (Opzionale) Rimuovilo dopo qualche secondo per non lasciarlo fisso
+          setTimeout(() => {
+              errorDiv.remove();
+          }, 3000);
+
+          // 🧼 Reset campi input
+          azzeraTestoInput(
+        
+            elements.newUserId,
+            elements.newUserName,
+            elements.newUserSurname,
+            elements.newEmailUser,
+            elements.newUserPassword
+        )
+    }
+
+    }
+
+
+export function renderUserView(userId, users){
+    
+    console.log("users.some(user => user.userid === userId)", users.some(user => user.userid === userId))
+    console.log(userId)
+    console.log("renderUserView, users",users)
+    if(users.some(user => user.userid === userId)){
+
+        const selectedUser = users.find(user => user.userid === userId)
+        console.log(userId)
+        console.log("user selezionato",selectedUser)
+        functions.showOnlySection(elements.userHomeSection, userSubSections);
+        elements.userHomeTitle.innerText = "Benvenuto su YSDTASK " + selectedUser.name + "!"
+        switchSections(selectedUser,users)
+        functions.renderWeeks(selectedUser,elements.weeksViewContainer)
+        
+        
+
+        
+
+    }
+
+
+
+
+    
 
 }
+    
+
 
 export function azzeraTestoInput(...input){
 

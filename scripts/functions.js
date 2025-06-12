@@ -6,6 +6,7 @@ import { Day } from "../items/Day.js";
 import { Task } from "../items/Task.js";
 import { getWeekListFromStorage, deleteAllWeeks, getUserListFromStorage } from "./localStorageManager.js";
 import { addNewUser } from "./userManager.js";
+import { User } from "../items/User.js";
 
 //------------------------------------------- TASKS ------------------------------------------
 let idTask = null
@@ -237,7 +238,7 @@ export function editTask(dayDate, editedTime, editedDescr, editedNotes,idTask, w
       taskToEdit.time = editedTime;
       taskToEdit.description = editedDescr;
       taskToEdit.notes = editedNotes
-      localStorage.setItem("weeks", JSON.stringify(weekList));
+      localStorage.setItem("users", JSON.stringify(weekList));
     } else {
       console.warn("Task da modificare non trovata con ID:", idTask);
     }
@@ -345,23 +346,23 @@ export function generateDaysForWeek(startDate, endDate, weekRef) {
 }
 
 
-export function addNewWeekFromToday(weeksList, addWeekModale, weeksViewContainer,userWeekColor, userWeekDescription) {
+export function addNewWeekFromToday(userRef, users, addWeekModale, weeksViewContainer,userWeekColor, userWeekDescription) {
         console.log("addNewWeekFromToday riceve:", userWeekColor.value, userWeekDescription.value);
         const newWeek = createNewWeekFromToday(userWeekColor.value, userWeekDescription.value)
 
-        weeksList.push(newWeek);
+        userRef.weeks.push(newWeek);
       
         // 🔽 Ordina per orario
-         weeksList.sort((a, b) => a.title.localeCompare(b.title));
+        userRef.weeks.sort((a, b) => a.title.localeCompare(b.title));
     
         // 🔐 Aggiorna il localStorage
-        const salvate = weeksList.map(week => week.toJSON());
-        localStorage.setItem("weeks", JSON.stringify(salvate));
+
+        localStorage.setItem("users", JSON.stringify(users));
     
         addWeekModale.classList.add("hidden")
 
         // 🔄 Pulisci e ricostruisci il DOM
-        renderWeeks(weeksList,weeksViewContainer)
+        renderWeeks(userRef,weeksViewContainer)
       
        
         userWeekColor.value = "#000000"
@@ -373,23 +374,24 @@ export function resetImputs(input){
   input = ""
 }
 
-export function addNewWeekFromNextMonday(weeksList, addWeekModale, weeksViewContainer,userWeekColor, userWeekDescription) {
+export function addNewWeekFromNextMonday(userRef, users, addWeekModale, weeksViewContainer,userWeekColor, userWeekDescription) {
 
         const newWeek = createNewWeekFromNextMonday(userWeekColor.value, userWeekDescription.value)
 
-        weeksList.push(newWeek);
+        userRef.weeks.push(newWeek);
       
         // 🔽 Ordina per orario
-        weeksList.sort((a, b) => a.title.localeCompare(b.title));
-    
+        userRef.weeks.sort((a, b) => a.title.localeCompare(b.title));
+
+        console.log(users.map(u => u.toJSON()))
         // 🔐 Aggiorna il localStorage
-        const salvate = weeksList.map(week => week.toJSON());
-        localStorage.setItem("weeks", JSON.stringify(salvate));
+        const salvate = users.map(u => u.toJSON());
+        localStorage.setItem("users", JSON.stringify(salvate));
     
         addWeekModale.classList.add("hidden")
 
         // 🔄 Pulisci e ricostruisci il DOM
-        renderWeeks(weeksList,weeksViewContainer)
+        renderWeeks(userRef,weeksViewContainer)
 
         userWeekColor.value = "#000000"
         userWeekDescription.value = ""
@@ -398,62 +400,65 @@ export function addNewWeekFromNextMonday(weeksList, addWeekModale, weeksViewCont
 
 let idWeek = null
 
-export function renderWeeks(weekList, weeksViewContainer) {
-    
-  
-  
-    weeksViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
-    weekList.forEach((week, index) => {
+export function renderWeeks(userRef, weeksViewContainer) {
+
+  console.log("renderWeeks, userRef", userRef)
+  if(Array.isArray(userRef.weeks)){
+
+      if(userRef.weeks.length > 0){
+
+        weeksViewContainer.innerHTML = ""; // svuota la lista prima di ricostruirla
+        userRef.weeks.forEach((week, index) => {
 
       
-      const weekDiv = document.createElement("div");
-      weekDiv.className = "weekCompleteDisplay";
-      weekDiv.dataset.id = week.id
-      weekDiv.title = week.title
+        const weekDiv = document.createElement("div");
+        weekDiv.className = "weekCompleteDisplay";
+        weekDiv.dataset.id = week.id
+        weekDiv.title = week.title
 
       
-      const pWeekTile = document.createElement("p");
-      pWeekTile.className = "weekTitle";
-      pWeekTile.textContent = week.title;
+        const pWeekTile = document.createElement("p");
+        pWeekTile.className = "weekTitle";
+        pWeekTile.textContent = week.title;
 
       
-      const pWeekColor = document.createElement("p");
-      pWeekColor.className = "weekColor";
-      pWeekColor.style.backgroundColor = week.color
+        const pWeekColor = document.createElement("p");
+        pWeekColor.className = "weekColor";
+        pWeekColor.style.backgroundColor = week.color
 
-      const pEditWeekButton = document.createElement("p");
-      pEditWeekButton.className = "pEditWeekButton";
-      pEditWeekButton.classList.add("editBtn")
-      pEditWeekButton.classList.add("btn")
-      pEditWeekButton.title = "Modifica settimana";
-      pEditWeekButton.innerHTML = "&#128736;"
+        const pEditWeekButton = document.createElement("p");
+        pEditWeekButton.className = "pEditWeekButton";
+        pEditWeekButton.classList.add("editBtn")
+        pEditWeekButton.classList.add("btn")
+        pEditWeekButton.title = "Modifica settimana";
+        pEditWeekButton.innerHTML = "&#128736;"
   
-      elements.editedWeekTitle.value = week.title
-      elements.editedWeekColor.value = week.color
+        elements.editedWeekTitle.value = week.title
+        elements.editedWeekColor.value = week.color
       // 🗑️ Cancella se clicchi su di lui
       /*taskDeleteButton.addEventListener("click", () => {
         deleteTask(week,weekList,weeksViewContainer)
       });*/
 
-      weekDiv.appendChild(pWeekTile)
-      weekDiv.appendChild(pWeekColor)
-      weekDiv.appendChild(pEditWeekButton)
+        weekDiv.appendChild(pWeekTile)
+        weekDiv.appendChild(pWeekColor)
+        weekDiv.appendChild(pEditWeekButton)
 
-      weeksViewContainer.appendChild(weekDiv)
+        weeksViewContainer.appendChild(weekDiv)
 
-      pEditWeekButton.addEventListener("click", (event) => {
-        event.stopPropagation(); // 👈 Prima cosa!
-        console.log("MODIFICA SETTIMANA CLICCATA", week.id);
+        pEditWeekButton.addEventListener("click", (event) => {
+          event.stopPropagation(); // 👈 Prima cosa!
+          console.log("MODIFICA SETTIMANA CLICCATA", week.id);
 
-        elements.editedWeekTitle.value = week.title
-        elements.editedWeekColor.value = week.color
+          elements.editedWeekTitle.value = week.title
+          elements.editedWeekColor.value = week.color
         
-        idWeek = week.id
-        // Rimanda l'apertura della modale alla prossima iterazione del ciclo event-loop
-        setTimeout(() => {
-          elements.editWeekModale.classList.remove("hidden");
-        }, 0);
-      });
+          idWeek = week.id
+          // Rimanda l'apertura della modale alla prossima iterazione del ciclo event-loop
+          setTimeout(() => {
+            elements.editWeekModale.classList.remove("hidden");
+          }, 0);
+        });
 
       
 
@@ -463,7 +468,7 @@ export function renderWeeks(weekList, weeksViewContainer) {
       weekDiv.addEventListener("click", (event) => {
         console.log("div CLICCATo", week.id);
         showOnlySection(userSubSections[1],userSubSections)
-        renderWeekDays(weekList[index], elements.daysViewContainer,elements.taskDescription, elements.taskHour, elements.tasksViewContainer, elements.addTaskButton, weekList)
+        renderWeekDays(weekList[index], elements.daysViewContainer,elements.taskDescription, elements.taskHour, elements.tasksViewContainer, elements.addTaskButton, userRef.weeks)
             // fai il cambio sezione o altra logica
       });
       
@@ -472,6 +477,17 @@ export function renderWeeks(weekList, weeksViewContainer) {
 
     
   }
+
+
+
+    }
+
+
+
+
+
+  }
+    
 
  
 
@@ -594,42 +610,12 @@ export function setupUIEventListeners() {
         elements.editTaskModale.classList.add("hidden");
     });
 
-    elements.startTodayBtn.addEventListener("click", () => {
-        console.log(weeks)
-        addNewWeekFromToday(weeks, elements.addWeekModale, elements.weeksViewContainer, elements.userWeekColor, elements.userWeekDescription);
-    });
-
-    elements.startNextMondayBtn.addEventListener("click", () => {
-      
-        console.log(weeks)
-        addNewWeekFromNextMonday(weeks, elements.addWeekModale, elements.weeksViewContainer, elements.userWeekColor, elements.userWeekDescription);
-    });
+    
 
     elements.registrationBtn.addEventListener("click", () =>{
+      
+      console.log(savedUsers)
       addNewUser(savedUsers)
-      logged = true 
-      localStorage.setItem("logged", JSON.stringify(logged))
-          // Mostra la sezione homePage
-      showOnlySection(elements.userViewSection, allSections);
-      showOnlySection(elements.userHomeSection, userSubSections);
-          // Aggiorna dati e UI per la home
-            //loadHomePageData(isAscending);
-      elements.userMenuLinks.classList.remove("hidden")
-      elements.generalMenuLinks.classList.add("hidden")
-      elements.homePageLink.addEventListener("click", () => {
-          // Mostra la sezione homePage
-      showOnlySection(elements.userHomeSection, userSubSections);
-          // Aggiorna dati e UI per la home
-              //loadHomePageData(isAscending);
-      });
-      
-      elements.toAccountBtn.addEventListener("click", () =>  {
-          showOnlySection(elements.userViewSection, allSections)
-          showOnlySection(elements.accountInfoSection, userSubSections)});
-      elements.toLogoutBtn.addEventListener("click", () =>  {
-          showOnlySection(elements.userViewSection, allSections)
-          showOnlySection(elements.logoutSection, userSubSections)});
-      
     })
 
     deleteAllWeeks(weeks)
@@ -640,6 +626,7 @@ export function setupUIEventListeners() {
       console.log(savedUsers)
     })
 
+    
 
 }
 
@@ -647,4 +634,14 @@ export function generateWeekId() {
 
   return Date.now()
   
+}
+
+export function renderAccountInfo(user){
+
+ elements.nameAccount.innerText = user.name
+ elements.surnameAccount.innerText = user.surname
+ elements.useridAccount.innerText = user.userid
+ elements.emailAccount.innerText = user.email
+ elements.passwordAccount.innerText = user.password
+
 }
