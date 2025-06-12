@@ -5,7 +5,7 @@ import { Week } from "../items/Week.js";
 import { Day } from "../items/Day.js";
 import { Task } from "../items/Task.js";
 import { getWeekListFromStorage, deleteAllWeeks, getUserListFromStorage, getLoggedIn } from "./localStorageManager.js";
-import { addNewUser } from "./userManager.js";
+import { addNewUser, loginUser } from "./userManager.js";
 import { User } from "../items/User.js";
 import { saveUserListToStorage } from './localStorageManager.js';
 import * as constant from "./constants.js";
@@ -634,7 +634,14 @@ export function setupUIEventListeners() {
       addNewUser(savedUsers)
     })
 
-    deleteAllWeeks(getLoggedIn(), savedUsers)
+    elements.loginBtn.addEventListener("click", () =>{
+      
+      console.log(savedUsers)
+      loginUser(getUserListFromStorage())
+    })
+
+
+    deleteAllWeeks(getLoggedIn(), getUserListFromStorage())
 
     elements.welcomeMessage.addEventListener("click", () =>{
       localStorage.removeItem("users")
@@ -681,6 +688,6 @@ export function renderAccountInfo(user){
  elements.surnameAccount.innerText = user.surname
  elements.useridAccount.innerText = user.userid
  elements.emailAccount.innerText = user.email
- elements.passwordAccount.innerText = user.password
+ elements.passwordAccount.value = user.password
 
 }

@@ -1,9 +1,9 @@
 import { User } from '../items/User.js'
 import * as elements from './domElements.js'
-import { showUserVisual, switchSections } from "./sectionsManager.js";
+import { loadHomePageData, showUserVisual, switchSections } from "./sectionsManager.js";
 import * as functions from './functions.js';
 import {userSubSections} from "./sectionsManager.js"
-import { saveUserListToStorage } from './localStorageManager.js';
+import { getLoggedIn, saveUserListToStorage } from './localStorageManager.js';
 
 
 export function createNewUser(savedUsers){
@@ -146,14 +146,12 @@ export function renderUserView(userId, users){
     console.log("renderUserView, users",users)
     if(users.some(user => user.userid === userId)){
 
-        const selectedUser = users.find(user => user.userid === userId)
         const userIndex = users.findIndex((user, index) => user.userid === userId)
-        console.log(userId)
         console.log("user selezionato",users[userIndex])
         functions.showOnlySection(elements.userHomeSection, userSubSections);
         elements.userHomeTitle.innerText = "Benvenuto su YSDTASK " + users[userIndex].name + "!"
         switchSections(users[userIndex],users)
-        functions.renderWeeks(users[userIndex],elements.weeksViewContainer)
+        loadHomePageData(userId, true)
         
         
 
@@ -176,4 +174,61 @@ export function azzeraTestoInput(...input){
         i.value = ""
     });
 
+}
+
+
+export function loginUser(users){
+    try {
+        
+
+        if(users.some(user => user.userid === elements.userId.value) === false){
+            console.log("elements.userId.value",elements.userId.value)
+            console.log("user ricercato",users.find(user => user.userid === elements.userId.value===false))
+            console.log("users.some(user => user.userid === elements.userId.value===false)",users.some(user => user.userid === elements.userId.value===false))
+            throw new Error("userid non registrata") 
+        }else if (elements.userId.value.trim().length === 0) {
+          throw new Error("la userid deve avere almeno una lettera");
+        }
+
+        const indexUser = users.findIndex((u, index) => u.userid === elements.userId.value)
+        console.log("indexdUser", indexUser)
+        if (indexUser === -1) return;
+
+        if(elements.password.value !== users[indexUser].password){
+          
+          throw new Error("La password è errata");
+        }else if (elements.password.value.trim().length === 0) {
+          throw new Error("La password deve avere almeno una lettera");
+        }
+        
+        users[indexUser].isLogged = true;
+        localStorage.setItem("logged", JSON.stringify(users[indexUser]))
+        saveUserListToStorage(users)
+        renderUserView(users[indexUser].userid,users);
+        loadHomePageData(getLoggedIn(), true)
+        azzeraTestoInput(
+        
+            elements.userId,
+            elements.password
+        )
+    } catch (error) {
+        const errorDiv = document.createElement("div");
+          errorDiv.className = "errorMessage";
+          errorDiv.color ="red"
+          errorDiv.textContent = error.message
+          console.log(users.some(user => user.userid === elements.userId.value===false))
+          elements.errorDivLogin.appendChild(errorDiv);
+
+          // (Opzionale) Rimuovilo dopo qualche secondo per non lasciarlo fisso
+          setTimeout(() => {
+              errorDiv.remove();
+          }, 3000);
+
+          // 🧼 Reset campi input
+          azzeraTestoInput(
+        
+            elements.userId,
+            elements.password
+        )
+    }
 }

@@ -104,55 +104,15 @@ export function showLog(user) {
     if (user === null) {
       
       showOnlySection(elements.generalViewSection, allSections);
-      elements.userMenuLinks.classList.add("hidden")
-      elements.generalMenuLinks.classList.remove("hidden")
-      elements.loginPageLink.addEventListener("click", () => {
-        showOnlySection(elements.generalHomeSection, allSections)
-        showOnlySection(elements.loginSection, generalSubSections)
-      })
-      elements.registrationPageLink.addEventListener("click", () => {
-        showOnlySection(elements.generalHomeSection, allSections)
-        showOnlySection(elements.registrationSection, generalSubSections)
-        
-      });
-      elements.homePageLink.addEventListener("click", () => {
-        showOnlySection(elements.generalViewSection, allSections)
-        // Mostra la sezione homePage
-        showOnlySection(elements.generalHomeSection, generalSubSections);
-        // Aggiorna dati e UI per la home
-        //loadHomePageData(up);
-      })
-      elements.themeSectionLink.addEventListener("click", () => showOnlySection(elements.themeSection, allSections));
+      
     } else {
       showOnlySection(elements.userViewSection, allSections);
-      showOnlySection(elements.userHomeSection, userSubSections); 
-
       showOnlySection(elements.userHomeSection, userSubSections);
       
       elements.userHomeTitle.innerText = "Benvenuto su YSDTASK " + user.name + "!"
-      // Aggiorna dati e UI per la home
-      //loadHomePageData(up);
-      elements.userMenuLinks.classList.remove("hidden")
-      elements.generalMenuLinks.classList.add("hidden")
-      elements.homePageLink.addEventListener("click", () => {
-          showOnlySection(elements.userViewSection, allSections)
-          // Mostra la sezione homePage
-          showOnlySection(elements.userHomeSection, userSubSections);
-          // Aggiorna dati e UI per la home
-          //loadHomePageData(up);
-      });
-
-
-      elements.toAccountBtn.addEventListener("click", () =>{
-        showOnlySection(elements.userViewSection, allSections)
-        showOnlySection(elements.accountInfoSection, userSubSections)
-      });
-      elements.toLogoutBtn.addEventListener("click", () =>{
-        showOnlySection(elements.userViewSection, allSections)
-        showOnlySection(elements.logoutSection, userSubSections)
-      });
       
-      elements.themeSectionLink.addEventListener("click", () => showOnlySection(elements.themeSection, allSections));
+      loadHomePageData(user, getUserListFromStorage())
+      
     }
     
 }

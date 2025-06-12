@@ -11,7 +11,7 @@ import {addNewWeekFromNextMonday, addNewWeekFromToday, renderWeekDays, renderWee
 document.addEventListener("DOMContentLoaded", () => {
     
     
-    
+    console.log(getUserListFromStorage())
     // --------------------------------------------------------- THEME --------------------------------------------------------------------
     
     showSavedTheme()
@@ -32,37 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
 
 
-  loadHomePageData(getLoggedIn(), up)
-
-
-    
-    
-
-    /*elements.sortBtn.addEventListener("click", () => {
-        if (up === true) {
-          if (elements.domBody.classList.contains("dark-theme")) {
-            elements.sortBtnImg.src = constant.SORT_DOWN_TEMA_SCURO
-            up = false
-          }else{
-            elements.sortBtnImg.src = constant.SORT_DOWN_TEMA_CHIARO
-            up = false
-          }
-            
-        loadHomePageData(up)    
-        } else {
-
-          if (elements.domBody.classList.contains("dark-theme")) {
-            elements.sortBtnImg.src = constant.SORT_UP_TEMA_SCURO
-            up=true
-          } else {
-            elements.sortBtnImg.src = constant.SORT_UP_TEMA_CHIARO
-            up=true
-          }
-
-        loadHomePageData(up)    
-        }
-    });*/ 
-    
+    loadHomePageData(getLoggedIn(), up)
 
     setupUIEventListeners();
   

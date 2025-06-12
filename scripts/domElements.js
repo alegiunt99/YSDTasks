@@ -33,9 +33,10 @@ const userHomeTitle = dom.getElementById("userHomeTitle")
 
 // --------------------------------------- LOGIN UTENTE--------------------------------------------------
 
-const userId = dom.querySelector("#userName")
+const userId = dom.querySelector("#userid")
 const password = dom.querySelector("#password")
 const loginBtn = document.getElementById("loginBtn")
+const errorDivLogin = dom.querySelector("#errorDivLogin")
 
 // ------------------------------------- user visualization --------------------------------------
 const userViewSection = dom.querySelector(".userViewSection")
@@ -172,5 +173,6 @@ export {
             surnameAccount,
             useridAccount,
             emailAccount,
-            passwordAccount
+            passwordAccount,
+            errorDivLogin
         }

@@ -1,7 +1,7 @@
 import * as elements from './domElements.js'
 import { showOnlySection, renderWeeks, renderAccountInfo, renderTasks, addNewWeekFromToday, addNewWeekFromNextMonday, addTask, sortWeeks } from "./functions.js";
 import * as constant from "./constants.js";
-import { getWeekListFromStorage, deleteAllWeeks, getUserListFromStorage } from "./localStorageManager.js";
+import { getWeekListFromStorage, deleteAllWeeks, getUserListFromStorage, saveUserListToStorage } from "./localStorageManager.js";
 
 export const allSections = [
         elements.generalViewSection, elements.userViewSection, elements.themeSection
@@ -28,8 +28,11 @@ export function switchSections(user, users) {
     elements.userMenuLinks.classList.remove("hidden");
     elements.generalMenuLinks.classList.add("hidden");
 
+    loadHomePageData(user, getUserListFromStorage())
+
     // Imposta eventi e viste specifiche utente
     elements.homePageLink.onclick = () => {
+      showOnlySection(elements.userViewSection, allSections)
       showOnlySection(elements.userHomeSection, userSubSections);
 
       elements.userHomeTitle.innerText = "Benvenuto su YSDTASK " + user.name + "!"
@@ -37,7 +40,7 @@ export function switchSections(user, users) {
       const indexdUser = users.findIndex((u, index) => u.userid === user.userid)
       console.log("indexdUser", indexdUser)
       if (indexdUser === -1) return;
-      renderWeeks(users[indexdUser], weeksViewContainer);
+      loadHomePageData(user, true)
       // Qui puoi caricare dati e aggiornare UI
     };
 
@@ -65,8 +68,13 @@ export function switchSections(user, users) {
 
     elements.logoutBtn.addEventListener("click", () => {
 
-      user.isLogged = false
+      const indexdUser = users.findIndex((u, index) => u.userid === user.userid)
+      console.log("indexdUser", indexdUser)
+      if (indexdUser === -1) return;
+      users[indexdUser].isLogged = false
+      //user.isLogged = false
       localStorage.setItem("logged", JSON.stringify(null))
+      saveUserListToStorage(users)
       showOnlySection(elements.userViewSection, allSections);
       showOnlySection(elements.userHomeSection, userSubSections);
               // Aggiorna dati e UI per la home
@@ -74,6 +82,8 @@ export function switchSections(user, users) {
       elements.userMenuLinks.classList.remove("hidden")
       elements.generalMenuLinks.classList.add("hidden")
     })
+
+    elements.themeSectionLink.addEventListener("click", () => showOnlySection(elements.themeSection, allSections));
 
   } else {
     // Utente NON loggato → mostra vista generica
@@ -98,94 +108,18 @@ export function switchSections(user, users) {
       showOnlySection(elements.generalViewSection, allSections);
       showOnlySection(elements.generalHomeSection, generalSubSections);
     };
+
+    elements.themeSectionLink.addEventListener("click", () => showOnlySection(elements.themeSection, allSections));
   }
 }
 
    
-  /*elements.loginBtn.addEventListener("click", () => {
-      logged = true 
-      logged
-      localStorage.setItem("logged", JSON.stringify(logged))
-    // Mostra la sezione homePage
-      showOnlySection(elements.userViewSection, allSections);
-      showOnlySection(elements.userHomeSection, userSubSections);
-    // Aggiorna dati e UI per la home
-      //loadHomePageData(isAscending);
-      elements.userMenuLinks.classList.remove("hidden")
-      elements.generalMenuLinks.classList.add("hidden")
-      elements.homePageLink.addEventListener("click", () => {
-    // Mostra la sezione homePage
-      showOnlySection(elements.userHomeSection, userSubSections);
-    // Aggiorna dati e UI per la home
-        //loadHomePageData(isAscending);
-      });
 
-      elements.toAccountBtn.addEventListener("click", () =>  {
-        showOnlySection(elements.userViewSection, allSections)
-        showOnlySection(elements.accountInfoSection, userSubSections)});
-      elements.toLogoutBtn.addEventListener("click", () =>  {
-        showOnlySection(elements.userViewSection, allSections)
-        showOnlySection(elements.logoutSection, userSubSections)});
-    })
-
-    elements.logoutBtn.addEventListener("click", () => {
-      showOnlySection(elements.userViewSection, allSections);
-  showOnlySection(elements.userHomeSection, userSubSections);
-              // Aggiorna dati e UI per la home
-                //loadHomePageData(isAscending);
-  elements.userMenuLinks.classList.remove("hidden")
-  elements.generalMenuLinks.classList.add("hidden")
-  elements.homePageLink.addEventListener("click", () => {
-              // Mostra la sezione homePage
- 
-              // Aggiorna dati e UI per la home
-                  //loadHomePageData(isAscending);
-  });
-          
-  elements.toAccountBtn.addEventListener("click", () =>  {
-      showOnlySection(elements.userViewSection, allSections)
-      showOnlySection(elements.accountInfoSection, userSubSections)});
-  elements.toLogoutBtn.addEventListener("click", () =>  {
-      showOnlySection(elements.userViewSection, allSections)
-      showOnlySection(elements.logoutSection, userSubSections)});
-      showOnlySection(elements.generalViewSection, allSections);
-      logged = false
-      localStorage.setItem("logged", JSON.stringify(logged))
-      elements.userMenuLinks.classList.add("hidden")
-      elements.generalMenuLinks.classList.remove("hidden")
-    })
-
-    elements.loginPageLink.addEventListener("click", () => {
-      showOnlySection(elements.generalViewSection, allSections)
-      showOnlySection(elements.loginSection, generalSubSections)
-    
-    });
-    elements.registrationPageLink.addEventListener("click", () => {
-      showOnlySection(elements.generalViewSection, allSections)
-      showOnlySection(elements.registrationSection, generalSubSections)});
-
-      
-    elements.homePageLink.addEventListener("click", () => {
-      
-      if (logged) {
-        showOnlySection(elements.userViewSection, allSections)
-        
-        // Aggiorna dati e UI per la home
-        //loadHomePageData(isAscending
-        console.log(" sono loggato!")
-        }else{
-        showOnlySection(elements.generalViewSection, allSections)
-        // Mostra la sezione homePage
-        //showOnlySection(elements.generalHomeSection, generalSubSections)
-        console.log("non sono loggato!")
-}
-        
-      });
-    
-    elements.themeSectionLink.addEventListener("click", () => showOnlySection(elements.themeSection, allSections));*/
 
       
 export function loadHomePageData(logged, sorting) {
+
+    if(logged === null) return 
 
     var users = getUserListFromStorage()
     const userIndex = users.findIndex((user, index) => user.userid === logged.userid)
