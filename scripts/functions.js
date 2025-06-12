@@ -370,22 +370,7 @@ export function addNewWeekFromToday(userRef, users, addWeekModale, weeksViewCont
         userWeekColor.value = "#000000";
         userWeekDescription.value = "";
 
-        /*userRef.weeks.push(newWeek);
-      
-        // 🔽 Ordina per orario
-        userRef.weeks.sort((a, b) => a.title.localeCompare(b.title));
-    
-        // 🔐 Aggiorna il localStorage
-        saveUserListToStorage(users)
-    
-        addWeekModale.classList.add("hidden")
-
-        // 🔄 Pulisci e ricostruisci il DOM
-        renderWeeks(userRef,weeksViewContainer)
-      
-       
-        userWeekColor.value = "#000000"
-        userWeekDescription.value = ""*/
+        
 }
 
 export function resetImputs(input){
@@ -512,44 +497,47 @@ export function renderWeeks(userRef, weeksViewContainer) {
     elements.saveEditWeekBtn.addEventListener("click", () => {
         console.log("ho cliccato la settimana:", idWeek);
         if (idWeek !== null) {
-          editWeek(elements.editedWeekTitle.value, elements.editedWeekColor.value,getWeekListFromStorage(), idWeek);
+          editWeek(elements.editedWeekTitle.value, elements.editedWeekColor.value,idWeek, getUserListFromStorage(), getLoggedIn());
           elements.editWeekModale.classList.add("hidden");
-          const sortedWeek = getWeekListFromStorage().sort((a, b) => a.title.localeCompare(b.title))
-          renderWeeks(sortedWeek, elements.weeksViewContainer); // attenzione che qui devi avere weeksViewContainer definito correttamente
+          loadHomePageData(getLoggedIn(),true); // attenzione che qui devi avere weeksViewContainer definito correttamente
         } else {
           console.warn("Nessuna settimana selezionata per la modifica");
         }
     })
 
 
-export function sortWeeks(users, weeks, sorting) {
-  weeks.sort((a, b) => {
-
+export function sortWeeks(users, user, sorting) {
+  user.weeks.sort((a, b) => {
     const nameA = a.title;
     const nameB = b.title;
-
     if(sorting){
-
-      nameA.localeCompare(nameB)
-      saveUserListToStorage(users)
+      
+      return nameA.localeCompare(nameB)
+      
     }else{
-
-      nameB.localeCompare(nameA);
-      saveUserListToStorage(users)
+      return nameB.localeCompare(nameA)
+      
     } 
     
   });
+
+  saveUserListToStorage(users)
 }
 
 
-export function editWeek(editedTitle, editedColor, weekList, idWeek) {
+export function editWeek(editedTitle, editedColor, idWeek, users, logged) {
+  console.log("editWeek, users", users)
+  const indexdUser = users.findIndex((user, index) => user.userid === logged.userid)
+  console.log("indexdUser", indexdUser)
+  if (indexdUser === -1) return;
+  const savedIdWeek = users[indexdUser].weeks.findIndex(w => w.id === idWeek);
+  console.log(savedIdWeek)
 
-  const weekToEdit = weekList.find(w => w.id === idWeek);
-
-  if (weekToEdit) {
-    weekToEdit.title = editedTitle;
-    weekToEdit.color = editedColor;
-    localStorage.setItem("weeks", JSON.stringify(weekList));
+  
+  if (users[indexdUser].weeks[savedIdWeek]) {
+    users[indexdUser].weeks[savedIdWeek].title = editedTitle;
+    users[indexdUser].weeks[savedIdWeek].color = editedColor;
+    saveUserListToStorage(users)
   } else {
     console.warn("Settimana da modificare non trovata con ID:", idWeek);
   }

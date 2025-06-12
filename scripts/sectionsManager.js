@@ -187,10 +187,9 @@ export function switchSections(user, users) {
       
 export function loadHomePageData(logged, sorting) {
 
-    console.log("sorting", sorting)
     var users = getUserListFromStorage()
     const userIndex = users.findIndex((user, index) => user.userid === logged.userid)
-    sortWeeks(users, users[userIndex].weeks, sorting)
+    sortWeeks(users, users[userIndex], sorting)
 
     elements.weeksViewContainer.innerHTML = ""; // svuota
     renderWeeks(users[userIndex], elements.weeksViewContainer)   

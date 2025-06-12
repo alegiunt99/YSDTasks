@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
 
 
-  loadHomePageData(getLoggedIn())
+  loadHomePageData(getLoggedIn(), up)
 
 
     
